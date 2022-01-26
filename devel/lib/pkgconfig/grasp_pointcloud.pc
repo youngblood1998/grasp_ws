@@ -1,0 +1,8 @@
+prefix=/home/jay/grasp_ws/devel
+
+Name: grasp_pointcloud
+Description: Description of grasp_pointcloud
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

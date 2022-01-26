@@ -1,0 +1,21 @@
+启动机器人
+roslaunch ur_modern_driver ur5_bringup.launch limited:=true robot_ip:=192.168.1.12
+roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch limited:=true
+roslaunch ur5_moveit_config moveit_rviz.launch config:=true
+启动夹爪
+rosrun robotiq_2f_gripper_control Robotiq2FGripperRtuNode.py /dev/ttyUSB0
+rosrun robotiq_2f_gripper_control robotiq_listener.py
+rosrun robotiq_2f_gripper_control robotiq_controller.py
+启动摄像头
+roslaunch realsense2_camera rs_camera_ca.launch
+
+运行程序
+    没有加周围检测的
+    rosrun grasp_pointcloud real_grasp_detect.py
+    rosrun grasp_pointcloud real_grasp_manipulate.py
+    加周围检测
+    rosrun grasp_pointcloud real_grasp_detect_new.py
+    rosrun grasp_pointcloud real_grasp_manipulate_new.py
+    加移动到被抓物体的上方
+    rosrun grasp_pointcloud real_grasp_detect_new_1.py
+    rosrun grasp_pointcloud real_grasp_manipulate_new_1.py
