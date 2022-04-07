@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import cv2 as cv
 import rospy
@@ -15,13 +15,13 @@ from real_grasp_pose_evaluator_new_1 import gmm, grasp_show
 
 
 THRESH_STEP = 4         #深度滤波的步长
-THRESH_STEP_NEW = 2
+THRESH_STEP_NEW = 2     #深度滤波的步长
 R_VAL = 10              #dbscan的r值
 MIN_NUM = 5             #dbscan的min_num值
 LINE_NUM = 20           #每个类生成的线数
-T_VAL = 1.75             #生成的矩形和线段长度的倍数
-GRIPPER_HEIGHT = 6      #夹爪的厚度
-GRIPPER_WIDTH = 21     #夹爪宽度
+T_VAL = 1.75            #生成的矩形和线段长度的倍数
+GRIPPER_HEIGHT = 6      #夹爪的厚度mm
+GRIPPER_WIDTH = 21      #夹爪宽度mm
 ADD_WIDTH = 23          #抓取余量
 PERCENT = 0.6           #碰撞百分比
 DEPTH_INDEX = 0.75      #深度指数

@@ -17,5 +17,5 @@ roslaunch realsense2_camera rs_camera_ca.launch
     rosrun grasp_pointcloud real_grasp_detect_new.py
     rosrun grasp_pointcloud real_grasp_manipulate_new.py
     加移动到被抓物体的上方
-    rosrun grasp_pointcloud real_grasp_detect_new_1.py
+    rosrun grasp_pointcloud real_grasp_detect_new_1.1.py
     rosrun grasp_pointcloud real_grasp_manipulate_new_1.py

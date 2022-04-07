@@ -127,6 +127,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
   include("/home/jay/grasp_ws/build/gtest/cmake_install.cmake")
   include("/home/jay/grasp_ws/build/grasp_pointcloud/cmake_install.cmake")
+  include("/home/jay/grasp_ws/build/Yolov5_ros/yolov5_ros/yolov5_ros/cmake_install.cmake")
+  include("/home/jay/grasp_ws/build/Yolov5_ros/yolov5_ros/yolov5_ros_msgs/cmake_install.cmake")
 
 endif()
 

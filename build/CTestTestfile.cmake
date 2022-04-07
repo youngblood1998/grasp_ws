@@ -6,3 +6,5 @@
 # testing this directory and lists subdirectories to be tested as well.
 subdirs(gtest)
 subdirs(grasp_pointcloud)
+subdirs(Yolov5_ros/yolov5_ros/yolov5_ros)
+subdirs(Yolov5_ros/yolov5_ros/yolov5_ros_msgs)

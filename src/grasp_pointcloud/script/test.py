@@ -65,36 +65,36 @@
 
 #----------------------------------------------------------------------------
 
-# import cv2 as cv
-# from grasp_candidate_generator import depth_filter, dbscan, grasp_generation, depth_filter_new, grasp_generation_new
-# from grasp_pose_evaluator_new import gmm, grasp_show
+import cv2 as cv
+from grasp_candidate_generator import depth_filter, dbscan, grasp_generation, depth_filter_new, grasp_generation_new
+from grasp_pose_evaluator_new import gmm, grasp_show
 
-# path = "../img/depth2-2.png"
-# thresh = 200
-# # binary, depth = depth_filter(path, thresh)
-# binary, depth = depth_filter_new(path, thresh)
-# cluster_img, cluster_arr = dbscan(binary, 10, 5)
-# while len(cluster_img) == 0:
-#     thresh += 2
-#     binary, depth = depth_filter_new(path, thresh)
-#     cluster_img, cluster_arr = dbscan(binary, 10, 5)
-# rect_arr, cent_arr, lines_arr = grasp_generation_new(cluster_img, cluster_arr, 10)
-# # rect_arr, cent_arr, lines_arr = grasp_generation(cluster_img, cluster_arr, 10)
-# # print(lines_arr)
-# rgb_path = "../img/rgb2-2.png"
-# index_arr = []
-# lr_arr = []
-# depth_arr = []
-# grippers_arr = []
-# for i, rect in enumerate(rect_arr):
-#     slice_img = depth[rect[0]:rect[1], rect[2]:rect[3]]
-#     select_index, lr_index, select_depth, select_width, select_add_width, gripper_arr = gmm(slice_img, lines_arr[i])
-#     index_arr.append(select_index)
-#     lr_arr.append(lr_index)
-#     depth_arr.append(select_depth)
-#     grippers_arr.append(gripper_arr)
-# grasp_point = grasp_show(rgb_path, index_arr, lr_arr, cent_arr, rect_arr, depth_arr, 10, grippers_arr)
-# print(grasp_point)
+path = "../img/depth2-2.png"
+thresh = 200
+# binary, depth = depth_filter(path, thresh)
+binary, depth = depth_filter_new(path, thresh)
+cluster_img, cluster_arr = dbscan(binary, 10, 5)
+while len(cluster_img) == 0:
+    thresh += 2
+    binary, depth = depth_filter_new(path, thresh)
+    cluster_img, cluster_arr = dbscan(binary, 10, 5)
+rect_arr, cent_arr, lines_arr = grasp_generation_new(cluster_img, cluster_arr, 10)
+# rect_arr, cent_arr, lines_arr = grasp_generation(cluster_img, cluster_arr, 10)
+# print(lines_arr)
+rgb_path = "../img/rgb2-2.png"
+index_arr = []
+lr_arr = []
+depth_arr = []
+grippers_arr = []
+for i, rect in enumerate(rect_arr):
+    slice_img = depth[rect[0]:rect[1], rect[2]:rect[3]]
+    select_index, lr_index, select_depth, select_width, select_add_width, gripper_arr = gmm(slice_img, lines_arr[i])
+    index_arr.append(select_index)
+    lr_arr.append(lr_index)
+    depth_arr.append(select_depth)
+    grippers_arr.append(gripper_arr)
+grasp_point = grasp_show(rgb_path, index_arr, lr_arr, cent_arr, rect_arr, depth_arr, 10, grippers_arr)
+print(grasp_point)
 
 #-----------------------------------------------------------------------------------------
 
