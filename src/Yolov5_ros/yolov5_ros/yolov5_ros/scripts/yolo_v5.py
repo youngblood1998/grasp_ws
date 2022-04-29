@@ -106,7 +106,7 @@ class Yolo_Dect:
 
 
             self.boundingBoxes.bounding_boxes.append(boundingBox)
-            self.position_pub.publish(self.boundingBoxes)
+        self.position_pub.publish(self.boundingBoxes)
         self.publish_image(img, height, width)
         cv2.imshow('YOLOv5', img)
 

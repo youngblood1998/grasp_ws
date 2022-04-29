@@ -5,4 +5,4 @@ Description: Description of yolov5_ros_msgs
 Version: 1.0.0
 Cflags: -I/home/jay/grasp_ws/devel/include
 Libs: -L${prefix}/lib 
-Requires: 
+Requires: message_runtime

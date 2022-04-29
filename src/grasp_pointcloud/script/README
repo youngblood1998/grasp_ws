@@ -19,3 +19,8 @@ roslaunch realsense2_camera rs_camera_ca.launch
     加移动到被抓物体的上方
     rosrun grasp_pointcloud real_grasp_detect_new_1.1.py
     rosrun grasp_pointcloud real_grasp_manipulate_new_1.py
+    使用yolo
+    roslaunch yolov5_ros yolo_v5.launch
+    rosrun grasp_pointcloud real_grasp_detect_yolo.py	更换相机记得更改trans_func的MATRIX
+
+

@@ -4,7 +4,6 @@ project(yolov5_ros_msgs)
 
 find_package(catkin REQUIRED COMPONENTS
   message_generation
-  message_runtime
   std_msgs
   rospy
 )
@@ -23,6 +22,7 @@ generate_messages(
 
 catkin_package(
   CATKIN_DEPENDS
+  message_runtime
 )
 
 
