@@ -10,8 +10,6 @@ from yolov5_ros_msgs.msg import BoundingBox, BoundingBoxes
 from real_grasp_tree_build import tree_built
 
 
-OVERLAP_RATIO = 0.2 # 重叠占比
-
 class GraspDetector:
     def __init__(self):
         self.color_sub = message_filters.Subscriber("/camera/color/image_raw", Image, queue_size=1, buff_size=52428800)
@@ -28,7 +26,7 @@ class GraspDetector:
             # 将深度图处理成64位整形
             depth_img = np.round(depth_img).astype(np.int64)
             # 数结构选取抓取对象
-            tree_built(depth_img, bound, OVERLAP_RATIO)
+            tree_built(depth_img, bound)
         except CvBridgeError as e:
             print("CvBridge转换出错！！！")
 
