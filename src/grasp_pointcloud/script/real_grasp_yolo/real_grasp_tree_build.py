@@ -1,13 +1,17 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 from trans_func import trans_img2real_point, trans_img2real_length
+from random_color import ncolors
 import numpy as np
+import copy
+import random
+import cv2 as cv
 
 
 HALF_LENGTH = 20    # 深度图取样的一半宽度
 MIN_LENGTH = 10     # 锚框最小尺寸
-MAX_LENGTH = 60     # 锚框最大尺寸
-OVERLAP_RATIO = 0.2 # 重叠占比
+MAX_LENGTH = 70     # 锚框最大尺寸
+OVERLAP_RATIO = 0.1 # 重叠占比
 
 
 # 排序规则
@@ -54,7 +58,10 @@ def bfs(new_node, node_arr):
             node.set_son_node(new_node)
             ret1 = True
         # 准备下一层节点
-        son_node_arr.extend(node.son_ndoe_list)
+        for son_node in node.son_ndoe_list:
+            if son_node.id == new_node.id:
+                continue
+            son_node_arr.append(son_node)
     if len(son_node_arr) > 0:
         ret2 = bfs(new_node, son_node_arr)
     else:
@@ -75,12 +82,13 @@ class Node:
         for son_node in self.son_ndoe_list:
             if son_node.id == node.id:
                 exist = True
+                break
         if not exist:
             self.son_ndoe_list.append(node)
 
 
 # 通过树结构返回最合适的一个草莓锚框数据
-def tree_built(depth_img, bound):
+def tree_built(depth_img, color_img, bound):
     # print(bound)
     strawberry_arr = []
     # 计算锚框深度并排序
@@ -124,3 +132,26 @@ def tree_built(depth_img, bound):
         # 如果该节点不是某一个节点的子节点，则放第一层
         if not ret:
             node_arr.append(new_node)
+
+    print("-"*100)
+    colors = ncolors(10)
+    i = 0
+    test_arr = copy.deepcopy(node_arr)
+    while len(test_arr) != 0:
+        color = colors[i]
+        i+=1
+        new_test_arr = []
+        for test in test_arr:
+            print(test.id)
+            x_center = int((test.data[0]+test.data[1])/2)
+            y_center = int((test.data[2]+test.data[3])/2)
+            cv.circle(color_img, (x_center, y_center), 8, color, thickness=5)
+            for son in test.son_ndoe_list:
+                print(son.id)
+                x = int((son.data[0]+son.data[1])/2)
+                y = int((son.data[2]+son.data[3])/2)
+                cv.line(color_img, (x_center, y_center), (x, y), color, thickness=3)
+                new_test_arr.append(son)
+        test_arr = copy.deepcopy(new_test_arr)
+        print("-"*20)
+    return color_img
