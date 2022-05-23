@@ -133,25 +133,45 @@ def tree_built(depth_img, color_img, bound):
         if not ret:
             node_arr.append(new_node)
 
-    print("-"*100)
+    # 在图上画出来
+    # print("-"*100)
+    # 生成十种颜色
     colors = ncolors(10)
     i = 0
     test_arr = copy.deepcopy(node_arr)
+    # 使用宽度遍历画出树结构，每个节点在中心画圆点并用相同的颜色与其子节点相连
     while len(test_arr) != 0:
         color = colors[i]
         i+=1
         new_test_arr = []
         for test in test_arr:
-            print(test.id)
+            # print(test.id)
             x_center = int((test.data[0]+test.data[1])/2)
             y_center = int((test.data[2]+test.data[3])/2)
             cv.circle(color_img, (x_center, y_center), 8, color, thickness=5)
             for son in test.son_ndoe_list:
-                print(son.id)
+                # print(son.id)
                 x = int((son.data[0]+son.data[1])/2)
                 y = int((son.data[2]+son.data[3])/2)
                 cv.line(color_img, (x_center, y_center), (x, y), color, thickness=3)
                 new_test_arr.append(son)
         test_arr = copy.deepcopy(new_test_arr)
-        print("-"*20)
-    return color_img
+        # print("-"*20)
+    
+    # 在第一层中找到子节点数最多的
+    max_son_num = 0
+    min_depth = float('inf')
+    best_node = None
+    for node in node_arr:
+        if len(node.son_ndoe_list) > max_son_num:
+            max_son_num = len(node.son_ndoe_list)
+            min_depth = node.data[4]
+            best_node = node
+        elif len(node.son_ndoe_list) == max_son_num:
+            if node.data[4] < min_depth:
+                max_son_num = len(node.son_ndoe_list)
+                min_depth = node.data[4]
+                best_node = node
+    
+    # 返回画出树结构的图片和锚框数据
+    return color_img, best_node.data

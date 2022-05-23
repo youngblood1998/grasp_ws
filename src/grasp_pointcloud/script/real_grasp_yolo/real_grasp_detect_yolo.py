@@ -10,6 +10,7 @@ import copy
 
 from yolov5_ros_msgs.msg import BoundingBox, BoundingBoxes
 from real_grasp_tree_build import tree_built
+from real_grasp_dbscan import dbscan
 
 
 class GraspDetector:
@@ -41,26 +42,29 @@ class GraspDetector:
             self.topic_arr.append(copy.deepcopy(topic))
             if len(self.topic_arr) > 3:
                 del self.topic_arr[0]
-
+            # 连续几帧中取锚框最多的
             best_topic = None
             num = 0
             for t in self.topic_arr:
                 if len(t[2].bounding_boxes) > num:
                     best_topic = t
                     num = len(t[2].bounding_boxes)
-
+            # 没有则返回
             if best_topic is None:
                 return
-
+            # 最佳那一帧的深度图、彩色图以及锚框
             best_depth_img = best_topic[1]
             best_color_img = best_topic[0]
             best_bound = best_topic[2]
 
-
             # 数结构选取抓取对象
-            result_img = tree_built(best_depth_img, best_color_img, best_bound)
-
+            result_img, bound_data = tree_built(best_depth_img, best_color_img, best_bound)
+            # 发布带有树结构的彩色图
             self.img_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))
+            print(0)
+            # 对三维点进行DBSCAN聚类
+            dbscan(best_depth_img, bound_data)
+            print(1)
         except CvBridgeError as e:
             print("CvBridge转换出错！！！")
 
