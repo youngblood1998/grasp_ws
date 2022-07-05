@@ -3,6 +3,6 @@ prefix=/home/jay/grasp_ws/devel
 Name: grasp_pointcloud
 Description: Description of grasp_pointcloud
 Version: 0.0.0
-Cflags: 
+Cflags: -I/home/jay/grasp_ws/devel/include
 Libs: -L${prefix}/lib 
-Requires: 
+Requires: message_runtime

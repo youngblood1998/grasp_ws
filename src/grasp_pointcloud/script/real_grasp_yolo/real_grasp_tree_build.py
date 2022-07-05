@@ -12,6 +12,8 @@ HALF_LENGTH = 20    # 深度图取样的一半宽度
 MIN_LENGTH = 10     # 锚框最小尺寸
 MAX_LENGTH = 70     # 锚框最大尺寸
 OVERLAP_RATIO = 0.1 # 重叠占比
+DEPTH_RATIO = 0.5   # 深度比值
+ADD_LENGTH = 10     # 点云直通滤波前后左右各增加的长度
 
 
 # 排序规则
@@ -53,8 +55,11 @@ def bfs(new_node, node_arr):
     ret1 = False # 用来判断是否插入
     # 遍历本层节点
     for node in node_arr:
-        # 判断是否重叠
-        if is_occluded(new_node, node):
+        # 判断是否重叠且深度在一半以下
+        diameter = trans_img2real_length(node.data[4], min(node.data[1]-node.data[0], node.data[3]-node.data[2]))
+        depth_sub = new_node.data[4] - node.data[4]
+        print(diameter, depth_sub)
+        if is_occluded(new_node, node) and depth_sub > diameter*DEPTH_RATIO:
             node.set_son_node(new_node)
             ret1 = True
         # 准备下一层节点
@@ -159,7 +164,7 @@ def tree_built(depth_img, color_img, bound):
         # print("-"*20)
     
     # 在第一层中找到子节点数最多的
-    max_son_num = 0
+    max_son_num = -1
     min_depth = float('inf')
     best_node = None
     for node in node_arr:
@@ -172,6 +177,10 @@ def tree_built(depth_img, color_img, bound):
                 max_son_num = len(node.son_ndoe_list)
                 min_depth = node.data[4]
                 best_node = node
-    
+    # 计算出点云图的直通滤波范围
+    point_1 = trans_img2real_point(best_node.data[0], best_node.data[2], best_node.data[4])
+    point_2 = trans_img2real_point(best_node.data[1], best_node.data[3], best_node.data[4])
+    point_bound = [point_1[0]-ADD_LENGTH, point_1[1]-ADD_LENGTH, point_2[0]+ADD_LENGTH, point_2[1]+ADD_LENGTH]
+
     # 返回画出树结构的图片和锚框数据
-    return color_img, best_node.data
+    return color_img, point_bound

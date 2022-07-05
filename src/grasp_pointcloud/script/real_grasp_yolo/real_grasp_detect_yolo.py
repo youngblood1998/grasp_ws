@@ -9,6 +9,7 @@ import cv2
 import copy
 
 from yolov5_ros_msgs.msg import BoundingBox, BoundingBoxes
+from grasp_pointcloud.msg import PointBoundingBox
 from real_grasp_tree_build import tree_built
 from real_grasp_dbscan import dbscan
 
@@ -20,6 +21,7 @@ class GraspDetector:
         self.depth_sub = message_filters.Subscriber("/camera/aligned_depth_to_color/image_raw", Image, queue_size=1, buff_size=52428800)
         self.bound_sub = message_filters.Subscriber("/yolov5/BoundingBoxes", BoundingBoxes, queue_size=1, buff_size=52428800)
         self.img_pub = rospy.Publisher("real_detect/tree_image", Image, queue_size=1)
+        self.bound_pub = rospy.Publisher("real_detect/PointBoundingBox", PointBoundingBox, queue_size=1)
         sync = message_filters.ApproximateTimeSynchronizer([self.color_sub, self.depth_sub, self.bound_sub], 1, 0.4, allow_headerless=True)
         sync.registerCallback(self.call_back)
 
@@ -57,14 +59,22 @@ class GraspDetector:
             best_color_img = best_topic[0]
             best_bound = best_topic[2]
 
-            # 数结构选取抓取对象
+            # 树结构选取抓取对象
             result_img, bound_data = tree_built(best_depth_img, best_color_img, best_bound)
             # 发布带有树结构的彩色图
             self.img_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))
+            # 发布点云直通滤波的范围
+            point_bound = PointBoundingBox()
+            point_bound.xmin = bound_data[0]
+            point_bound.ymin = bound_data[1]
+            point_bound.xmax = bound_data[2]
+            point_bound.ymax = bound_data[3]
+            self.bound_pub.publish(point_bound)
+            
             print(0)
             # 对三维点进行DBSCAN聚类
-            dbscan(best_depth_img, bound_data)
-            print(1)
+            # dbscan(best_depth_img, bound_data)
+            # print(1)
         except CvBridgeError as e:
             print("CvBridge转换出错！！！")
 
