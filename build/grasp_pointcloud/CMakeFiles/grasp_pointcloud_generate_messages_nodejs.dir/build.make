@@ -58,6 +58,7 @@ grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs: /home/jay
 
 /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/PointBoundingBox.js: /opt/ros/kinetic/lib/gennodejs/gen_nodejs.py
 /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/PointBoundingBox.js: /home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg
+/home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/PointBoundingBox.js: /opt/ros/kinetic/share/std_msgs/msg/Header.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating Javascript code from grasp_pointcloud/PointBoundingBox.msg"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg
 

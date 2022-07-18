@@ -61,6 +61,8 @@ class GraspDetector:
 
             # 树结构选取抓取对象
             result_img, bound_data = tree_built(best_depth_img, best_color_img, best_bound)
+            if result_img is None:
+                return 
             # 发布带有树结构的彩色图
             self.img_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))
             # 发布点云直通滤波的范围
@@ -70,9 +72,8 @@ class GraspDetector:
             point_bound.xmax = bound_data[2]
             point_bound.ymax = bound_data[3]
             self.bound_pub.publish(point_bound)
-            
-            print(0)
-            # 对三维点进行DBSCAN聚类
+            print(point_bound)
+            # # 对三维点进行DBSCAN聚类
             # dbscan(best_depth_img, bound_data)
             # print(1)
         except CvBridgeError as e:

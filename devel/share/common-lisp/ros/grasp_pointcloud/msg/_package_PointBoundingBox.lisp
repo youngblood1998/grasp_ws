@@ -1,5 +1,7 @@
 (cl:in-package grasp_pointcloud-msg)
-(cl:export '(XMIN-VAL
+(cl:export '(HEADER-VAL
+          HEADER
+          XMIN-VAL
           XMIN
           YMIN-VAL
           YMIN

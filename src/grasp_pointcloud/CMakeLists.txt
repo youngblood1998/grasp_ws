@@ -274,3 +274,11 @@ add_dependencies(don_segmentation ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_E
 target_link_libraries(don_segmentation
   ${catkin_LIBRARIES}
 )
+
+add_executable(real_grasp_posture_generate
+  src/real_grasp_yolo/real_grasp_posture_generate.cpp
+)
+add_dependencies(real_grasp_posture_generate ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(real_grasp_posture_generate
+  ${catkin_LIBRARIES}
+)

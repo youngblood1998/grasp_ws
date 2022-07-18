@@ -10,10 +10,11 @@ import cv2 as cv
 
 HALF_LENGTH = 20    # 深度图取样的一半宽度
 MIN_LENGTH = 10     # 锚框最小尺寸
-MAX_LENGTH = 70     # 锚框最大尺寸
-OVERLAP_RATIO = 0.1 # 重叠占比
+MAX_LENGTH = 50     # 锚框最大尺寸
+OVERLAP_RATIO = 0.08 # 重叠占比
 DEPTH_RATIO = 0.5   # 深度比值
 ADD_LENGTH = 10     # 点云直通滤波前后左右各增加的长度
+LENGTH_WIGTH_RATIO = 1.4    # 长宽比阈值
 
 
 # 排序规则
@@ -58,7 +59,6 @@ def bfs(new_node, node_arr):
         # 判断是否重叠且深度在一半以下
         diameter = trans_img2real_length(node.data[4], min(node.data[1]-node.data[0], node.data[3]-node.data[2]))
         depth_sub = new_node.data[4] - node.data[4]
-        print(diameter, depth_sub)
         if is_occluded(new_node, node) and depth_sub > diameter*DEPTH_RATIO:
             node.set_son_node(new_node)
             ret1 = True
@@ -117,6 +117,8 @@ def tree_built(depth_img, color_img, bound):
         real_y_length = trans_img2real_length(mean_depth, img_y_length)
         # print(real_x_length, real_y_length)
         if (real_x_length < MIN_LENGTH or real_x_length > MAX_LENGTH) or (real_y_length < MIN_LENGTH or real_y_length > MAX_LENGTH):
+            continue
+        if (real_x_length/real_y_length) > LENGTH_WIGTH_RATIO or (real_y_length/real_x_length) > LENGTH_WIGTH_RATIO:
             continue
         strawberry_arr.append([min(b.xmin, b.xmax), max(b.xmin, b.xmax), min(b.ymin, b.ymax), max(b.ymin, b.ymax), mean_depth])
     # 根据深度值从小往大排序
@@ -178,9 +180,12 @@ def tree_built(depth_img, color_img, bound):
                 min_depth = node.data[4]
                 best_node = node
     # 计算出点云图的直通滤波范围
-    point_1 = trans_img2real_point(best_node.data[0], best_node.data[2], best_node.data[4])
-    point_2 = trans_img2real_point(best_node.data[1], best_node.data[3], best_node.data[4])
-    point_bound = [point_1[0]-ADD_LENGTH, point_1[1]-ADD_LENGTH, point_2[0]+ADD_LENGTH, point_2[1]+ADD_LENGTH]
+    if best_node:
+        point_1 = trans_img2real_point(best_node.data[0], best_node.data[2], best_node.data[4])
+        point_2 = trans_img2real_point(best_node.data[1], best_node.data[3], best_node.data[4])
+        point_bound = [point_1[0]-ADD_LENGTH, point_1[1]-ADD_LENGTH, point_2[0]+ADD_LENGTH, point_2[1]+ADD_LENGTH]
 
-    # 返回画出树结构的图片和锚框数据
-    return color_img, point_bound
+        # 返回画出树结构的图片和锚框数据
+        return color_img, point_bound
+    else:
+        return None, None

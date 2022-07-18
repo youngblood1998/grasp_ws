@@ -283,6 +283,19 @@ gtest_main/fast:
 .PHONY : gtest_main/fast
 
 #=============================================================================
+# Target rules for targets named real_grasp_posture_generate
+
+# Build rule for target.
+real_grasp_posture_generate: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 real_grasp_posture_generate
+.PHONY : real_grasp_posture_generate
+
+# fast build rule for target.
+real_grasp_posture_generate/fast:
+	$(MAKE) -f grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/build.make grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/build
+.PHONY : real_grasp_posture_generate/fast
+
+#=============================================================================
 # Target rules for targets named don_segmentation
 
 # Build rule for target.
@@ -1760,6 +1773,7 @@ help:
 	@echo "... gmock_main"
 	@echo "... gtest"
 	@echo "... gtest_main"
+	@echo "... real_grasp_posture_generate"
 	@echo "... don_segmentation"
 	@echo "... dbscan"
 	@echo "... pcl_msgs_generate_messages_eus"

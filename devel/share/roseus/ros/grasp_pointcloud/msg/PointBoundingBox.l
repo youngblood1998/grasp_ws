@@ -10,26 +10,37 @@
 
 (in-package "ROS")
 ;;//! \htmlinclude PointBoundingBox.msg.html
+(if (not (find-package "STD_MSGS"))
+  (ros::roseus-add-msgs "std_msgs"))
 
 
 (defclass grasp_pointcloud::PointBoundingBox
   :super ros::object
-  :slots (_xmin _ymin _xmax _ymax ))
+  :slots (_header _xmin _ymin _xmax _ymax ))
 
 (defmethod grasp_pointcloud::PointBoundingBox
   (:init
    (&key
+    ((:header __header) (instance std_msgs::Header :init))
     ((:xmin __xmin) 0.0)
     ((:ymin __ymin) 0.0)
     ((:xmax __xmax) 0.0)
     ((:ymax __ymax) 0.0)
     )
    (send-super :init)
+   (setq _header __header)
    (setq _xmin (float __xmin))
    (setq _ymin (float __ymin))
    (setq _xmax (float __xmax))
    (setq _ymax (float __ymax))
    self)
+  (:header
+   (&rest __header)
+   (if (keywordp (car __header))
+       (send* _header __header)
+     (progn
+       (if __header (setq _header (car __header)))
+       _header)))
   (:xmin
    (&optional __xmin)
    (if __xmin (setq _xmin __xmin)) _xmin)
@@ -45,6 +56,8 @@
   (:serialization-length
    ()
    (+
+    ;; std_msgs/Header _header
+    (send _header :serialization-length)
     ;; float64 _xmin
     8
     ;; float64 _ymin
@@ -58,6 +71,8 @@
    (&optional strm)
    (let ((s (if strm strm
               (make-string-output-stream (send self :serialization-length)))))
+     ;; std_msgs/Header _header
+       (send _header :serialize s)
      ;; float64 _xmin
        (sys::poke _xmin (send s :buffer) (send s :count) :double) (incf (stream-count s) 8)
      ;; float64 _ymin
@@ -70,6 +85,8 @@
      (if (null strm) (get-output-stream-string s))))
   (:deserialize
    (buf &optional (ptr- 0))
+   ;; std_msgs/Header _header
+     (send _header :deserialize buf ptr-) (incf ptr- (send _header :serialization-length))
    ;; float64 _xmin
      (setq _xmin (sys::peek buf ptr- :double)) (incf ptr- 8)
    ;; float64 _ymin
@@ -82,18 +99,37 @@
    self)
   )
 
-(setf (get grasp_pointcloud::PointBoundingBox :md5sum-) "2da0e8eb269cd8cc187fb4c7d113d543")
+(setf (get grasp_pointcloud::PointBoundingBox :md5sum-) "8325290e99152964b5a41f6290f76ea2")
 (setf (get grasp_pointcloud::PointBoundingBox :datatype-) "grasp_pointcloud/PointBoundingBox")
 (setf (get grasp_pointcloud::PointBoundingBox :definition-)
-      "float64 xmin
+      "Header header
+float64 xmin
 float64 ymin
 float64 xmax
 float64 ymax
+
+================================================================================
+MSG: std_msgs/Header
+# Standard metadata for higher-level stamped data types.
+# This is generally used to communicate timestamped data 
+# in a particular coordinate frame.
+# 
+# sequence ID: consecutively increasing ID 
+uint32 seq
+#Two-integer timestamp that is expressed as:
+# * stamp.sec: seconds (stamp_secs) since epoch (in Python the variable is called 'secs')
+# * stamp.nsec: nanoseconds since stamp_secs (in Python the variable is called 'nsecs')
+# time-handling sugar is provided by the client library
+time stamp
+#Frame this data is associated with
+# 0: no frame
+# 1: global frame
+string frame_id
 
 ")
 
 
 
-(provide :grasp_pointcloud/PointBoundingBox "2da0e8eb269cd8cc187fb4c7d113d543")
+(provide :grasp_pointcloud/PointBoundingBox "8325290e99152964b5a41f6290f76ea2")
 
 

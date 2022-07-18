@@ -166,6 +166,21 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
+grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/rule
+
+# Convenience name for target.
+real_grasp_posture_generate: grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/rule
+
+.PHONY : real_grasp_posture_generate
+
+# fast build rule for target.
+real_grasp_posture_generate/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/build.make grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/build
+.PHONY : real_grasp_posture_generate/fast
+
+# Convenience name for target.
 grasp_pointcloud/CMakeFiles/don_segmentation.dir/rule:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/don_segmentation.dir/rule
 .PHONY : grasp_pointcloud/CMakeFiles/don_segmentation.dir/rule
@@ -1797,6 +1812,33 @@ src/pretreatment.cpp.s:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/pretreatment.dir/build.make grasp_pointcloud/CMakeFiles/pretreatment.dir/src/pretreatment.cpp.s
 .PHONY : src/pretreatment.cpp.s
 
+src/real_grasp_yolo/real_grasp_posture_generate.o: src/real_grasp_yolo/real_grasp_posture_generate.cpp.o
+
+.PHONY : src/real_grasp_yolo/real_grasp_posture_generate.o
+
+# target to build an object file
+src/real_grasp_yolo/real_grasp_posture_generate.cpp.o:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/build.make grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/src/real_grasp_yolo/real_grasp_posture_generate.cpp.o
+.PHONY : src/real_grasp_yolo/real_grasp_posture_generate.cpp.o
+
+src/real_grasp_yolo/real_grasp_posture_generate.i: src/real_grasp_yolo/real_grasp_posture_generate.cpp.i
+
+.PHONY : src/real_grasp_yolo/real_grasp_posture_generate.i
+
+# target to preprocess a source file
+src/real_grasp_yolo/real_grasp_posture_generate.cpp.i:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/build.make grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/src/real_grasp_yolo/real_grasp_posture_generate.cpp.i
+.PHONY : src/real_grasp_yolo/real_grasp_posture_generate.cpp.i
+
+src/real_grasp_yolo/real_grasp_posture_generate.s: src/real_grasp_yolo/real_grasp_posture_generate.cpp.s
+
+.PHONY : src/real_grasp_yolo/real_grasp_posture_generate.s
+
+# target to generate assembly for a file
+src/real_grasp_yolo/real_grasp_posture_generate.cpp.s:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/build.make grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.dir/src/real_grasp_yolo/real_grasp_posture_generate.cpp.s
+.PHONY : src/real_grasp_yolo/real_grasp_posture_generate.cpp.s
+
 src/region_growing_segmentation.o: src/region_growing_segmentation.cpp.o
 
 .PHONY : src/region_growing_segmentation.o
@@ -1859,6 +1901,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... install/strip"
+	@echo "... real_grasp_posture_generate"
 	@echo "... don_segmentation"
 	@echo "... dbscan"
 	@echo "... pcl_msgs_generate_messages_eus"
@@ -1980,6 +2023,9 @@ help:
 	@echo "... src/pretreatment.o"
 	@echo "... src/pretreatment.i"
 	@echo "... src/pretreatment.s"
+	@echo "... src/real_grasp_yolo/real_grasp_posture_generate.o"
+	@echo "... src/real_grasp_yolo/real_grasp_posture_generate.i"
+	@echo "... src/real_grasp_yolo/real_grasp_posture_generate.s"
 	@echo "... src/region_growing_segmentation.o"
 	@echo "... src/region_growing_segmentation.i"
 	@echo "... src/region_growing_segmentation.s"
