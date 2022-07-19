@@ -30,10 +30,9 @@ boxs = grasp_yolo_detector(rgb_img)
 bound_data = grasp_tree_builder(depth_img, rgb_img, boxs)
 
 rgb_cut = rgb_img[int(bound_data[2]):int(bound_data[3]), int(bound_data[0]):int(bound_data[1])]
-cv.imshow("rgb_cut", rgb_cut)
 
 # 抓取候选生成
-grasp_candidate_generator(depth_img, bound_data)
+grasp_candidate_generator(depth_img, rgb_img, bound_data)
 
 # 销毁所有图片
 cv.waitKey(0)
