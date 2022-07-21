@@ -14,13 +14,14 @@ MIN_NUM = 5 # DBSCAN的min_num值
 AREA = 200  # 聚类的类面积阈值
 T = 1       # 生成抓取候选所需截图的大小比例
 LINE_NUM = 10   # 生成的抓取候选个数
+SIPPLEMENT_VALUE = (2**16)-1    # 空洞填补值
 
 
 # 深度滤波
 def depth_filter(depth_img, thresh):
     # 拷贝并对空洞进行处理
     depth = depth_img.copy()
-    depth[depth == 0] = (2**16)-1
+    depth[depth == 0] = SIPPLEMENT_VALUE
     # 二值化
     depth[depth < thresh] = 0
     depth[depth >= thresh] = 255
@@ -77,7 +78,7 @@ def grasp_generate(depth_img, rgb_img, line_num):
         line_arr.append([min_line_x, min_line_y, max_line_x, max_line_y])
         cv.line(rgb_img, (min_line_x, min_line_y), (max_line_x, max_line_y), (0, 0, 255), 2)
 
-    cv.imshow("grasp_img", rgb_img)
+    # cv.imshow("grasp_img", rgb_img)
     return line_arr
 
 
@@ -99,22 +100,22 @@ def grasp_candidate_generator(depth_img, rgb_img, bound_data):
     flag = False
     t = T
     if center_y - t*length >= 0:
-        min_y = center_y - t*length 
+        min_y = int(center_y - t*length)
     else:
         min_y = 0
         flag = True
     if center_y + t*length <= depth_img_height:
-        max_y = center_y + t*length
+        max_y = int(center_y + t*length)
     else:
         max_y = depth_img_height
         flag = True
     if center_x - t*length >= 0:
-        min_x = center_x - t*length
+        min_x = int(center_x - t*length)
     else:
         min_x = 0
         flag = True
     if center_x + t*length <= depth_img_width:
-        max_x = center_x + t*length
+        max_x = int(center_x + t*length)
     else:
         max_x = depth_img_width
         flag = True
@@ -134,3 +135,5 @@ def grasp_candidate_generator(depth_img, rgb_img, bound_data):
     cv.imshow("binary", binary)
     cv.imshow("cluster", cluster_img)
     cv.imshow("rgb_cut", rgb_img_cut_new)
+
+    return depth_img_cut_new, line_arr

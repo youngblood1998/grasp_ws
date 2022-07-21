@@ -7,6 +7,7 @@ import cv2 as cv
 from grasp_detect_yolo import grasp_yolo_detector
 from grasp_tree_build import grasp_tree_builder
 from grasp_candidate_generate import grasp_candidate_generator
+from grasp_pose_evaluate import grasp_pose_evaluator
 
 
 # 输入图片
@@ -32,7 +33,10 @@ bound_data = grasp_tree_builder(depth_img, rgb_img, boxs)
 rgb_cut = rgb_img[int(bound_data[2]):int(bound_data[3]), int(bound_data[0]):int(bound_data[1])]
 
 # 抓取候选生成
-grasp_candidate_generator(depth_img, rgb_img, bound_data)
+depth_img_cut, line_arr = grasp_candidate_generator(depth_img, rgb_img, bound_data)
+
+# 评估抓取候选选择最优
+grasp_pose_evaluator(bound_data, depth_img, depth_img_cut, line_arr)
 
 # 销毁所有图片
 cv.waitKey(0)

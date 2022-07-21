@@ -169,4 +169,20 @@
 
 #-----------------------------------------------------------------------------
 
-print(range(10, -1, -1))
+# print(range(10, -1, -1))
+#--------------------------------------------------------------------
+# import numpy as np
+
+# mask = np.zeros((4, 4), dtype=np.uint8)
+# for i in range(4):
+#     mask[3-i,i] = 1
+# mask = (mask > 0)
+# img = [i for i in range(16)]
+# img = np.array(img)
+# img = img.reshape((4,4))
+
+# mask = (mask > 0)
+# line_num = img[mask]
+# print(line_num)
+# import matplotlib
+# print(matplotlib.get_backend())
