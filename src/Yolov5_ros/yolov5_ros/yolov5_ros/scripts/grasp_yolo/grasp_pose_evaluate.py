@@ -11,7 +11,7 @@ from math import cos,pi
 from math import sin, cos, pi
 matplotlib.use("Qt5Agg")
 
-from trans_func import trans_real2img_length, trans_img2real_length
+from trans_func import trans_real2img_length, trans_img2real_length, trans_img2real_point
 
 
 GRIPPER_WIDTH = 15  # 夹爪宽
@@ -163,43 +163,30 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
                 sub_value_new = hirizon_line-y_cut
                 positive = sub_value_new>0
                 grasp_width_second = grasp_width_first*(np.where(positive==True)[0][-1]-np.where(positive==True)[0][0])/len(positive)
-                print(best_line_index, peak_index, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second)
+                # print(best_line_index, peak_index, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second)
         except RuntimeError:
             print("拟合失败")
     return best_line_index, best_line, peak_index, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second
 
 
-# #抓取结果展示,img为彩色图,index_arr为抓取的索引,lr_arr为抓取两边百分比,cent_arr为中心点,rect_arr为矩形,depth_arr为深度,line_num为总抓取数
-# def grasp_show(img, index_arr, lr_arr, cent_arr, rect_arr, depth_arr, line_num):
-#     print(index_arr, lr_arr, cent_arr, rect_arr, depth_arr)
-#     if (np.array(index_arr)<0).all():
-#         print("无合适抓取对象")
-#         return [], np.array([])
-#     grasp_point = []
-#     for i, cent in enumerate(cent_arr):
-#         if index_arr[i]<0:
-#             continue
-#         length = min((rect_arr[i][1]-rect_arr[i][0]), (rect_arr[i][3]-rect_arr[i][2]))
-#         #判断正反向并将示意图的抓取宽度变短
-#         if index_arr[i]==0:
-#             min_line_x = int(cent[0]-(length/2)*cos(pi*index_arr[i]/line_num)*lr_arr[i][0])
-#             min_line_y = int(cent[1]+(length/2)*sin(pi*index_arr[i]/line_num)*lr_arr[i][0])
-#             max_line_x = int(cent[0]+(length/2)*cos(pi*index_arr[i]/line_num)*lr_arr[i][1])
-#             max_line_y = int(cent[1]-(length/2)*sin(pi*index_arr[i]/line_num)*lr_arr[i][1])
-#         else:
-#             min_line_x = int(cent[0]-(length/2)*cos(pi*index_arr[i]/line_num)*lr_arr[i][1])
-#             min_line_y = int(cent[1]+(length/2)*sin(pi*index_arr[i]/line_num)*lr_arr[i][1])
-#             max_line_x = int(cent[0]+(length/2)*cos(pi*index_arr[i]/line_num)*lr_arr[i][0])
-#             max_line_y = int(cent[1]-(length/2)*sin(pi*index_arr[i]/line_num)*lr_arr[i][0])
-#         cv.line(img, (min_line_x, min_line_y), (max_line_x, max_line_y), (0, 255, 0), 2)
-#         cent_point = (int((min_line_x+max_line_x)/2), int((min_line_y+max_line_y)/2))
-#         cv.circle(img, cent_point, 2, (255, 0, 0), 2)
-#         #计算实际抓取点的位置
-#         pix_point = [int((min_line_x+max_line_x)/2), int((min_line_y+max_line_y)/2), 1]
-#         point = depth_arr[i]*np.dot(np.matrix(MATRIX).I, np.array(pix_point).T)
-#         grasp_point.append([point[0,0], point[0,1], point[0,2]])
-#     #返回抓取点和示意图
-#     return grasp_point, img
+#抓取结果展示
+def grasp_show(rgb_img, point1, point2):
+    img = rgb_img.copy()
+    cv.line(img, point1, point2, (0,255,0), 2)
+    cv.line(img, point1, point2, (0,255,0), 2)
+    cv.imshow("result", img)
 
-def grasp_pose_evaluator(bound_data, depth_img, depth_img_cut, line_arr):
-    gmm(bound_data, depth_img, depth_img_cut, line_arr)
+
+def grasp_pose_evaluator(bound_data, depth_img, rgb_img, depth_img_cut, line_arr, cut_img_min_point):
+    best_line_index, best_line, peak_index, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second = gmm(bound_data, depth_img, depth_img_cut, line_arr)
+    rotate_angle = best_line_index*np.pi/len(line_arr)
+    centroid_x, centroid_y, length = depth_img_cut.shape[1]/2, depth_img_cut.shape[0]/2, depth_img_cut.shape[0]-2
+    min_line_x = int(centroid_x-(length/2)*cos(pi*best_line_index/len(line_arr))*(1-peak_index[1]))
+    min_line_y = int(centroid_y+(length/2)*sin(pi*best_line_index/len(line_arr))*(1-peak_index[1]))
+    max_line_x = int(centroid_x+(length/2)*cos(pi*best_line_index/len(line_arr))*(1-peak_index[0]))
+    max_line_y = int(centroid_y-(length/2)*sin(pi*best_line_index/len(line_arr))*(1-peak_index[0]))
+    grasp_show(rgb_img, (int(min_line_x+cut_img_min_point[0]), int(min_line_y+cut_img_min_point[1])), (int(max_line_x+cut_img_min_point[0]), int(max_line_y+cut_img_min_point[1])))
+    img_point = (cut_img_min_point[0]+(min_line_x+max_line_x)/2, cut_img_min_point[1]+(min_line_y+max_line_y)/2)
+    grasp_point = trans_img2real_point(img_point[0], img_point[1], grasp_depth)
+    print(grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second)
+    return grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second

@@ -67,9 +67,10 @@ def dbscan(binary, r, min_num, thresh):
 
 #抓取姿态生成
 def grasp_generate(depth_img, rgb_img, line_num):
+    rgb_img_copy = rgb_img.copy()
     #确定中心点和长度
     centroid_x, centroid_y, length = int(depth_img.shape[1]/2), int(depth_img.shape[0]/2), depth_img.shape[0]-2
-    cv.circle(rgb_img, (centroid_x, centroid_y), 2, (0, 0, 255), 2)
+    cv.circle(rgb_img_copy, (centroid_x, centroid_y), 2, (0, 0, 255), 2)
     # 生成抓取候选
     line_arr = []
     for i in range(0, line_num):
@@ -78,9 +79,9 @@ def grasp_generate(depth_img, rgb_img, line_num):
         max_line_x = int(centroid_x+(length/2)*cos(pi*i/line_num))
         max_line_y = int(centroid_y-(length/2)*sin(pi*i/line_num))
         line_arr.append([min_line_x, min_line_y, max_line_x, max_line_y])
-        cv.line(rgb_img, (min_line_x, min_line_y), (max_line_x, max_line_y), (0, 0, 255), 2)
+        cv.line(rgb_img_copy, (min_line_x, min_line_y), (max_line_x, max_line_y), (0, 0, 255), 2)
 
-    # cv.imshow("grasp_img", rgb_img)
+    # cv.imshow("grasp_img", rgb_img_copy)
     return line_arr
 
 
@@ -138,4 +139,4 @@ def grasp_candidate_generator(depth_img, rgb_img, bound_data):
     cv.imshow("cluster", cluster_img)
     cv.imshow("rgb_cut", rgb_img_cut_new)
 
-    return depth_img_cut_new, line_arr
+    return depth_img_cut_new, line_arr, (min_x, min_y)

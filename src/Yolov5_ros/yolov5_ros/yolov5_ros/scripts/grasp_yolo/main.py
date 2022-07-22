@@ -11,7 +11,7 @@ from grasp_pose_evaluate import grasp_pose_evaluator
 
 
 # 输入图片
-num = 2
+num = 3
 rgb_img = cv.imread("img/rgb_"+str(num)+".png")
 depth_img = cv.imread("img/depth_"+str(num)+".png")
 
@@ -33,10 +33,10 @@ bound_data = grasp_tree_builder(depth_img, rgb_img, boxs)
 rgb_cut = rgb_img[int(bound_data[2]):int(bound_data[3]), int(bound_data[0]):int(bound_data[1])]
 
 # 抓取候选生成
-depth_img_cut, line_arr = grasp_candidate_generator(depth_img, rgb_img, bound_data)
+depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(depth_img, rgb_img, bound_data)
 
 # 评估抓取候选选择最优
-grasp_pose_evaluator(bound_data, depth_img, depth_img_cut, line_arr)
+grasp_pose_evaluator(bound_data, depth_img, rgb_img, depth_img_cut, line_arr, cut_img_min_point)
 
 # 销毁所有图片
 cv.waitKey(0)
