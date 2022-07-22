@@ -11,10 +11,10 @@ from trans_func import trans_img2real_length, distance
 
 R = 10      # DBSCAN的r值
 MIN_NUM = 5 # DBSCAN的min_num值
-AREA = 200  # 聚类的类面积阈值
-T = 1       # 生成抓取候选所需截图的大小比例
+AREA = 300  # 聚类的类面积阈值
+T = 0.8       # 生成抓取候选所需截图的大小比例
 LINE_NUM = 10   # 生成的抓取候选个数
-SIPPLEMENT_VALUE = (2**16)-1    # 空洞填补值
+SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
 
 
 # 深度滤波
@@ -22,6 +22,8 @@ def depth_filter(depth_img, thresh):
     # 拷贝并对空洞进行处理
     depth = depth_img.copy()
     depth[depth == 0] = SIPPLEMENT_VALUE
+    print("最小值")
+    print(np.min(depth))
     # 二值化
     depth[depth < thresh] = 0
     depth[depth >= thresh] = 255
@@ -84,7 +86,7 @@ def grasp_generate(depth_img, rgb_img, line_num):
 
 # 抓取位姿生成器
 def grasp_candidate_generator(depth_img, rgb_img, bound_data):
-    thresh = int(bound_data[4])
+    thresh = int(bound_data[4])+1
     depth_img_cut = depth_img[int(bound_data[2]):int(bound_data[3]), int(bound_data[0]):int(bound_data[1])]
     # 深度滤波和聚类
     cluster_arr = None
@@ -95,8 +97,8 @@ def grasp_candidate_generator(depth_img, rgb_img, bound_data):
     # 截取深度图准备进行抓取候选生成，注意不要截出图片范围
     depth_img_height, depth_img_width = depth_img.shape[0], depth_img.shape[1]
     length = int(max(bound_data[3]-bound_data[2], bound_data[1]-bound_data[0]))
-    center_x = int((np.min(cluster_arr[0][:, 0]) + np.max(cluster_arr[0][:, 0]))/2 +bound_data[0])
-    center_y = int((np.min(cluster_arr[0][:, 1]) + np.max(cluster_arr[0][:, 1]))/2 +bound_data[2])
+    center_x = int(((np.min(cluster_arr[0][:, 0]) + np.max(cluster_arr[0][:, 0]))/2+depth_img_cut.shape[1]/2)/2 +bound_data[0])
+    center_y = int(((np.min(cluster_arr[0][:, 1]) + np.max(cluster_arr[0][:, 1]))/2+depth_img_cut.shape[0]/2)/2 +bound_data[2])
     flag = False
     t = T
     if center_y - t*length >= 0:

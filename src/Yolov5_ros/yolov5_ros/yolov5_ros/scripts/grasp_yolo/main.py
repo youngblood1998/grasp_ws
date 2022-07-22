@@ -11,7 +11,7 @@ from grasp_pose_evaluate import grasp_pose_evaluator
 
 
 # 输入图片
-num = 3
+num = 2
 rgb_img = cv.imread("img/rgb_"+str(num)+".png")
 depth_img = cv.imread("img/depth_"+str(num)+".png")
 

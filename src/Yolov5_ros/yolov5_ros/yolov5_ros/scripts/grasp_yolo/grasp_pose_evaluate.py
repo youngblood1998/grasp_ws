@@ -11,13 +11,14 @@ from math import cos,pi
 from math import sin, cos, pi
 matplotlib.use("Qt5Agg")
 
-from trans_func import trans_real2img_length
+from trans_func import trans_real2img_length, trans_img2real_length
 
 
 GRIPPER_WIDTH = 15  # 夹爪宽
 GRIPPER_HEIGHT = 5  # 夹爪厚
-SIPPLEMENT_VALUE = 2**16-1    # 空洞填补值
-COLLIDE_PERCENT = 0.2   # 可接受碰撞比例
+SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
+COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
+ADD_DEPTH = 20      # 判断宽度所在的深度
 
 
 #高斯函数
@@ -65,7 +66,10 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
     best_line = None        # 最好的抓取候选
     peak_index = []         # 峰值的索引
     max_area = 0            # 最大包围面积
-    grasp_width = 0         # 闭合后的指内宽度
+    grasp_width_first = 0   # 闭合前的指内宽度
+    grasp_width_second = 0  # 闭合后的指内宽度
+    grasp_depth = 0         # 抓取深度
+    tilt_angle = 0          # 夹爪倾斜角度
 
     #对每个抓取线进行评估
     for i, line in enumerate(lines_arr):
@@ -123,100 +127,46 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
             mask_right = (mask_right > 0)
             # 将深度图旋转
             M = cv.getRotationMatrix2D((centroid_x, centroid_y), -i*(180/len(lines_arr)), 1)
-            depth_img_cut_rotate = cv.warpAffine(src=depth_img_cut, M=M, dsize=None, borderValue=SIPPLEMENT_VALUE)
-            depth_img_cut_rotate[depth_img_cut_rotate <= 0] = SIPPLEMENT_VALUE
-            # 取样
+            depth_img_cut_rotate = cv.warpAffine(src=depth_img_cut, M=M, dsize=None, borderValue=0)
+            depth_img_cut_rotate[depth_img_cut_rotate == 0] = SIPPLEMENT_VALUE
+            # 取样后排序得到可接受碰撞比例的值
             num_left = depth_img_cut_rotate[mask_left]
             num_left = np.sort(num_left)
             num_right = depth_img_cut_rotate[mask_right]
             num_right = np.sort(num_right)
             depth_left = num_left[int(COLLIDE_PERCENT*len(num_left))]
             depth_right = num_right[int(COLLIDE_PERCENT*len(num_right))]
-            # print(num_left, num_right)
-            print(depth_left-min_depth, depth_right-min_depth)
-            # #矮峰的半峰高
-            # half_depth = min(gaussian(popt[1], popt[0], popt[1], popt[2]), gaussian(popt[4], popt[3], popt[4], popt[5]))/2
-            # #计算抓取深度
-            # grasp_depth = half_depth + np.min(line_num)
-            # #计算夹爪在图上的尺寸
-            # angle_index = cos(min((i*pi/grasp_num)%(pi/2), pi/2-((i*pi/grasp_num)%(pi/2))))
-            # gripper_width = cal_width_pix(grasp_depth, gripper_size[0]*angle_index)
-            # gripper_length = cal_width_pix(grasp_depth, gripper_size[1]*angle_index)
-            # #计算半峰高时左右两边是总长的百分比
-            # l_index = int(len(y)/2)
-            # r_index = int(len(y)/2)
-            # for j in range(int(len(y)/2), 0, -1):
-            #     if y[j] < half_depth and y[j-1] > half_depth:
-            #         l_index = j
-            #         break
-            # for k in range(int(len(y)/2), len(y)-1):
-            #     if y[k] < half_depth and y[k+1] > half_depth:
-            #         r_index = k
-            #         break
-            # #计算增加抓取余量后的抓取并判断深度是否合适
-            # add_index = cal_width_pix(grasp_depth, add_width*angle_index)
-            # add_l_index = l_index-add_index if l_index-add_index>=0 else 0
-            # add_r_index = r_index+add_index if r_index+add_index<len(y) else len(y)-1
-            # #在图上取出夹爪的部分用于分析
-            # if i == 0:
-            #     # cp_1_x, cp_1_y = line[0]+int((line[2]-line[0])*add_l_index/len(y)), line[1]
-            #     # cp_2_x, cp_2_y = line[0]+int((line[2]-line[0])*add_r_index/len(y)), line[1]
-            #     cp_1_x, cp_1_y = lines_arr[0][0]+int((lines_arr[0][2]-lines_arr[0][0])*add_l_index/len(y)), lines_arr[0][1]
-            #     cp_2_x, cp_2_y = lines_arr[0][0]+int((lines_arr[0][2]-lines_arr[0][0])*add_r_index/len(y)), lines_arr[0][1]
-            # else:
-            #     # cp_1_x, cp_1_y = line[0]+int((line[2]-line[0])*(len(y)-add_r_index)/len(y)), line[1]+int((line[3]-line[1])*(len(y)-add_r_index)/len(y))
-            #     # cp_2_x, cp_2_y = line[0]+int((line[2]-line[0])*(len(y)-add_l_index)/len(y)), line[1]+int((line[3]-line[1])*(len(y)-add_l_index)/len(y))
-            #     cp_1_x, cp_1_y = lines_arr[0][0]+int((lines_arr[0][2]-lines_arr[0][0])*(len(y)-add_r_index)/len(y)), lines_arr[0][1]
-            #     cp_2_x, cp_2_y = lines_arr[0][0]+int((lines_arr[0][2]-lines_arr[0][0])*(len(y)-add_l_index)/len(y)), lines_arr[0][1]
-            # p1_1_x, p1_1_y = cp_1_x-int(gripper_width/2), cp_1_y-int(gripper_length/2)
-            # p1_2_x, p1_2_y = cp_1_x+int(gripper_width/2), cp_1_y+int(gripper_length/2)
-            # p2_1_x, p2_1_y = cp_2_x-int(gripper_width/2), cp_2_y-int(gripper_length/2)
-            # p2_2_x, p2_2_y = cp_2_x+int(gripper_width/2), cp_2_y+int(gripper_length/2)
-            # # left_mask = np.zeros((depth_img.shape[0], depth_img.shape[1], 3), dtype=np.uint8)
-            # left_mask = np.zeros((depth_img.shape[0], depth_img.shape[1]), dtype=np.uint8)
-            # right_mask = np.zeros((depth_img.shape[0], depth_img.shape[1]), dtype=np.uint8)
-            # cv.rectangle(left_mask, (p1_1_x, p1_1_y), (p1_2_x, p1_2_y), (1, 1, 1), thickness=-1)
-            # cv.rectangle(right_mask, (p2_1_x, p2_1_y), (p2_2_x, p2_2_y), (1, 1, 1), thickness=-1)
-            # M = cv.getRotationMatrix2D((int(depth_img.shape[0]/2), int(depth_img.shape[1]/2)), i*180/grasp_num, 1.0)
-            # left_mask = cv.warpAffine(left_mask, M, (depth_img.shape[0], depth_img.shape[1]))
-            # right_mask = cv.warpAffine(right_mask, M, (depth_img.shape[0], depth_img.shape[1]))
-            # # print(depth_img.shape, left_mask.shape, right_mask.shape)
-            # left_mask = (left_mask > 0)
-            # right_mask = (right_mask > 0)
-            # # print(depth_img.shape, left_mask.shape)
-            # left_num = depth_img[left_mask]
-            # right_num = depth_img[right_mask]
-            # #计算抓取宽度、深度
-            # grasp_width = cal_width_real(grasp_depth, (r_index-l_index)/angle_index)
-            # grasp_depth = grasp_width + np.min(line_num)
-            # add_depth = (MAX_WIDTH-grasp_width)*10.0/MAX_WIDTH if (MAX_WIDTH-grasp_width)*10.0/MAX_WIDTH>0 else 0
-            # #对取出来的数据进行判断处理
-            # left_amount = np.count_nonzero(left_num < np.min(line_num)+depth_index*grasp_width)
-            # right_amount = np.count_nonzero(right_num < np.min(line_num)+depth_index*grasp_width)
-            # # print(left_amount, right_amount, add_depth)
-            # left_percent = float(left_amount)/len(left_num)
-            # right_percent = float(right_amount)/len(right_num)
-            # # print(left_percent, right_percent)
-            # if left_percent>percent or right_percent>percent:
-            #     continue
-
-            # if min(gaussian(add_l_index, popt[0], popt[1], popt[2]), gaussian(add_r_index, popt[3], popt[4], popt[5]))<half_depth:
-            #     continue
-            # #评估每个抓取，选择最优（深度、两侧宽度、对称度）
-            # if ((left_percent+0.1)*(right_percent+0.1))*(min(popt[2], popt[5])/angle_index)*min(popt[2]*popt[3]/popt[5]/popt[0], popt[5]*popt[0]/popt[2]/popt[3]) > evaluate_score:
-            #     # evaluate_score = half_depth*min(popt[2], popt[5])
-            #     evaluate_score = ((left_percent+0.1)*(right_percent+0.1))*(min(popt[2], popt[5])/angle_index)*min(popt[2]*popt[3]/popt[5]/popt[0], popt[5]*popt[0]/popt[2]/popt[3])
-            #     select_index = i
-            #     lr_index = [float(len(y)-l_index*2)/len(y), float(r_index*2-len(y))/len(y)]
-            #     # select_depth = grasp_depth
-            #     select_depth = grasp_depth
-            #     select_width = grasp_width
-            #     select_add_width = select_width+2*add_width-2*gripper_size[0]
-                # select_mask = left_mask
+            # 计算夹爪之间的面积
+            y_cut = y[int(popt[1]):int(popt[4])]
+            grasp_line = np.linspace(depth_left-min_depth, depth_right-min_depth, len(y_cut))
+            sub_value = grasp_line-y_cut
+            positive_value = (sub_value[sub_value>0]).astype(np.int16)
+            # print(positive_value)
+            # print(positive_value)
+            angle_ratio = (max(abs(np.cos(np.pi*i/len(lines_arr))), abs(np.sin(np.pi*i/len(lines_arr)))))
+            # print(angle_ratio)
+            # print("-"*100)
+            area = np.sum(positive_value)/angle_ratio
+            # print(area)
+            if area > max_area:
+                max_area = area
+                best_line_index = i
+                best_line = line_num
+                peak_index = (l_percent, r_percent)
+                grasp_depth = (depth_left+depth_right)/2
+                grasp_width = trans_img2real_length(grasp_depth, (1-l_percent/2-r_percent/2)*length)
+                tilt_angle = np.arctan((depth_left-depth_right)/grasp_width)
+                grasp_width_first = (grasp_width**2+(depth_left-depth_right)**2)**0.5
+                # positive = sub_value>0
+                # grasp_width_second = grasp_width_first*(np.where(positive==True)[0][-1]-np.where(positive==True)[0][0])/len(positive)
+                hirizon_line = np.linspace(ADD_DEPTH, ADD_DEPTH, len(y_cut))
+                sub_value_new = hirizon_line-y_cut
+                positive = sub_value_new>0
+                grasp_width_second = grasp_width_first*(np.where(positive==True)[0][-1]-np.where(positive==True)[0][0])/len(positive)
+                print(best_line_index, peak_index, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second)
         except RuntimeError:
             print("拟合失败")
-    # #返回抓取的索引、抓取两边的百分比、抓取深度、抓取宽度、增加抓取余量的抓取宽度
-    # return select_index, lr_index, select_depth, select_width, select_add_width
+    return best_line_index, best_line, peak_index, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second
 
 
 # #抓取结果展示,img为彩色图,index_arr为抓取的索引,lr_arr为抓取两边百分比,cent_arr为中心点,rect_arr为矩形,depth_arr为深度,line_num为总抓取数

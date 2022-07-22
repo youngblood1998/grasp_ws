@@ -14,4 +14,20 @@
 # cv2.waitKey(0)
 # cv2.destroyAllWindows()
 #-----------------------------------------
-print(2**16-1)
+# print(2**16-1)
+import numpy as np
+
+# a = np.array(
+#     [1.1,2.2,3.3,4.4]
+# )
+# b = a>2
+# print(b)
+
+# # b = np.array(
+# #     [4,5,6,7]
+# # )
+# # print(b-a)
+# c = np.where(b==True)
+# print(c[0][0])
+a = np.linspace(10,10,10)
+print(a)
