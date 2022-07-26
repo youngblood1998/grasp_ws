@@ -19,6 +19,7 @@ GRIPPER_HEIGHT = 5  # 夹爪厚
 SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
 COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
+STEP = 5            # 步距
 
 
 #高斯函数
@@ -139,8 +140,28 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
             # 计算夹爪之间的面积
             y_cut = y[int(popt[1]):int(popt[4])]
             grasp_line = np.linspace(depth_left-min_depth, depth_right-min_depth, len(y_cut))
-            sub_value = grasp_line-y_cut
+            sub_value = (grasp_line-y_cut).astype(np.int16)
+            print(sub_value)
             positive_value = (sub_value[sub_value>0]).astype(np.int16)
+            # 判断是否夹到容器
+            to_l = int(len(y_cut)/2)
+            to_r = int(len(y_cut)/2)
+            to_l_flag = False
+            to_r_flag = False
+            while to_l >= 0:
+                if sub_value[to_l] < 0 and not to_l_flag:
+                    to_l_flag = True
+                if sub_value[to_l] > 0 and to_l_flag:
+                    l_percent = (popt[1]+to_l+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
+                    break
+                to_l = to_l - STEP
+            while to_r < len(sub_value):
+                if sub_value[to_r] < 0 and not to_r_flag:
+                    to_r_flag = True
+                if sub_value[to_r] > 0 and to_r_flag:
+                    r_percent = (total_length-popt[4]+(len(sub_value)-to_r)+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
+                    break
+                to_r = to_r + STEP
             # print(positive_value)
             # print(positive_value)
             angle_ratio = (max(abs(np.cos(np.pi*i/len(lines_arr))), abs(np.sin(np.pi*i/len(lines_arr)))))
@@ -188,5 +209,5 @@ def grasp_pose_evaluator(bound_data, depth_img, rgb_img, depth_img_cut, line_arr
     grasp_show(rgb_img, (int(min_line_x+cut_img_min_point[0]), int(min_line_y+cut_img_min_point[1])), (int(max_line_x+cut_img_min_point[0]), int(max_line_y+cut_img_min_point[1])))
     img_point = (cut_img_min_point[0]+(min_line_x+max_line_x)/2, cut_img_min_point[1]+(min_line_y+max_line_y)/2)
     grasp_point = trans_img2real_point(img_point[0], img_point[1], grasp_depth)
-    print(grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second)
-    return grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second
+    print(grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second)
+    return grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second
