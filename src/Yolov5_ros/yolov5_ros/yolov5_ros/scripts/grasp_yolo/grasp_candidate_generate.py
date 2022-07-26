@@ -12,7 +12,7 @@ from trans_func import trans_img2real_length, distance
 R = 10      # DBSCAN的r值
 MIN_NUM = 5 # DBSCAN的min_num值
 AREA = 300  # 聚类的类面积阈值
-T = 0.8       # 生成抓取候选所需截图的大小比例
+T = 1       # 生成抓取候选所需截图的大小比例
 LINE_NUM = 10   # 生成的抓取候选个数
 SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
 

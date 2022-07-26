@@ -20,6 +20,7 @@ SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
 COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
 STEP = 5            # 步距
+DEPTH = 45          # 最大深度
 
 
 #高斯函数
@@ -137,22 +138,32 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
             num_right = np.sort(num_right)
             depth_left = num_left[int(COLLIDE_PERCENT*len(num_left))]
             depth_right = num_right[int(COLLIDE_PERCENT*len(num_right))]
+            # print("左右深度：")
+            # print(depth_left-min_depth, depth_right-min_depth)
             # 计算夹爪之间的面积
             y_cut = y[int(popt[1]):int(popt[4])]
-            grasp_line = np.linspace(depth_left-min_depth, depth_right-min_depth, len(y_cut))
+            depth_left_sub = min(depth_left-min_depth, DEPTH)
+            depth_right_sub = min(depth_right-min_depth, DEPTH)
+            print("左右深度：")
+            print(depth_left_sub, depth_right_sub)
+            grasp_line = np.linspace(depth_left_sub, depth_right_sub, len(y_cut))
             sub_value = (grasp_line-y_cut).astype(np.int16)
-            print(sub_value)
+            # print(sub_value)
             positive_value = (sub_value[sub_value>0]).astype(np.int16)
             # 判断是否夹到容器
             to_l = int(len(y_cut)/2)
             to_r = int(len(y_cut)/2)
             to_l_flag = False
             to_r_flag = False
+            sub_area_1 = 0
+            sub_area_2 = 0
             while to_l >= 0:
                 if sub_value[to_l] < 0 and not to_l_flag:
                     to_l_flag = True
                 if sub_value[to_l] > 0 and to_l_flag:
                     l_percent = (popt[1]+to_l+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
+                    sub_area_1 = np.sum(positive_value[0:int(to_l+STEP+GRIPPER_HEIGHT/2)])
+                    print("截断左")
                     break
                 to_l = to_l - STEP
             while to_r < len(sub_value):
@@ -160,6 +171,8 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
                     to_r_flag = True
                 if sub_value[to_r] > 0 and to_r_flag:
                     r_percent = (total_length-popt[4]+(len(sub_value)-to_r)+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
+                    sub_area_2 = np.sum(positive_value[int(to_r-STEP-GRIPPER_HEIGHT/2):len(sub_value)])
+                    print("截断右")
                     break
                 to_r = to_r + STEP
             # print(positive_value)
@@ -167,7 +180,7 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
             angle_ratio = (max(abs(np.cos(np.pi*i/len(lines_arr))), abs(np.sin(np.pi*i/len(lines_arr)))))
             # print(angle_ratio)
             # print("-"*100)
-            area = np.sum(positive_value)/angle_ratio
+            area = (np.sum(positive_value)-sub_area_1-sub_area_2)/angle_ratio
             # print(area)
             if area > max_area:
                 max_area = area
