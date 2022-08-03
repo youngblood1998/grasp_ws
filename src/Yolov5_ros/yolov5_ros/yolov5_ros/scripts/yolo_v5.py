@@ -78,6 +78,7 @@ class Yolo_Dect:
 
     def dectshow(self, org_img, boxs, height, width):
         img = org_img.copy()
+        img_circle = org_img.copy()
 
         count = 0
         for i in boxs:
@@ -93,22 +94,29 @@ class Yolo_Dect:
             boundingBox.num = np.int16(count)
             boundingBox.Class = box[-1]
 
-            if box[-1] in self.classes_colors.keys():
-                color = self.classes_colors[box[-1]]
-            else:
-                color = np.random.randint(0, 183, 3)
-                self.classes_colors[box[-1]] = color
+        #     if box[-1] in self.classes_colors.keys():
+        #         color = self.classes_colors[box[-1]]
+        #     else:
+        #         color = np.random.randint(0, 183, 3)
+        #         self.classes_colors[box[-1]] = color
 
-            cv2.rectangle(img, (int(box[0]), int(box[1])),
-                          (int(box[2]), int(box[3])), (int(color[0]),int(color[1]), int(color[2])), 2)
-            cv2.putText(img, box[-1],
-                        (int(box[0]), int(box[1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv2.LINE_AA)
-
-
+        #     cv2.rectangle(img, (int(box[0]), int(box[1])),
+        #                   (int(box[2]), int(box[3])), (int(color[0]),int(color[1]), int(color[2])), 2)
+        #     cv2.putText(img, box[-1],
+        #                 (int(box[0]), int(box[1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv2.LINE_AA)
             self.boundingBoxes.bounding_boxes.append(boundingBox)
+        # 依次画锚框和圆
+            cv2.rectangle(img, (int(box[0]), int(box[1])),(int(box[2]), int(box[3])), (0, 255, 0), 2)
+            cv2.putText(img, box[-1],(int(box[0]), int(box[1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv2.LINE_AA)
+            cv2.circle(img_circle, (int((box[0]+box[2])/2), int((box[1]+box[3])/2)), int(max(box[2]-box[0], box[3]-box[1])/2), (0, 255, 0), 2)
+            cv2.putText(img_circle, box[-1],(int(box[0]), int(box[1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv2.LINE_AA)
+
         self.position_pub.publish(self.boundingBoxes)
         self.publish_image(img, height, width)
-        cv2.imshow('YOLOv5', img)
+        cv2.namedWindow('YOLOv5_rectangle', cv2.WINDOW_NORMAL)
+        cv2.namedWindow('YOLOv5_circle', cv2.WINDOW_NORMAL)
+        cv2.imshow('YOLOv5_rectangle', img)
+        cv2.imshow('YOLOv5_circle', img_circle)
 
     def publish_image(self, imgdata, height, width):
         image_temp = Image()
