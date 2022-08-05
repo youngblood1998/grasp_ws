@@ -33,7 +33,10 @@ if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/grasp_pointcloud/msg" TYPE FILE FILES "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/grasp_pointcloud/msg" TYPE FILE FILES
+    "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg"
+    "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg"
+    )
 endif()
 
 if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")

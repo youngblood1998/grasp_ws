@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "grasp_pointcloud: 1 messages, 0 services")
+message(STATUS "grasp_pointcloud: 2 messages, 0 services")
 
 set(MSG_I_FLAGS "-Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg;-Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg")
 
@@ -22,6 +22,11 @@ add_custom_target(_grasp_pointcloud_generate_messages_check_deps_${_filename}
   COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "grasp_pointcloud" "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg" "std_msgs/Header"
 )
 
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
+add_custom_target(_grasp_pointcloud_generate_messages_check_deps_${_filename}
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "grasp_pointcloud" "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" ""
+)
+
 #
 #  langs = gencpp;geneus;genlisp;gennodejs;genpy
 #
@@ -32,6 +37,12 @@ _generate_msg_cpp(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg"
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_cpp(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/grasp_pointcloud
 )
 
@@ -51,6 +62,8 @@ add_dependencies(grasp_pointcloud_generate_messages grasp_pointcloud_generate_me
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_cpp _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_cpp _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
 add_custom_target(grasp_pointcloud_gencpp)
@@ -65,6 +78,12 @@ _generate_msg_eus(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg"
+  ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_eus(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/grasp_pointcloud
 )
 
@@ -84,6 +103,8 @@ add_dependencies(grasp_pointcloud_generate_messages grasp_pointcloud_generate_me
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_eus _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_eus _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
 add_custom_target(grasp_pointcloud_geneus)
@@ -98,6 +119,12 @@ _generate_msg_lisp(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg"
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_lisp(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/grasp_pointcloud
 )
 
@@ -117,6 +144,8 @@ add_dependencies(grasp_pointcloud_generate_messages grasp_pointcloud_generate_me
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_lisp _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_lisp _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
 add_custom_target(grasp_pointcloud_genlisp)
@@ -131,6 +160,12 @@ _generate_msg_nodejs(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg"
+  ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_nodejs(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/grasp_pointcloud
 )
 
@@ -150,6 +185,8 @@ add_dependencies(grasp_pointcloud_generate_messages grasp_pointcloud_generate_me
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_nodejs _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_nodejs _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility
 add_custom_target(grasp_pointcloud_gennodejs)
@@ -164,6 +201,12 @@ _generate_msg_py(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg"
   "${MSG_I_FLAGS}"
   "/opt/ros/kinetic/share/std_msgs/cmake/../msg/Header.msg"
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_py(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/grasp_pointcloud
 )
 
@@ -182,6 +225,8 @@ add_dependencies(grasp_pointcloud_generate_messages grasp_pointcloud_generate_me
 
 # add dependencies to all check dependencies targets
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_py _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_py _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
 # target for backward compatibility

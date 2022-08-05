@@ -54,6 +54,7 @@ CMAKE_BINARY_DIR = /home/jay/grasp_ws/build
 include grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_cpp.dir/progress.make
 
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_cpp: /home/jay/grasp_ws/devel/include/grasp_pointcloud/PointBoundingBox.h
+grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_cpp: /home/jay/grasp_ws/devel/include/grasp_pointcloud/GraspParams.h
 
 
 /home/jay/grasp_ws/devel/include/grasp_pointcloud/PointBoundingBox.h: /opt/ros/kinetic/lib/gencpp/gen_cpp.py
@@ -63,8 +64,15 @@ grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_cpp: /home/jay/gr
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Generating C++ code from grasp_pointcloud/PointBoundingBox.msg"
 	cd /home/jay/grasp_ws/src/grasp_pointcloud && /home/jay/grasp_ws/build/catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/include/grasp_pointcloud -e /opt/ros/kinetic/share/gencpp/cmake/..
 
+/home/jay/grasp_ws/devel/include/grasp_pointcloud/GraspParams.h: /opt/ros/kinetic/lib/gencpp/gen_cpp.py
+/home/jay/grasp_ws/devel/include/grasp_pointcloud/GraspParams.h: /home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg
+/home/jay/grasp_ws/devel/include/grasp_pointcloud/GraspParams.h: /opt/ros/kinetic/share/gencpp/msg.h.template
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating C++ code from grasp_pointcloud/GraspParams.msg"
+	cd /home/jay/grasp_ws/src/grasp_pointcloud && /home/jay/grasp_ws/build/catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/gencpp/cmake/../../../lib/gencpp/gen_cpp.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/include/grasp_pointcloud -e /opt/ros/kinetic/share/gencpp/cmake/..
+
 grasp_pointcloud_generate_messages_cpp: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_cpp
 grasp_pointcloud_generate_messages_cpp: /home/jay/grasp_ws/devel/include/grasp_pointcloud/PointBoundingBox.h
+grasp_pointcloud_generate_messages_cpp: /home/jay/grasp_ws/devel/include/grasp_pointcloud/GraspParams.h
 grasp_pointcloud_generate_messages_cpp: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_cpp.dir/build.make
 
 .PHONY : grasp_pointcloud_generate_messages_cpp

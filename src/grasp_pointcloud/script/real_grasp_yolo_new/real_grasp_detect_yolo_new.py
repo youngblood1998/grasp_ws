@@ -13,6 +13,7 @@ from yolov5_ros_msgs.msg import BoundingBox, BoundingBoxes
 from real_grasp_tree_build_new import grasp_tree_builder
 from real_grasp_candidate_generate_new import grasp_candidate_generator
 from real_grasp_pose_evaluate_new import grasp_pose_evaluator
+from grasp_pointcloud.msg import GraspParams
 
 
 class GraspDetector:
@@ -23,12 +24,16 @@ class GraspDetector:
         self.tree_pub = rospy.Publisher("real_detect/tree_image", Image, queue_size=1)
         self.rgb_cut_pub = rospy.Publisher("real_detect/rgb_cut_image", Image, queue_size=1)
         self.result_pub = rospy.Publisher("real_detect/result_image", Image, queue_size=1)
+        self.grasp_params_pub = rospy.Publisher("real_detect/grasp_params", GraspParams, queue_size=1)
         sync = message_filters.ApproximateTimeSynchronizer([self.color_sub, self.depth_sub, self.bound_sub], 1, 0.4, allow_headerless=True)
         sync.registerCallback(self.call_back)
         # 用于在保存连续多帧话题
         self.topic_arr = []
 
     def call_back(self, color_img, depth_img, bound):
+        #如果参数grasp_step不存在或者不等于0说明机器人在移动,暂停检测
+        if rospy.has_param("/grasp_step") and int(rospy.get_param("/grasp_step"))!=0:
+            return 0
         bridge = CvBridge()
         try:
             # 话题
@@ -66,6 +71,16 @@ class GraspDetector:
             # 评估抓取候选选择最优
             grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second, result_img = grasp_pose_evaluator(bound_data, best_depth_img, best_color_img, depth_img_cut, line_arr, cut_img_min_point)
             self.result_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))
+            # 发布抓取参数
+            grasp_params = GraspParams()
+            grasp_params.x = grasp_point[0]
+            grasp_params.y = grasp_point[1]
+            grasp_params.z = grasp_point[2]
+            grasp_params.rotate_angle = rotate_angle
+            grasp_params.tilt_angle = tilt_angle
+            grasp_params.grasp_width_first = grasp_width_first
+            grasp_params.grasp_width_second = grasp_width_second
+            self.grasp_params_pub.publish(grasp_params)
         except CvBridgeError as e:
             print("CvBridge转换出错！！！")
 
