@@ -200,6 +200,7 @@ def grasp_tree_builder(depth_img, rgb_img, bound):
     
     # 返回最优抓取对象
     if best_node:
+        cv.namedWindow("tree", cv.WINDOW_NORMAL)
         cv.imshow("tree", color_img)
         return best_node.data
     else:

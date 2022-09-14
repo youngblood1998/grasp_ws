@@ -12,7 +12,7 @@ from trans_func import trans_img2real_length, distance
 R = 10      # DBSCAN的r值
 MIN_NUM = 5 # DBSCAN的min_num值
 AREA = 300  # 聚类的类面积阈值
-T = 1       # 生成抓取候选所需截图的大小比例
+T = 0.8       # 生成抓取候选所需截图的大小比例
 LINE_NUM = 10   # 生成的抓取候选个数
 SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
 
@@ -22,8 +22,8 @@ def depth_filter(depth_img, thresh):
     # 拷贝并对空洞进行处理
     depth = depth_img.copy()
     depth[depth == 0] = SIPPLEMENT_VALUE
-    print("最小值")
-    print(np.min(depth))
+    # print("最小值")
+    # print(np.min(depth))
     # 二值化
     depth[depth < thresh] = 0
     depth[depth >= thresh] = 255
@@ -80,8 +80,8 @@ def grasp_generate(depth_img, rgb_img, line_num):
         max_line_y = int(centroid_y-(length/2)*sin(pi*i/line_num))
         line_arr.append([min_line_x, min_line_y, max_line_x, max_line_y])
         cv.line(rgb_img_copy, (min_line_x, min_line_y), (max_line_x, max_line_y), (0, 0, 255), 2)
-    cv.namedWindow("grasp_img", cv.WINDOW_NORMAL)
-    cv.imshow("grasp_img", rgb_img_copy)
+
+    # cv.imshow("grasp_img", rgb_img_copy)
     return line_arr
 
 
@@ -134,13 +134,9 @@ def grasp_candidate_generator(depth_img, rgb_img, bound_data):
     rgb_img_cut_new = rgb_img[min_y:max_y, min_x:max_x]
     line_arr = grasp_generate(depth_img_cut_new, rgb_img_cut_new, LINE_NUM)
 
-    cv.namedWindow("depth_cut", cv.WINDOW_NORMAL)
-    cv.imshow("depth_cut", depth_img_cut)
-    cv.namedWindow("binary", cv.WINDOW_NORMAL)
-    cv.imshow("binary", binary)
-    cv.namedWindow("cluster", cv.WINDOW_NORMAL)
-    cv.imshow("cluster", cluster_img)
-    cv.namedWindow("rgb_cut", cv.WINDOW_NORMAL)
-    cv.imshow("rgb_cut", rgb_img_cut_new)
+    # cv.imshow("depth_cut", depth_img_cut)
+    # cv.imshow("binary", binary)
+    # cv.imshow("cluster", cluster_img)
+    # cv.imshow("rgb_cut", rgb_img_cut_new)
 
     return depth_img_cut_new, line_arr, (min_x, min_y)

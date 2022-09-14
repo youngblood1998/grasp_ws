@@ -34,7 +34,9 @@ def dectshow(org_img, boxs, height, width):
             cv2.circle(img_circle, (int((box[0]+box[2])/2), int((box[1]+box[3])/2)), int(max(box[2]-box[0], box[3]-box[1])/2), (0, 255, 0), 2)
             cv2.putText(img_circle, box[-1],(int(box[0]), int(box[1])-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2, cv2.LINE_AA)
 
+        cv2.namedWindow("detect_img_rect", cv2.WINDOW_NORMAL)
         cv2.imshow('detect_img_rect', img)
+        cv2.namedWindow("detect_img_circle", cv2.WINDOW_NORMAL)
         cv2.imshow('detect_img_circle', img_circle)
         # cv2.waitKey(0)
         # cv2.destroyAllWindows()

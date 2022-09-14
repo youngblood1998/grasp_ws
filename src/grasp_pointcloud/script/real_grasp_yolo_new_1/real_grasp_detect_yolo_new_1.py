@@ -10,9 +10,9 @@ import copy
 import sys
 
 from yolov5_ros_msgs.msg import BoundingBox, BoundingBoxes
-from real_grasp_tree_build_new import grasp_tree_builder
-from real_grasp_candidate_generate_new import grasp_candidate_generator
-from real_grasp_pose_evaluate_new import grasp_pose_evaluator
+from real_grasp_tree_build_new_1 import grasp_tree_builder
+from real_grasp_candidate_generate_new_1 import grasp_candidate_generator
+from real_grasp_pose_evaluate_new_1 import grasp_pose_evaluator
 from grasp_pointcloud.msg import GraspParams
 
 
@@ -75,9 +75,9 @@ class GraspDetector:
             self.result_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))
             # 发布抓取参数
             grasp_params = GraspParams()
-            grasp_params.x = grasp_point[0]
-            grasp_params.y = grasp_point[1]
-            grasp_params.z = grasp_point[2]
+            grasp_params.x = grasp_point[0]/100.0
+            grasp_params.y = grasp_point[1]/100.0
+            grasp_params.z = grasp_point[2]/100.0
             grasp_params.rotate_angle = rotate_angle
             grasp_params.tilt_angle = tilt_angle
             grasp_params.grasp_width_first = grasp_width_first

@@ -11,12 +11,14 @@ from grasp_pose_evaluate import grasp_pose_evaluator
 
 
 # 输入图片
-num = 1
+num = 3
 rgb_img = cv.imread("img/rgb_"+str(num)+".png")
 depth_img = cv.imread("img/depth_"+str(num)+".png")
 
 # 展示初始图片
+cv.namedWindow("rgb", cv.WINDOW_NORMAL)
 cv.imshow("rgb", rgb_img)
+cv.namedWindow("depth", cv.WINDOW_NORMAL)
 cv.imshow("depth", depth_img)
 
 # 进行转换
