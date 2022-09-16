@@ -215,5 +215,5 @@ def grasp_pose_evaluator(bound_data, depth_img, rgb_img, depth_img_cut, line_arr
     result_img = grasp_show(rgb_img, (int(min_line_x+cut_img_min_point[0]), int(min_line_y+cut_img_min_point[1])), (int(max_line_x+cut_img_min_point[0]), int(max_line_y+cut_img_min_point[1])))
     img_point = (cut_img_min_point[0]+(min_line_x+max_line_x)/2, cut_img_min_point[1]+(min_line_y+max_line_y)/2)
     grasp_point = trans_img2real_point(img_point[0], img_point[1], grasp_depth)
-    print(grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second)
+    # print(grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second)
     return grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second, result_img

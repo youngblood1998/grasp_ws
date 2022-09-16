@@ -75,13 +75,14 @@ class GraspDetector:
             self.result_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))
             # 发布抓取参数
             grasp_params = GraspParams()
-            grasp_params.x = grasp_point[0]/100.0
-            grasp_params.y = grasp_point[1]/100.0
-            grasp_params.z = grasp_point[2]/100.0
+            grasp_params.x = grasp_point[0]/1000.0
+            grasp_params.y = grasp_point[1]/1000.0
+            grasp_params.z = grasp_point[2]/1000.0
             grasp_params.rotate_angle = rotate_angle
             grasp_params.tilt_angle = tilt_angle
             grasp_params.grasp_width_first = grasp_width_first
             grasp_params.grasp_width_second = grasp_width_second
+            print(grasp_params)
             self.grasp_params_pub.publish(grasp_params)
         except CvBridgeError as e:
             print("CvBridge转换出错！！！")
