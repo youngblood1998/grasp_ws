@@ -4,7 +4,6 @@ from trans_func import trans_img2real_point, trans_img2real_length, distance
 from random_color import ncolors
 import numpy as np
 import copy
-import sys
 import random
 import cv2 as cv
 
@@ -48,15 +47,11 @@ def bfs(new_node, node_arr):
         # 判断是否重叠且深度在一半以下
         diameter = trans_img2real_length(node.data[4], min(node.data[1]-node.data[0], node.data[3]-node.data[2]))
         depth_sub = new_node.data[4] - node.data[4]
-        if is_occluded_new(new_node, node):
-            if depth_sub > diameter*DEPTH_RATIO:
-                node.set_son_node(new_node)
-                ret1 = True
-            else:
-                node.set_bro_node(new_node)
-                new_node.set_bro_node(node)
+        if is_occluded_new(new_node, node) and depth_sub > diameter*DEPTH_RATIO:
+            node.set_son_node(new_node)
+            ret1 = True
         # 准备下一层节点
-        for son_node in node.son_node_list:
+        for son_node in node.son_ndoe_list:
             if son_node.id == new_node.id:
                 continue
             son_node_arr.append(son_node)
@@ -72,28 +67,17 @@ class Node:
     def __init__(self, id, data):
         self.id = id    # id用于区分节点
         self.data = data    # 数据
-        self.son_node_list = [] # 子节点数组
-        self.bro_node_list = [] # 兄弟节点数组
+        self.son_ndoe_list = [] # 子节点数组
 
     def set_son_node(self, node):
         # 先判断节点是否已存在子节点列表，不存在才插入
         exist = False
-        for son_node in self.son_node_list:
+        for son_node in self.son_ndoe_list:
             if son_node.id == node.id:
                 exist = True
                 break
         if not exist:
-            self.son_node_list.append(node)
-    
-    def set_bro_node(self, node):
-        # 先判断节点是否已存在兄弟节点列表，不存在才插入
-        exist = False
-        for bro_node in self.bro_node_list:
-            if bro_node.id == node.id:
-                exist = True
-                break
-        if not exist:
-            self.bro_node_list.append(node)
+            self.son_ndoe_list.append(node)
 
 
 # 通过树结构返回最合适的一个草莓锚框数据
@@ -165,7 +149,7 @@ def grasp_tree_builder(depth_img, rgb_img, bound):
             x_center = int((test.data[0]+test.data[1])/2)
             y_center = int((test.data[2]+test.data[3])/2)
             cv.circle(color_img, (x_center, y_center), 5, color, thickness=9)
-            for son in test.son_node_list:
+            for son in test.son_ndoe_list:
                 # print(son.id)
                 x = int((son.data[0]+son.data[1])/2)
                 y = int((son.data[2]+son.data[3])/2)
@@ -173,22 +157,22 @@ def grasp_tree_builder(depth_img, rgb_img, bound):
                 new_test_arr.append(son)
         test_arr = copy.deepcopy(new_test_arr)
     
-    # 在第一层中找到子节点数减兄弟节点最多的
-    max_son_sub_bro_num = -sys.maxint
+    # 在第一层中找到子节点数最多的
+    max_son_num = -1
     min_depth = float('inf')
     best_node = None
     for node in node_arr:
-        if len(node.son_node_list)-len(node.bro_node_list) > max_son_sub_bro_num:
-            max_son_sub_bro_num = len(node.son_node_list)
+        if len(node.son_ndoe_list) > max_son_num:
+            max_son_num = len(node.son_ndoe_list)
             min_depth = node.data[4]
             best_node = node
-        elif len(node.son_node_list)-len(node.bro_node_list) == max_son_sub_bro_num:
+        elif len(node.son_ndoe_list) == max_son_num:
             if node.data[4] < min_depth:
-                max_son_sub_bro_num = len(node.son_node_list)
+                max_son_num = len(node.son_ndoe_list)
                 min_depth = node.data[4]
                 best_node = node
     # 返回最优抓取对象
     if best_node:
-        return best_node, color_img
+        return best_node.data, color_img
     else:
         return None, []

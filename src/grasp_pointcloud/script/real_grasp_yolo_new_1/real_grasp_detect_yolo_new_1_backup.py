@@ -61,17 +61,17 @@ class GraspDetector:
             best_color_img = best_topic[0]
             best_bound = best_topic[2].bounding_boxes
             # 树建立并获取抓取对象的xmin, xmax, ymin, ymax, mean_depth
-            best_node, tree_img = grasp_tree_builder(best_depth_img, best_color_img, best_bound)
-            if best_node is None:
+            bound_data, tree_img = grasp_tree_builder(best_depth_img, best_color_img, best_bound)
+            if bound_data is None:
                 return
             self.tree_pub.publish(bridge.cv2_to_imgmsg(tree_img, "bgr8"))
             # 截取图片
-            rgb_cut = best_color_img[int(best_node.data[2]):int(best_node.data[3]), int(best_node.data[0]):int(best_node.data[1])]
+            rgb_cut = best_color_img[int(bound_data[2]):int(bound_data[3]), int(bound_data[0]):int(bound_data[1])]
             self.rgb_cut_pub.publish(bridge.cv2_to_imgmsg(rgb_cut, "bgr8"))
             # 抓取候选生成
-            depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(best_depth_img, best_color_img, best_node.data)
+            depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(best_depth_img, best_color_img, bound_data)
             # 评估抓取候选选择最优
-            grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second, result_img = grasp_pose_evaluator(best_node, best_depth_img, best_color_img, depth_img_cut, line_arr, cut_img_min_point)
+            grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second, result_img = grasp_pose_evaluator(bound_data, best_depth_img, best_color_img, depth_img_cut, line_arr, cut_img_min_point)
             if len(grasp_point) == 0:
                 return 
             self.result_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))

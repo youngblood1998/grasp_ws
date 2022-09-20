@@ -15,6 +15,7 @@ AREA = 300  # 聚类的类面积阈值
 T = 0.8       # 生成抓取候选所需截图的大小比例
 LINE_NUM = 10   # 生成的抓取候选个数
 SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
+CUT_RATIO = 1       # 截取图片靠近聚类点的权值，0～1
 
 
 # 深度滤波
@@ -98,8 +99,10 @@ def grasp_candidate_generator(depth_img, rgb_img, bound_data):
     # 截取深度图准备进行抓取候选生成，注意不要截出图片范围
     depth_img_height, depth_img_width = depth_img.shape[0], depth_img.shape[1]
     length = int(max(bound_data[3]-bound_data[2], bound_data[1]-bound_data[0]))
-    center_x = int(((np.min(cluster_arr[0][:, 0]) + np.max(cluster_arr[0][:, 0]))/2+depth_img_cut.shape[1]/2)/2 +bound_data[0])
-    center_y = int(((np.min(cluster_arr[0][:, 1]) + np.max(cluster_arr[0][:, 1]))/2+depth_img_cut.shape[0]/2)/2 +bound_data[2])
+    # center_x = int(((np.min(cluster_arr[0][:, 0]) + np.max(cluster_arr[0][:, 0]))/2+depth_img_cut.shape[1]/2)/2 +bound_data[0])
+    # center_y = int(((np.min(cluster_arr[0][:, 1]) + np.max(cluster_arr[0][:, 1]))/2+depth_img_cut.shape[0]/2)/2 +bound_data[2])
+    center_x = int((np.min(cluster_arr[0][:, 0]) + np.max(cluster_arr[0][:, 0]))/2*CUT_RATIO+depth_img_cut.shape[1]/2*(1-CUT_RATIO) +bound_data[0])
+    center_y = int((np.min(cluster_arr[0][:, 1]) + np.max(cluster_arr[0][:, 1]))/2*CUT_RATIO+depth_img_cut.shape[0]/2*(1-CUT_RATIO) +bound_data[2])
     flag = False
     t = T
     if center_y - t*length >= 0:

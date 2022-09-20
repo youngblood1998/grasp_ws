@@ -4,7 +4,8 @@ import cv2 as cv
 import numpy as np
 from scipy.optimize import curve_fit
 from scipy import interpolate
-from math import sin, cos, pi, atan
+from math import cos,pi
+from math import sin, cos, pi
 
 from trans_func import trans_real2img_length, trans_img2real_length, trans_img2real_point
 
@@ -15,9 +16,8 @@ SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
 COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
 STEP = 5            # 步距
-DEPTH = 26          # 最大深度
+DEPTH = 28          # 最大深度
 MIN_DEPTH = 18      # 最小抓取深度
-ANGLE_THRESH = pi/9    # 兄弟节点连线角度的增加阈值
 
 
 #高斯函数
@@ -61,7 +61,7 @@ def interpolation(y_arr, x_arr):
     return y_arr
 
 #高斯混合模型
-def gmm(best_node, depth_img, depth_img_cut, lines_arr):
+def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
 
     best_line_index = -1    # 选择的线段索引
     best_line = None        # 最好的抓取候选
@@ -73,27 +73,9 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
     grasp_depth = 0         # 抓取深度
     tilt_angle = 0          # 夹爪倾斜角度
 
-    # 计算与兄弟节点连线的角度
-    remove_angle = []
-    cent_x_1 = (best_node.data[0]+best_node.data[1])/2
-    cent_y_1 = (best_node.data[2]+best_node.data[3])/2
-    for bro_node in best_node.bro_node_list:
-        cent_x_2 = (bro_node.data[0]+bro_node.data[1])/2
-        cent_y_2 = (bro_node.data[2]+bro_node.data[3])/2
-        angle = atan((cent_y_2-cent_y_1)/(cent_x_1-cent_x_2))
-        angle = angle if angle > 0 else pi+angle
-        remove_angle.append(angle)
     #对每个抓取线进行评估
     for i, line in enumerate(lines_arr):
-        # 如果在兄弟节点连线角度附近则跳过
-        flag_angle = False
-        for angle in remove_angle:
-            if abs(i/len(lines_arr)*pi - angle) < ANGLE_THRESH:
-                flag_angle = True
-                break
-        if flag_angle:
-            continue
-        # 在深度图上将线段取出
+        #在深度图上将线段取出
         mask = np.zeros((depth_img_cut.shape[0], depth_img_cut.shape[1]), dtype=np.uint8)
         cv.line(mask, (line[0], line[1]), (line[2], line[3]), (1, 1, 1), 1)
         mask = (mask > 0)
@@ -101,17 +83,17 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
         if i == 0:
             line_num = line_num[::-1]
         x = np.arange(len(line_num))
-        # 插值
+        #插值
         line_num = interpolation(line_num, x)
         if len(line_num) == 0:
             return best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second
-        # 减去最小值
+        #减去最小值
         min_depth = np.min(line_num)
         y = line_num - min_depth
         x = np.arange(len(y))
 
         try:
-            # 高斯混合模型拟合
+            #高斯混合模型拟合
             popt,pcov = curve_fit(gaussian_mix2, x, y, bounds=([0, 0, 0, 0, len(y)/2, 0], [np.inf, len(y)/2, np.inf, np.inf, len(y), np.inf]), maxfev = 50000)
 
             # 截取深度图判断最深抓取深度
@@ -226,8 +208,8 @@ def grasp_show(rgb_img, point1, point2):
     return img
 
 
-def grasp_pose_evaluator(best_node, depth_img, rgb_img, depth_img_cut, line_arr, cut_img_min_point):
-    best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second = gmm(best_node, depth_img, depth_img_cut, line_arr)
+def grasp_pose_evaluator(bound_data, depth_img, rgb_img, depth_img_cut, line_arr, cut_img_min_point):
+    best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second = gmm(bound_data, depth_img, depth_img_cut, line_arr)
     if best_line is None:
         return [], 0, 0, 0, 0, []
     rotate_angle = best_line_index*np.pi/len(line_arr)
