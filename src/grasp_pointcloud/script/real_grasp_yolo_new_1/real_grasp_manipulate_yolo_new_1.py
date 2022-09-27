@@ -12,15 +12,15 @@ from geometry_msgs.msg import (
 from grasp_pointcloud.msg import GraspParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
 
-END_TO_END = 0.158    # 机器人末端到夹爪末端
-TRAN = [0.0, -0.0634528072638, 0.0739784679795] #手眼标定的平移
+END_TO_END = 0.161    # 机器人末端到夹爪末端
+TRAN = [-0.007, -0.0664528072638, 0.0739784679795] #手眼标定的平移
 ROT = [-0.0322859285682, -0.00222200140914, -0.0294295826053, 0.999042832512]   #手眼标定的旋转
 END_JOINT = [-1.1180594603167933, -1.8702004591571253, -1.35732347169985, 4.850101470947266, -4.704089466725485, 0.1362917274236679]  # 抓取之后放置的位置
 Z_DISTANCE = 0.050     # 抓取位置前一个位置的距离
 ADD_WIDTH = 16
 SUB_WIDTH = 10
 TOLERANCE = 0.001
-SCALING_FACTOR = 0.02
+SCALING_FACTOR = 0.05
 
 
 class Grasp_manipulate:
@@ -70,7 +70,7 @@ class Grasp_manipulate:
                 # 平移一个夹爪长度
                 point_obj_to_cam_2 = [grasp_params.x, grasp_params.y, grasp_params.z-END_TO_END-add_length, 1]
                 point_obj_to_base_2 = np.dot(matrix_cam_to_base, point_obj_to_cam_2)
-                grasp_num_2 = real_width_to_num(grasp_params.grasp_width_second-SUB_WIDTH)
+                grasp_num_2 = real_width_to_num(min(grasp_params.grasp_width_second-SUB_WIDTH, grasp_params.grasp_width_first))
                 # 平移一个夹爪长度加一个安全距离
                 point_obj_to_cam_1 = [grasp_params.x, grasp_params.y, grasp_params.z-END_TO_END-add_length-Z_DISTANCE, 1]
                 print(add_length)

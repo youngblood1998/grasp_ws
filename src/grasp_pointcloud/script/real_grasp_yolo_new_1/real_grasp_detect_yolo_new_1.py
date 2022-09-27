@@ -41,6 +41,7 @@ class GraspDetector:
             depth_img = bridge.imgmsg_to_cv2(depth_img, "64FC1")
             # 将深度图处理成64位整形
             depth_img = np.round(depth_img).astype(np.int16)
+            depth_img = cv2.medianBlur(depth_img, 5)
             # 始终维持数组长度为3
             topic = [color_img, depth_img, bound]
             self.topic_arr.append(copy.deepcopy(topic))

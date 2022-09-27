@@ -15,9 +15,10 @@ SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
 COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
 STEP = 5            # 步距
-DEPTH = 26          # 最大深度
-MIN_DEPTH = 18      # 最小抓取深度
+DEPTH = 40          # 最大深度
+MIN_DEPTH_RATIO = 0.6      # 最小抓取深度
 ANGLE_THRESH = pi/9    # 兄弟节点连线角度的增加阈值
+INDEX_FILTER_THRESH = 0.25   # 过滤掉太小的抓取
 
 
 #高斯函数
@@ -168,9 +169,14 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
             to_r_flag = False
             sub_area_1 = 0
             sub_area_2 = 0
+            l_c_index = 0
+            r_c_index = len(y_cut)
             while to_l >= 0:
+                # 给出草莓边缘
                 if sub_value[to_l] < 0 and not to_l_flag:
                     to_l_flag = True
+                    l_c_index = to_l
+                    # 给出草莓边缘到拟合峰值之间是否会夹到
                 if sub_value[to_l] > 0 and to_l_flag:
                     l_percent = (popt[1]+to_l+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
                     sub_area_1 = np.sum(positive_value[0:int(to_l+STEP+GRIPPER_HEIGHT/2)])
@@ -180,39 +186,52 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
             while to_r < len(sub_value):
                 if sub_value[to_r] < 0 and not to_r_flag:
                     to_r_flag = True
+                    r_c_index = to_r
                 if sub_value[to_r] > 0 and to_r_flag:
                     r_percent = (total_length-popt[4]+(len(sub_value)-to_r)+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
                     sub_area_2 = np.sum(positive_value[int(to_r-STEP-GRIPPER_HEIGHT/2):len(sub_value)])
                     # print("截断右")
                     break
                 to_r = to_r + STEP
-            if not (to_l_flag and to_r_flag):
+            # 过滤掉太小的抓取
+            if float(r_c_index-l_c_index)/len(y_cut) < INDEX_FILTER_THRESH:
+                print(float(r_c_index-l_c_index)/len(y_cut))
                 continue
+            l_c_percent = (popt[1]+l_c_index+GRIPPER_HEIGHT/2)/(total_length/2)
+            r_c_percent = (total_length-popt[4]+(len(sub_value)-r_c_index)+GRIPPER_HEIGHT/2)/(total_length/2)
+            # if not (to_l_flag and to_r_flag):
+            #     continue
             # print(positive_value)
             # print(positive_value)
+            # 由于旋转，需要进行面积的比例变换
             angle_ratio = (max(abs(np.cos(np.pi*i/len(lines_arr))), abs(np.sin(np.pi*i/len(lines_arr)))))
             # print(angle_ratio)
             # print("-"*100)
+            # 求解单位面积最大的那一个候选
             area = (np.sum(positive_value)-sub_area_1-sub_area_2)/angle_ratio
+            grasp_width = trans_img2real_length((depth_left+depth_right)/2, (1-l_c_percent/2-r_c_percent/2)*length)
             # print(area)
-            if area > max_area:
-                max_area = area
+            if area/grasp_width > max_area:
+                max_area = area/grasp_width
                 best_line_index = i
                 best_line = line_num
                 peak_index = (l_percent, r_percent)
-                grasp_depth = max((depth_left+depth_right)/2, MIN_DEPTH)
-                grasp_width = trans_img2real_length(grasp_depth, (1-l_percent/2-r_percent/2)*length)
+                print("抓取深度比较："+str((depth_left+depth_right)/2)+"  "+str(MIN_DEPTH_RATIO*grasp_width+min_depth))
+                grasp_depth = max((depth_left+depth_right)/2, MIN_DEPTH_RATIO*grasp_width+min_depth)
+                # grasp_width = trans_img2real_length(grasp_depth, (1-l_percent/2-r_percent/2)*length)
                 # tilt_angle = np.arctan((depth_left-depth_right)/grasp_width)
-                grasp_width_first = (grasp_width**2+(depth_left-depth_right)**2)**0.5
+                grasp_width_first = trans_img2real_length(grasp_depth, (1-l_percent/2-r_percent/2)*length)
                 # positive = sub_value>0
                 # grasp_width_second = grasp_width_first*(np.where(positive==True)[0][-1]-np.where(positive==True)[0][0])/len(positive)
-                hirizon_line = np.linspace(ADD_DEPTH, ADD_DEPTH, len(y_cut))
-                sub_value_new = hirizon_line-y_cut
-                positive = sub_value_new>0
-                l_c_index, r_c_index = np.where(positive==True)[0][0], np.where(positive==True)[0][-1]
-                peak_index_close = ((popt[1]+l_c_index)/(total_length/2), (total_length-popt[4]+(len(positive)-r_c_index))/(total_length/2))
-                grasp_width_second = grasp_width_first*(r_c_index-l_c_index)/len(positive)
+                # hirizon_line = np.linspace(ADD_DEPTH, ADD_DEPTH, len(y_cut))
+                # sub_value_new = hirizon_line-y_cut
+                # positive = sub_value_new>0
+                # l_c_index, r_c_index = np.where(positive==True)[0][0], np.where(positive==True)[0][-1]
+                # peak_index_close = ((popt[1]+l_c_index)/(total_length/2), (total_length-popt[4]+(len(positive)-r_c_index))/(total_length/2))
+                # grasp_width_second = grasp_width_first*(r_c_index-l_c_index)/len(positive)
                 # print(best_line_index, peak_index, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second)
+                peak_index_close = ((popt[1]+l_c_index)/(total_length/2), (total_length-popt[4]+(len(y_cut)-r_c_index))/(total_length/2))
+                grasp_width_second = grasp_width
         except RuntimeError:
             print("拟合失败")
     return best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second
