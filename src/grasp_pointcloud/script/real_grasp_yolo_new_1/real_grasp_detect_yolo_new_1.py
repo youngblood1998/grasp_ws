@@ -18,13 +18,16 @@ from grasp_pointcloud.msg import GraspParams
 
 class GraspDetector:
     def __init__(self):
+        # 彩色图和深度图以及yolov5检测信息的订阅者
         self.color_sub = message_filters.Subscriber("/camera/color/image_raw", Image, queue_size=1, buff_size=52428800)
         self.depth_sub = message_filters.Subscriber("/camera/aligned_depth_to_color/image_raw", Image, queue_size=1, buff_size=52428800)
         self.bound_sub = message_filters.Subscriber("/yolov5/BoundingBoxes", BoundingBoxes, queue_size=1, buff_size=52428800)
+        # 树形图，彩色剪切图，抓取结果图以及抓取参数的发布者
         self.tree_pub = rospy.Publisher("real_detect/tree_image", Image, queue_size=1)
         self.rgb_cut_pub = rospy.Publisher("real_detect/rgb_cut_image", Image, queue_size=1)
         self.result_pub = rospy.Publisher("real_detect/result_image", Image, queue_size=1)
         self.grasp_params_pub = rospy.Publisher("real_detect/grasp_params", GraspParams, queue_size=1)
+        # 多话题同步
         sync = message_filters.ApproximateTimeSynchronizer([self.color_sub, self.depth_sub, self.bound_sub], 1, 0.4, allow_headerless=True)
         sync.registerCallback(self.call_back)
         # 用于在保存连续多帧话题
@@ -36,10 +39,10 @@ class GraspDetector:
             return 0
         bridge = CvBridge()
         try:
-            # 话题
+            # cvbridge转换imgmsg为cv类型
             color_img = bridge.imgmsg_to_cv2(color_img, "bgr8")
             depth_img = bridge.imgmsg_to_cv2(depth_img, "64FC1")
-            # 将深度图处理成64位整形
+            # 将深度图处理成64位整形并进行深度滤波
             depth_img = np.round(depth_img).astype(np.int16)
             depth_img = cv2.medianBlur(depth_img, 5)
             # 始终维持数组长度为3
@@ -54,7 +57,7 @@ class GraspDetector:
                 if len(t[2].bounding_boxes) < num:
                     best_topic = t
                     num = len(t[2].bounding_boxes)
-            # 没有则返回
+            # 没有话题则返回
             if best_topic is None:
                 return
             # 最佳那一帧的深度图、彩色图以及锚框

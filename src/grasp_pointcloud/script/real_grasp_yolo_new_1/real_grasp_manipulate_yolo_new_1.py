@@ -21,6 +21,7 @@ ADD_WIDTH = 16
 SUB_WIDTH = 10
 TOLERANCE = 0.001
 SCALING_FACTOR = 0.05
+GRIPPER_HEIGHT = 4  # 夹爪厚
 
 
 class Grasp_manipulate:
@@ -70,12 +71,13 @@ class Grasp_manipulate:
                 # 平移一个夹爪长度
                 point_obj_to_cam_2 = [grasp_params.x, grasp_params.y, grasp_params.z-END_TO_END-add_length, 1]
                 point_obj_to_base_2 = np.dot(matrix_cam_to_base, point_obj_to_cam_2)
-                grasp_num_2 = real_width_to_num(min(grasp_params.grasp_width_second-SUB_WIDTH, grasp_params.grasp_width_first))
+                grasp_num_2 = real_width_to_num(grasp_params.grasp_width_second-SUB_WIDTH)
                 # 平移一个夹爪长度加一个安全距离
                 point_obj_to_cam_1 = [grasp_params.x, grasp_params.y, grasp_params.z-END_TO_END-add_length-Z_DISTANCE, 1]
                 print(add_length)
                 point_obj_to_base_1 = np.dot(matrix_cam_to_base, point_obj_to_cam_1)
-                grasp_num_1 = real_width_to_num(grasp_params.grasp_width_second+ADD_WIDTH)
+                print(grasp_params.grasp_width_second+ADD_WIDTH, grasp_params.grasp_width_first)
+                grasp_num_1 = real_width_to_num(min(grasp_params.grasp_width_second+ADD_WIDTH, grasp_params.grasp_width_first+GRIPPER_HEIGHT))
                 # 先进行rotate角度变换
                 angle_z = -grasp_params.rotate_angle if grasp_params.rotate_angle < np.pi/2 else np.pi-grasp_params.rotate_angle
                 # 先转动最后一个关节

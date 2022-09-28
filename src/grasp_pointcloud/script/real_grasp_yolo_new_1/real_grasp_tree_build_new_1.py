@@ -112,7 +112,7 @@ def grasp_tree_builder(depth_img, rgb_img, bound):
         depth_cut = depth_cut.flatten()
         depth_cut = depth_cut[depth_cut!=0]
         mean_depth = np.mean(depth_cut)
-        # print("深度："+str(mean_depth))
+        # print("深度："+str(mean_depth)+" "+str(np.median(depth_cut)))
         if len(depth_cut) == 0:
             continue
         # 锚框的长宽计算剔除异常值
@@ -173,7 +173,7 @@ def grasp_tree_builder(depth_img, rgb_img, bound):
                 new_test_arr.append(son)
         test_arr = copy.deepcopy(new_test_arr)
     
-    # 在第一层中找到子节点数减兄弟节点最多的
+    # 在第一层中找到子节点数减兄弟节点最多的，一样多时取深度小的
     max_son_sub_bro_num = -sys.maxint
     min_depth = float('inf')
     best_node = None

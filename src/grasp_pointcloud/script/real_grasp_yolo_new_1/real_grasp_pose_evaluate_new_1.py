@@ -16,9 +16,9 @@ COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
 STEP = 5            # 步距
 DEPTH = 40          # 最大深度
-MIN_DEPTH_RATIO = 0.6      # 最小抓取深度
+MIN_DEPTH_RATIO = 0.61      # 最小抓取深度
 ANGLE_THRESH = pi/9    # 兄弟节点连线角度的增加阈值
-INDEX_FILTER_THRESH = 0.25   # 过滤掉太小的抓取
+INDEX_FILTER_THRESH = 0.3   # 过滤掉太小的抓取
 
 
 #高斯函数
@@ -81,7 +81,7 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
     for bro_node in best_node.bro_node_list:
         cent_x_2 = (bro_node.data[0]+bro_node.data[1])/2
         cent_y_2 = (bro_node.data[2]+bro_node.data[3])/2
-        angle = atan((cent_y_2-cent_y_1)/(cent_x_1-cent_x_2))
+        angle = atan((cent_y_2-cent_y_1)/(cent_x_1-cent_x_2)) if (cent_x_1-cent_x_2) != 0 else pi/2
         angle = angle if angle > 0 else pi+angle
         remove_angle.append(angle)
     #对每个抓取线进行评估
@@ -246,16 +246,19 @@ def grasp_show(rgb_img, point1, point2):
 
 
 def grasp_pose_evaluator(best_node, depth_img, rgb_img, depth_img_cut, line_arr, cut_img_min_point):
+    # 进行高斯混合模型并判断出各种参数，如果没有则返回
     best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second = gmm(best_node, depth_img, depth_img_cut, line_arr)
     if best_line is None:
         return [], 0, 0, 0, 0, []
-    rotate_angle = best_line_index*np.pi/len(line_arr)
+    rotate_angle = best_line_index*np.pi/len(line_arr)  # 计算转角
+    # 画出抓取结果图
     centroid_x, centroid_y, length = depth_img_cut.shape[1]/2, depth_img_cut.shape[0]/2, depth_img_cut.shape[0]-2
     min_line_x = int(centroid_x-(length/2)*cos(pi*best_line_index/len(line_arr))*(1-peak_index_close[1]))
     min_line_y = int(centroid_y+(length/2)*sin(pi*best_line_index/len(line_arr))*(1-peak_index_close[1]))
     max_line_x = int(centroid_x+(length/2)*cos(pi*best_line_index/len(line_arr))*(1-peak_index_close[0]))
     max_line_y = int(centroid_y-(length/2)*sin(pi*best_line_index/len(line_arr))*(1-peak_index_close[0]))
     result_img = grasp_show(rgb_img, (int(min_line_x+cut_img_min_point[0]), int(min_line_y+cut_img_min_point[1])), (int(max_line_x+cut_img_min_point[0]), int(max_line_y+cut_img_min_point[1])))
+    # 计算实际点的抓取位置
     img_point = (cut_img_min_point[0]+(min_line_x+max_line_x)/2, cut_img_min_point[1]+(min_line_y+max_line_y)/2)
     grasp_point = trans_img2real_point(img_point[0], img_point[1], grasp_depth)
     # print(grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second)
