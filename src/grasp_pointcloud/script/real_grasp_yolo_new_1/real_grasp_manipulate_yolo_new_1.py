@@ -59,7 +59,7 @@ class Grasp_manipulate:
                 point_cam_to_end = tran_to_point(TRAN)
                 matrix_cam_to_end = matrix_from_quaternion(ori_cam_to_end, point_cam_to_end)
                 #计算末端坐标到基坐标的变换矩阵
-                (trans,rot) = listener.lookupTransform('/base_link', '/wrist_3_link', rospy.Time(0))
+                (trans,rot) = listener.lookupTransform('/base_link', '/tool0', rospy.Time(0))
                 ori_end_to_base = rot_to_ori(rot)
                 point_end_to_base = tran_to_point(trans)
                 matrix_end_to_base = matrix_from_quaternion(ori_end_to_base, point_end_to_base)
@@ -93,14 +93,14 @@ class Grasp_manipulate:
                 # pose_1.position.y = point_obj_to_base_1[1]
                 # pose_1.position.z = point_obj_to_base_1[2]
                 # waypoints.append(pose_1)
-                # # self.arm.set_pose_target(pose_1, "wrist_3_link")
+                # # self.arm.set_pose_target(pose_1, "tool0")
                 # # self.arm.go(wait = True)
                 # # 开始运动2
                 # pose_2 = self.arm.get_current_pose().pose
                 # pose_2.position.x = point_obj_to_base_2[0]
                 # pose_2.position.y = point_obj_to_base_2[1]
                 # pose_2.position.z = point_obj_to_base_2[2]
-                # # self.arm.set_pose_target(pose_2, "wrist_3_link")
+                # # self.arm.set_pose_target(pose_2, "tool0")
                 # # self.arm.go(wait = True)
                 # waypoints.append(pose_2)
                 # print(pose_1, pose_2)
@@ -119,25 +119,25 @@ class Grasp_manipulate:
                 # rospy.set_param("/robotiq_command",str(grasp_num_2))
                 # rospy.sleep(1)
                 # 开始运动1
-                pose_1 = self.arm.get_current_pose()
+                pose_1 = self.arm.get_current_pose("tool0")
                 pose_1.pose.position.x = point_obj_to_base_1[0]
                 pose_1.pose.position.y = point_obj_to_base_1[1]
                 pose_1.pose.position.z = point_obj_to_base_1[2]
-                self.arm.set_pose_target(pose_1)
+                self.arm.set_pose_target(pose_1, "tool0")
                 self.arm.go(wait = True)
                 # 开始运动2
-                pose_2 = self.arm.get_current_pose()
+                pose_2 = self.arm.get_current_pose("tool0")
                 pose_2.pose.position.x = point_obj_to_base_2[0]
                 pose_2.pose.position.y = point_obj_to_base_2[1]
                 pose_2.pose.position.z = point_obj_to_base_2[2]
-                self.arm.set_pose_target(pose_2)
+                self.arm.set_pose_target(pose_2, "tool0")
                 self.arm.go(wait = True)
                 rospy.sleep(1)
                 # rospy.set_param("/robotiq_command",str(grasp_num_2))
                 rospy.set_param("/robotiq_command",'c')
                 rospy.sleep(1)
                 # 开始运动3
-                self.arm.set_pose_target(pose_1)
+                self.arm.set_pose_target(pose_1, "tool0")
                 self.arm.go(wait = True)
                 # # 到达指定位置放下
                 self.arm.set_joint_value_target(END_JOINT)

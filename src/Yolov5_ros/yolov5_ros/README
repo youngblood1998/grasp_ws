@@ -1,1 +1,7 @@
-roslaunch yolov5_ros yolov5_ros.launch
+启动yolo（已启动相机）
+roslaunch yolov5_ros yolo_v5.launch
+启动相机并启动yolo
+roslaunch yolov5_ros camera_yolo_v5.launch
+训练模型（要启动pytorch环境）
+cd /home/jay/grasp_ws/src/Yolov5_ros/yolov5_ros/yolov5_ros/yolov5
+python train.py --img 640 --batch 4 --epochs 10 --data ./data/strawberry.yaml --weights ./weights/yolov5x.pt
