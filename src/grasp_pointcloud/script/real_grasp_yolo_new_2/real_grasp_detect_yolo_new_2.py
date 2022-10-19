@@ -15,6 +15,7 @@ from real_grasp_candidate_generate_new_2 import grasp_candidate_generator
 from real_grasp_pose_evaluate_new_2 import grasp_pose_evaluator
 from grasp_pointcloud.msg import GraspParams
 
+MAX_NODE_NUM = 5
 
 class GraspDetector:
     def __init__(self):
@@ -45,49 +46,57 @@ class GraspDetector:
             # 将深度图处理成64位整形并进行深度滤波
             depth_img = np.round(depth_img).astype(np.int16)
             depth_img = cv2.medianBlur(depth_img, 5)
-            # 始终维持数组长度为3
-            topic = [color_img, depth_img, bound]
-            self.topic_arr.append(copy.deepcopy(topic))
-            if len(self.topic_arr) > 3:
-                del self.topic_arr[0]
-            # 连续几帧中取锚框最少的
-            best_topic = None
-            num = sys.maxint
-            for t in self.topic_arr:
-                if len(t[2].bounding_boxes) < num:
-                    best_topic = t
-                    num = len(t[2].bounding_boxes)
-            # 没有话题则返回
-            if best_topic is None:
-                return
-            # 最佳那一帧的深度图、彩色图以及锚框
-            best_depth_img = best_topic[1]
-            best_color_img = best_topic[0]
-            best_bound = best_topic[2].bounding_boxes
+            # # 始终维持数组长度为3
+            # topic = [color_img, depth_img, bound]
+            # self.topic_arr.append(copy.deepcopy(topic))
+            # if len(self.topic_arr) > 3:
+            #     del self.topic_arr[0]
+            # # 连续几帧中取锚框最少的
+            # best_topic = None
+            # num = sys.maxint
+            # for t in self.topic_arr:
+            #     if len(t[2].bounding_boxes) < num:
+            #         best_topic = t
+            #         num = len(t[2].bounding_boxes)
+            # # 没有话题则返回
+            # if best_topic is None:
+            #     return
+            # # 最佳那一帧的深度图、彩色图以及锚框
+            # best_depth_img = best_topic[1]
+            # best_color_img = best_topic[0]
+            # best_bound = best_topic[2].bounding_boxes
             # 树建立并获取抓取对象的xmin, xmax, ymin, ymax, mean_depth
-            best_node, tree_img = grasp_tree_builder(best_depth_img, best_color_img, best_bound)
-            if best_node is None:
-                return
+            node_arr, tree_img = grasp_tree_builder(depth_img, color_img, bound.bounding_boxes)
             self.tree_pub.publish(bridge.cv2_to_imgmsg(tree_img, "bgr8"))
-            # 截取图片
-            rgb_cut = best_color_img[int(best_node.data[2]):int(best_node.data[3]), int(best_node.data[0]):int(best_node.data[1])]
-            self.rgb_cut_pub.publish(bridge.cv2_to_imgmsg(rgb_cut, "bgr8"))
-            # 抓取候选生成
-            depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(best_depth_img, best_color_img, best_node.data)
-            # 评估抓取候选选择最优
-            grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second, result_img = grasp_pose_evaluator(best_node, best_depth_img, best_color_img, depth_img_cut, line_arr, cut_img_min_point)
-            if len(grasp_point) == 0:
-                return 
-            self.result_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))
+            # 对第一层节点进行计算
+            i = 0
+            max_area = 0
+            best_grasp_datas = None
+            best_result_img = []
+            while i < MAX_NODE_NUM and i < len(node_arr):
+                node = node_arr[i]
+                i += 1
+                # 截取图片
+                rgb_cut = color_img[int(node.data[2]):int(node.data[3]), int(node.data[0]):int(node.data[1])]
+                # self.rgb_cut_pub.publish(bridge.cv2_to_imgmsg(rgb_cut, "bgr8"))
+                # 抓取候选生成
+                depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(depth_img, color_img, node.data)
+                # 评估抓取候选选择最优
+                area, grasp_datas, result_img = grasp_pose_evaluator(node, depth_img, color_img, depth_img_cut, line_arr, cut_img_min_point)
+                if area > max_area:
+                    best_grasp_datas = grasp_datas
+                    best_result_img = result_img
+            self.result_pub.publish(bridge.cv2_to_imgmsg(best_result_img, "bgr8"))
             # 发布抓取参数
+            grasp_point = best_grasp_datas[0]
             grasp_params = GraspParams()
             grasp_params.x = grasp_point[0]/1000.0
             grasp_params.y = grasp_point[1]/1000.0
             grasp_params.z = grasp_point[2]/1000.0
-            grasp_params.rotate_angle = rotate_angle
-            grasp_params.tilt_angle = tilt_angle
-            grasp_params.grasp_width_first = grasp_width_first
-            grasp_params.grasp_width_second = grasp_width_second
+            grasp_params.rotate_angle = best_grasp_datas[1]
+            grasp_params.tilt_angle = best_grasp_datas[2]
+            grasp_params.grasp_width_first = best_grasp_datas[3]
+            grasp_params.grasp_width_second = best_grasp_datas[4]
             print(grasp_params)
             self.grasp_params_pub.publish(grasp_params)
         except CvBridgeError as e:

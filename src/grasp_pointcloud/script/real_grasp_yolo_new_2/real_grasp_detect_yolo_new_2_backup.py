@@ -10,21 +10,24 @@ import copy
 import sys
 
 from yolov5_ros_msgs.msg import BoundingBox, BoundingBoxes
-from real_grasp_tree_build_new_1 import grasp_tree_builder
-from real_grasp_candidate_generate_new_1 import grasp_candidate_generator
-from real_grasp_pose_evaluate_new_1 import grasp_pose_evaluator
+from real_grasp_tree_build_new_2 import grasp_tree_builder
+from real_grasp_candidate_generate_new_2 import grasp_candidate_generator
+from real_grasp_pose_evaluate_new_2 import grasp_pose_evaluator
 from grasp_pointcloud.msg import GraspParams
 
 
 class GraspDetector:
     def __init__(self):
+        # 彩色图和深度图以及yolov5检测信息的订阅者
         self.color_sub = message_filters.Subscriber("/camera/color/image_raw", Image, queue_size=1, buff_size=52428800)
         self.depth_sub = message_filters.Subscriber("/camera/aligned_depth_to_color/image_raw", Image, queue_size=1, buff_size=52428800)
         self.bound_sub = message_filters.Subscriber("/yolov5/BoundingBoxes", BoundingBoxes, queue_size=1, buff_size=52428800)
+        # 树形图，彩色剪切图，抓取结果图以及抓取参数的发布者
         self.tree_pub = rospy.Publisher("real_detect/tree_image", Image, queue_size=1)
         self.rgb_cut_pub = rospy.Publisher("real_detect/rgb_cut_image", Image, queue_size=1)
         self.result_pub = rospy.Publisher("real_detect/result_image", Image, queue_size=1)
         self.grasp_params_pub = rospy.Publisher("real_detect/grasp_params", GraspParams, queue_size=1)
+        # 多话题同步
         sync = message_filters.ApproximateTimeSynchronizer([self.color_sub, self.depth_sub, self.bound_sub], 1, 0.4, allow_headerless=True)
         sync.registerCallback(self.call_back)
         # 用于在保存连续多帧话题
@@ -36,11 +39,12 @@ class GraspDetector:
             return 0
         bridge = CvBridge()
         try:
-            # 话题
+            # cvbridge转换imgmsg为cv类型
             color_img = bridge.imgmsg_to_cv2(color_img, "bgr8")
             depth_img = bridge.imgmsg_to_cv2(depth_img, "64FC1")
-            # 将深度图处理成64位整形
+            # 将深度图处理成64位整形并进行深度滤波
             depth_img = np.round(depth_img).astype(np.int16)
+            depth_img = cv2.medianBlur(depth_img, 5)
             # 始终维持数组长度为3
             topic = [color_img, depth_img, bound]
             self.topic_arr.append(copy.deepcopy(topic))
@@ -53,7 +57,7 @@ class GraspDetector:
                 if len(t[2].bounding_boxes) < num:
                     best_topic = t
                     num = len(t[2].bounding_boxes)
-            # 没有则返回
+            # 没有话题则返回
             if best_topic is None:
                 return
             # 最佳那一帧的深度图、彩色图以及锚框
@@ -61,17 +65,17 @@ class GraspDetector:
             best_color_img = best_topic[0]
             best_bound = best_topic[2].bounding_boxes
             # 树建立并获取抓取对象的xmin, xmax, ymin, ymax, mean_depth
-            bound_data, tree_img = grasp_tree_builder(best_depth_img, best_color_img, best_bound)
-            if bound_data is None:
+            best_node, tree_img = grasp_tree_builder(best_depth_img, best_color_img, best_bound)
+            if best_node is None:
                 return
             self.tree_pub.publish(bridge.cv2_to_imgmsg(tree_img, "bgr8"))
             # 截取图片
-            rgb_cut = best_color_img[int(bound_data[2]):int(bound_data[3]), int(bound_data[0]):int(bound_data[1])]
+            rgb_cut = best_color_img[int(best_node.data[2]):int(best_node.data[3]), int(best_node.data[0]):int(best_node.data[1])]
             self.rgb_cut_pub.publish(bridge.cv2_to_imgmsg(rgb_cut, "bgr8"))
             # 抓取候选生成
-            depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(best_depth_img, best_color_img, bound_data)
+            depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(best_depth_img, best_color_img, best_node.data)
             # 评估抓取候选选择最优
-            grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second, result_img = grasp_pose_evaluator(bound_data, best_depth_img, best_color_img, depth_img_cut, line_arr, cut_img_min_point)
+            grasp_point, rotate_angle, tilt_angle, grasp_width_first, grasp_width_second, result_img = grasp_pose_evaluator(best_node, best_depth_img, best_color_img, depth_img_cut, line_arr, cut_img_min_point)
             if len(grasp_point) == 0:
                 return 
             self.result_pub.publish(bridge.cv2_to_imgmsg(result_img, "bgr8"))

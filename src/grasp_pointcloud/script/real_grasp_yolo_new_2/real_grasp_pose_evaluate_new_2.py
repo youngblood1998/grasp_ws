@@ -234,7 +234,7 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
                 grasp_width_second = grasp_width
         except RuntimeError:
             print("拟合失败")
-    return best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second
+    return max_area, best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second
 
 
 #抓取结果展示
@@ -247,9 +247,9 @@ def grasp_show(rgb_img, point1, point2):
 
 def grasp_pose_evaluator(best_node, depth_img, rgb_img, depth_img_cut, line_arr, cut_img_min_point):
     # 进行高斯混合模型并判断出各种参数，如果没有则返回
-    best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second = gmm(best_node, depth_img, depth_img_cut, line_arr)
+    max_area, best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second = gmm(best_node, depth_img, depth_img_cut, line_arr)
     if best_line is None:
-        return [], 0, 0, 0, 0, []
+        return 0, [[], 0, 0, 0, 0], []
     rotate_angle = best_line_index*np.pi/len(line_arr)  # 计算转角
     # 画出抓取结果图
     centroid_x, centroid_y, length = depth_img_cut.shape[1]/2, depth_img_cut.shape[0]/2, depth_img_cut.shape[0]-2
@@ -262,4 +262,4 @@ def grasp_pose_evaluator(best_node, depth_img, rgb_img, depth_img_cut, line_arr,
     img_point = (cut_img_min_point[0]+(min_line_x+max_line_x)/2, cut_img_min_point[1]+(min_line_y+max_line_y)/2)
     grasp_point = trans_img2real_point(img_point[0], img_point[1], grasp_depth)
     # print(grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second)
-    return grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second, result_img
+    return max_area, [grasp_point, rotate_angle, tilt_angle, grasp_width_first-GRIPPER_HEIGHT, grasp_width_second], result_img

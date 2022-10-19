@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import rospy
+import copy
 import numpy as np
 import moveit_commander
 import moveit_msgs.msg
@@ -12,8 +13,8 @@ from geometry_msgs.msg import (
 from grasp_pointcloud.msg import GraspParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
 
-END_TO_END = 0.161    # 机器人末端到夹爪末端
-TRAN = [-0.007, -0.0664528072638, 0.0739784679795] #手眼标定的平移
+END_TO_END = 0.163    # 机器人末端到夹爪末端
+TRAN = [-0.007, -0.0704528072638, 0.0739784679795] #手眼标定的平移
 ROT = [-0.0322859285682, -0.00222200140914, -0.0294295826053, 0.999042832512]   #手眼标定的旋转
 END_JOINT = [-1.1180594603167933, -1.8702004591571253, -1.35732347169985, 4.850101470947266, -4.704089466725485, 0.1362917274236679]  # 抓取之后放置的位置
 Z_DISTANCE = 0.050     # 抓取位置前一个位置的距离
@@ -22,6 +23,7 @@ SUB_WIDTH = 10
 TOLERANCE = 0.001
 SCALING_FACTOR = 0.05
 GRIPPER_HEIGHT = 4  # 夹爪厚
+MAX_TILT = 15   # 最大偏转角
 
 
 class Grasp_manipulate:
@@ -77,6 +79,7 @@ class Grasp_manipulate:
                 matrix_obj_to_base = np.dot(matrix_obj_to_base, rotate_z)
                 # 再进行tilt角度变换
                 angle_y = -grasp_params.tilt_angle if grasp_params.rotate_angle < np.pi/2 else grasp_params.tilt_angle
+                angle_y = np.pi*MAX_TILT/180 if angle_y > np.pi*MAX_TILT/180 else -np.pi*MAX_TILT/180 if angle_y < -np.pi*MAX_TILT/180 else angle_y
                 rotate_y = euler_to_matrix([0, angle_y, 0])
                 matrix_obj_to_base = np.dot(matrix_obj_to_base, rotate_y)
                 # 平移一个夹爪长度和当前位置的抓取输入数值
@@ -85,9 +88,11 @@ class Grasp_manipulate:
                 tran_z_2 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length],[0,0,0,1]]
                 # print(-END_TO_END-add_length)
                 matrix_obj_to_base_2 = np.dot(matrix_obj_to_base, tran_z_2)
+                grasp_num_2 = real_width_to_num(grasp_params.grasp_width_second-SUB_WIDTH)
                 # 平移一个夹爪长度加一个安全距离
                 tran_z_1 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length-Z_DISTANCE],[0,0,0,1]]
                 matrix_obj_to_base_1 = np.dot(matrix_obj_to_base, tran_z_1)
+                grasp_num_1 = real_width_to_num(min(grasp_params.grasp_width_second+ADD_WIDTH, grasp_params.grasp_width_first+GRIPPER_HEIGHT))
                 # 先转动最后一个关节
                 joint = self.arm.get_current_joint_values()
                 joint[5] += angle_z

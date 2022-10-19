@@ -173,22 +173,26 @@ def grasp_tree_builder(depth_img, rgb_img, bound):
                 new_test_arr.append(son)
         test_arr = copy.deepcopy(new_test_arr)
     
-    # 在第一层中找到子节点数减兄弟节点最多的，一样多时取深度小的
-    max_son_sub_bro_num = -sys.maxint
-    min_depth = float('inf')
-    best_node = None
-    for node in node_arr:
-        if len(node.son_node_list)-len(node.bro_node_list) > max_son_sub_bro_num:
-            max_son_sub_bro_num = len(node.son_node_list)
-            min_depth = node.data[4]
-            best_node = node
-        elif len(node.son_node_list)-len(node.bro_node_list) == max_son_sub_bro_num:
-            if node.data[4] < min_depth:
-                max_son_sub_bro_num = len(node.son_node_list)
-                min_depth = node.data[4]
-                best_node = node
-    # 返回最优抓取对象
-    if best_node:
-        return best_node, color_img
-    else:
-        return None, []
+    # # 在第一层中找到子节点数减兄弟节点最多的，一样多时取深度小的
+    # max_son_sub_bro_num = -sys.maxint
+    # min_depth = float('inf')
+    # best_node = None
+    # for node in node_arr:
+    #     if len(node.son_node_list)-len(node.bro_node_list) > max_son_sub_bro_num:
+    #         max_son_sub_bro_num = len(node.son_node_list)
+    #         min_depth = node.data[4]
+    #         best_node = node
+    #     elif len(node.son_node_list)-len(node.bro_node_list) == max_son_sub_bro_num:
+    #         if node.data[4] < min_depth:
+    #             max_son_sub_bro_num = len(node.son_node_list)
+    #             min_depth = node.data[4]
+    #             best_node = node
+    # # 返回最优抓取对象
+    # if best_node:
+    #     return best_node, color_img
+    # else:
+    #     return None, []
+    
+    # 对第一层节点数组排序
+    node_arr.sort(key=lambda node: len(node.bro_node_list)-len(node.son_node_list))
+    return node_arr, color_img
