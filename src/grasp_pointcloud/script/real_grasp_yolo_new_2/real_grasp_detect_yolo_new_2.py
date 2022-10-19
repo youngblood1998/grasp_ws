@@ -15,7 +15,7 @@ from real_grasp_candidate_generate_new_2 import grasp_candidate_generator
 from real_grasp_pose_evaluate_new_2 import grasp_pose_evaluator
 from grasp_pointcloud.msg import GraspParams
 
-MAX_NODE_NUM = 5
+MAX_NODE_NUM = 3
 
 class GraspDetector:
     def __init__(self):
@@ -86,6 +86,9 @@ class GraspDetector:
                 if area > max_area:
                     best_grasp_datas = grasp_datas
                     best_result_img = result_img
+                    max_area = area
+            if max_area == 0:
+                return
             self.result_pub.publish(bridge.cv2_to_imgmsg(best_result_img, "bgr8"))
             # 发布抓取参数
             grasp_point = best_grasp_datas[0]

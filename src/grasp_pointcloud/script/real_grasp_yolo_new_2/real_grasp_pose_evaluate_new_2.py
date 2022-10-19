@@ -105,7 +105,7 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
         # 插值
         line_num = interpolation(line_num, x)
         if len(line_num) == 0:
-            return best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second
+            return max_area, best_line_index, best_line, peak_index, peak_index_close, grasp_depth, tilt_angle, grasp_width_first, grasp_width_second
         # 减去最小值
         min_depth = np.min(line_num)
         y = line_num - min_depth
