@@ -16,9 +16,11 @@ COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
 STEP = 5            # 步距
 DEPTH = 40          # 最大深度
-MIN_DEPTH_RATIO = 0.61      # 最小抓取深度
+MIN_DEPTH_RATIO = 0.61      # 最小抓取深度比例
+MAX_DEPTH_RATIO = 1         # 最大抓取深度比例
 ANGLE_THRESH = pi/9    # 兄弟节点连线角度的增加阈值
-INDEX_FILTER_THRESH = 0.3   # 过滤掉太小的抓取
+MIN_INDEX_FILTER_THRESH = 0.35   # 过滤掉太小的抓取
+MAX_INDEX_FILTER_THRESH = 0.65      # 过滤掉太大的抓取
 
 
 #高斯函数
@@ -29,6 +31,11 @@ def gaussian(x, a, mu, sigma):
 def gaussian_mix2(x, a1, mu1, sigma1, a2, mu2, sigma2):
     return gaussian(x, a1, mu1, sigma1)+gaussian(x, a2, mu2, sigma2)
 
+#平滑函数
+def moving_average(interval, windowsize):
+    window = np.ones(int(windowsize)) / float(windowsize)
+    re = np.convolve(interval, window, 'same')
+    return re
 
 #插值函数
 def interpolation(y_arr, x_arr):
@@ -110,6 +117,8 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
         min_depth = np.min(line_num)
         y = line_num - min_depth
         x = np.arange(len(y))
+        # 平滑
+        y = moving_average(y, 10)
 
         try:
             # 高斯混合模型拟合
@@ -162,7 +171,7 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
             grasp_line = np.linspace(depth_left_sub, depth_right_sub, len(y_cut))
             sub_value = (grasp_line-y_cut).astype(np.int16)
             positive_value = (sub_value[sub_value>0]).astype(np.int16)
-            # 判断是否夹到容器
+            # 把不属于草莓面积的部分去掉
             to_l = int(len(y_cut)/2)
             to_r = int(len(y_cut)/2)
             to_l_flag = False
@@ -193,8 +202,8 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
                     # print("截断右")
                     break
                 to_r = to_r + STEP
-            # 过滤掉太小的抓取
-            if float(r_c_index-l_c_index)/len(y_cut) < INDEX_FILTER_THRESH:
+            # 过滤掉太小的和太大的抓取
+            if float(r_c_index-l_c_index)/len(y_cut) < MIN_INDEX_FILTER_THRESH or float(r_c_index-l_c_index)/len(y_cut) > MAX_INDEX_FILTER_THRESH:
                 print(float(r_c_index-l_c_index)/len(y_cut))
                 continue
             l_c_percent = (popt[1]+l_c_index+GRIPPER_HEIGHT/2)/(total_length/2)
@@ -216,8 +225,8 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
                 best_line_index = i
                 best_line = line_num
                 peak_index = (l_percent, r_percent)
-                print("抓取深度比较："+str((depth_left+depth_right)/2)+"  "+str(MIN_DEPTH_RATIO*grasp_width+min_depth))
-                grasp_depth = max((depth_left+depth_right)/2, MIN_DEPTH_RATIO*grasp_width+min_depth)
+                print("抓取深度比较："+str((depth_left+depth_right)/2)+"  "+str(MIN_DEPTH_RATIO*grasp_width+min_depth)+" "+str(MAX_DEPTH_RATIO*grasp_width+min_depth))
+                grasp_depth = min(max((depth_left+depth_right)/2, MIN_DEPTH_RATIO*grasp_width+min_depth), MAX_DEPTH_RATIO*grasp_width+min_depth)
                 # grasp_width = trans_img2real_length(grasp_depth, (1-l_percent/2-r_percent/2)*length)
                 tilt_angle = np.arctan((depth_left-depth_right)/grasp_width)
                 grasp_width_first = trans_img2real_length(grasp_depth, (1-l_percent/2-r_percent/2)*length)

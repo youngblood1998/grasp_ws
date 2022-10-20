@@ -31,6 +31,11 @@ def gaussian(x, a, mu, sigma):
 def gaussian_mix2(x, a1, mu1, sigma1, a2, mu2, sigma2):
     return gaussian(x, a1, mu1, sigma1)+gaussian(x, a2, mu2, sigma2)
 
+#平滑函数
+def moving_average(interval, windowsize):
+    window = np.ones(int(windowsize)) / float(windowsize)
+    re = np.convolve(interval, window, 'same')
+    return re
 
 #插值函数
 def interpolation(y_arr, x_arr):
@@ -85,10 +90,16 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
         x = np.arange(len(line_num))
         #插值
         line_num = interpolation(line_num, x)
+        print("数组长度")
+        print(len(line_num))
         #减去最小值
         min_depth = np.min(line_num)
         y = line_num - min_depth
         x = np.arange(len(y))
+        # # 平滑
+        # y = moving_average(y, 10)
+        # print("数组长度")
+        # print(len(y))
 
         try:
             #高斯混合模型拟合

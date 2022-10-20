@@ -3,6 +3,7 @@
 
 import numpy as np
 import cv2 as cv
+import time
 
 from grasp_detect_yolo import grasp_yolo_detector
 from grasp_tree_build import grasp_tree_builder
@@ -11,7 +12,7 @@ from grasp_pose_evaluate import grasp_pose_evaluator
 
 
 # 输入图片
-num = 3
+num = 2
 rgb_img = cv.imread("img/rgb_"+str(num)+".png")
 depth_img = cv.imread("img/depth_"+str(num)+".png")
 
@@ -28,7 +29,7 @@ depth_img = depth_img*2
 
 # yolo检测获得所有对象的锚框数据
 boxs = grasp_yolo_detector(rgb_img)
-
+start = time.time()
 # 树建立并获取抓取对象的xmin, xmax, ymin, ymax, mean_depth
 bound_data = grasp_tree_builder(depth_img, rgb_img, boxs)
 
@@ -39,7 +40,8 @@ depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(depth_img
 
 # 评估抓取候选选择最优
 grasp_pose_evaluator(bound_data, depth_img, rgb_img, depth_img_cut, line_arr, cut_img_min_point)
-
+end = time.time()
+print(end-start)
 # 销毁所有图片
 cv.waitKey(0)
 cv.destroyAllWindows()
