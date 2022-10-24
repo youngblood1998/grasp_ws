@@ -16,11 +16,11 @@ COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
 STEP = 5            # 步距
 DEPTH = 40          # 最大深度
-MIN_DEPTH_RATIO = 0.61      # 最小抓取深度比例
-MAX_DEPTH_RATIO = 1         # 最大抓取深度比例
+MIN_DEPTH_RATIO = 0.75      # 最小抓取深度比例
+MAX_DEPTH_RATIO = 0.9         # 最大抓取深度比例
 ANGLE_THRESH = pi/9    # 兄弟节点连线角度的增加阈值
-MIN_INDEX_FILTER_THRESH = 0.35   # 过滤掉太小的抓取
-MAX_INDEX_FILTER_THRESH = 0.65      # 过滤掉太大的抓取
+MIN_INDEX_FILTER_THRESH = 0.58   # 过滤掉太小的抓取
+MAX_INDEX_FILTER_THRESH = 0.75      # 过滤掉太大的抓取
 
 
 #高斯函数
@@ -182,21 +182,21 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
             r_c_index = len(y_cut)
             while to_l >= 0:
                 # 给出草莓边缘
-                if sub_value[to_l] < 0 and not to_l_flag:
+                if sub_value[to_l] <= 0 and not to_l_flag:
                     to_l_flag = True
                     l_c_index = to_l
                     # 给出草莓边缘到拟合峰值之间是否会夹到
-                if sub_value[to_l] > 0 and to_l_flag:
+                if sub_value[to_l] >= 0 and to_l_flag:
                     l_percent = (popt[1]+to_l+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
                     sub_area_1 = np.sum(positive_value[0:int(to_l+STEP+GRIPPER_HEIGHT/2)])
                     # print("截断左")
                     break
                 to_l = to_l - STEP
             while to_r < len(sub_value):
-                if sub_value[to_r] < 0 and not to_r_flag:
+                if sub_value[to_r] <= 0 and not to_r_flag:
                     to_r_flag = True
                     r_c_index = to_r
-                if sub_value[to_r] > 0 and to_r_flag:
+                if sub_value[to_r] >= 0 and to_r_flag:
                     r_percent = (total_length-popt[4]+(len(sub_value)-to_r)+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
                     sub_area_2 = np.sum(positive_value[int(to_r-STEP-GRIPPER_HEIGHT/2):len(sub_value)])
                     # print("截断右")
@@ -225,7 +225,7 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
                 best_line_index = i
                 best_line = line_num
                 peak_index = (l_percent, r_percent)
-                print("抓取深度比较："+str((depth_left+depth_right)/2)+"  "+str(MIN_DEPTH_RATIO*grasp_width+min_depth)+" "+str(MAX_DEPTH_RATIO*grasp_width+min_depth))
+                # print("抓取深度比较："+str((depth_left+depth_right)/2)+"  "+str(MIN_DEPTH_RATIO*grasp_width+min_depth)+" "+str(MAX_DEPTH_RATIO*grasp_width+min_depth))
                 grasp_depth = min(max((depth_left+depth_right)/2, MIN_DEPTH_RATIO*grasp_width+min_depth), MAX_DEPTH_RATIO*grasp_width+min_depth)
                 # grasp_width = trans_img2real_length(grasp_depth, (1-l_percent/2-r_percent/2)*length)
                 tilt_angle = np.arctan((depth_left-depth_right)/grasp_width)

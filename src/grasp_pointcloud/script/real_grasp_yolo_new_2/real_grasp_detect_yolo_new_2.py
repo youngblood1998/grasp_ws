@@ -100,7 +100,7 @@ class GraspDetector:
             grasp_params.tilt_angle = best_grasp_datas[2]
             grasp_params.grasp_width_first = best_grasp_datas[3]
             grasp_params.grasp_width_second = best_grasp_datas[4]
-            print(grasp_params)
+            # print(grasp_params)
             self.grasp_params_pub.publish(grasp_params)
         except CvBridgeError as e:
             print("CvBridge转换出错！！！")
