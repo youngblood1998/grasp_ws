@@ -19,7 +19,7 @@ DEPTH = 40          # 最大深度
 MIN_DEPTH_RATIO = 0.75      # 最小抓取深度比例
 MAX_DEPTH_RATIO = 0.9         # 最大抓取深度比例
 ANGLE_THRESH = pi/9    # 兄弟节点连线角度的增加阈值
-MIN_INDEX_FILTER_THRESH = 0.58   # 过滤掉太小的抓取
+MIN_INDEX_FILTER_THRESH = 0.60   # 过滤掉太小的抓取
 MAX_INDEX_FILTER_THRESH = 0.75      # 过滤掉太大的抓取
 
 
@@ -186,7 +186,7 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
                     to_l_flag = True
                     l_c_index = to_l
                     # 给出草莓边缘到拟合峰值之间是否会夹到
-                if sub_value[to_l] >= 0 and to_l_flag:
+                if sub_value[to_l] > 0 and to_l_flag:
                     l_percent = (popt[1]+to_l+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
                     sub_area_1 = np.sum(positive_value[0:int(to_l+STEP+GRIPPER_HEIGHT/2)])
                     # print("截断左")
@@ -196,7 +196,7 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
                 if sub_value[to_r] <= 0 and not to_r_flag:
                     to_r_flag = True
                     r_c_index = to_r
-                if sub_value[to_r] >= 0 and to_r_flag:
+                if sub_value[to_r] > 0 and to_r_flag:
                     r_percent = (total_length-popt[4]+(len(sub_value)-to_r)+STEP+GRIPPER_HEIGHT/2)/(total_length/2)
                     sub_area_2 = np.sum(positive_value[int(to_r-STEP-GRIPPER_HEIGHT/2):len(sub_value)])
                     # print("截断右")
