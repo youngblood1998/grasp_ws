@@ -127,11 +127,12 @@ def grasp_candidate_generator(depth_img, rgb_img, bound_data):
         flag = True
     # 如果有点超出图片范围则重新截取
     if flag:
-        t = min((center_y-min_y)/length, (max_y-center_y)/length, (center_x-min_x)/length, (max_x-center_x)/length)
+        t = min(float(center_y-min_y)/length, float(max_y-center_y)/length, float(center_x-min_x)/length, float(max_x-center_x)/length)
         min_y = int(center_y - t*length)
         max_y = int(center_y + t*length)
         min_x = int(center_x - t*length)
         max_x = int(center_x + t*length)
+    # print(min_x, max_x, min_y, max_y)
     # 截取深度图、彩色图之后进行抓取候选生成
     depth_img_cut_new = depth_img[min_y:max_y, min_x:max_x]
     rgb_img_cut_new = rgb_img[min_y:max_y, min_x:max_x]

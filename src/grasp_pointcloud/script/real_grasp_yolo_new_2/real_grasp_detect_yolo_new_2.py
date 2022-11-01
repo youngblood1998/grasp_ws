@@ -89,6 +89,30 @@ class GraspDetector:
                     max_area = area
             if max_area == 0:
                 return
+            # # 对第一层节点进行计算
+            # i = 0
+            # max_area_width_ratio = 0
+            # best_grasp_datas = None
+            # best_result_img = []
+            # while i < MAX_NODE_NUM and i < len(node_arr):
+            #     node = node_arr[i]
+            #     i += 1
+            #     # 截取图片
+            #     rgb_cut = color_img[int(node.data[2]):int(node.data[3]), int(node.data[0]):int(node.data[1])]
+            #     # self.rgb_cut_pub.publish(bridge.cv2_to_imgmsg(rgb_cut, "bgr8"))
+            #     # 抓取候选生成
+            #     depth_img_cut, line_arr, cut_img_min_point = grasp_candidate_generator(depth_img, color_img, node.data)
+            #     # 评估抓取候选选择最优
+            #     area, grasp_datas, result_img = grasp_pose_evaluator(node, depth_img, color_img, depth_img_cut, line_arr, cut_img_min_point)
+            #     if area / grasp_datas[4] > max_area_width_ratio:
+            #         best_grasp_datas = grasp_datas
+            #         best_result_img = result_img
+            #         max_area_width_ratio = area / grasp_datas[4]
+            #     print(area, grasp_datas[4])
+            #     print("抓取深度宽度比")
+            #     print(max_area_width_ratio)
+            # if max_area_width_ratio == 0:
+            #     return
             self.result_pub.publish(bridge.cv2_to_imgmsg(best_result_img, "bgr8"))
             # 发布抓取参数
             grasp_point = best_grasp_datas[0]
