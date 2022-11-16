@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.context.in
 
-messages_str = "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg;/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg"
+messages_str = "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg;/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg;/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg"
 services_str = ""
 pkg_name = "grasp_pointcloud"
 dependencies_str = "std_msgs"

@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/grasp_pointcloud_generate_messages_eus"
   "/home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/PointBoundingBox.l"
+  "/home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/AdjustParams.l"
   "/home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/GraspParams.l"
   "/home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/manifest.l"
 )

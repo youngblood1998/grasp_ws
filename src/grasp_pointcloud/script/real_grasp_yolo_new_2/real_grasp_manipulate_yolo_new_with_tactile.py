@@ -10,7 +10,7 @@ from geometry_msgs.msg import (
     Quaternion,
     Point
 )
-from grasp_pointcloud.msg import GraspParams
+from grasp_pointcloud.msg import GraspParams, AdjustParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
 
 END_TO_END = 0.149    # 机器人末端到夹爪末端
@@ -39,6 +39,8 @@ class Grasp_manipulate:
         self.arm.set_max_velocity_scaling_factor(SCALING_FACTOR)
         self.arm.set_max_acceleration_scaling_factor(SCALING_FACTOR)
         self.arm.set_planning_time(5)
+        # 坐标监听器
+        self.listener = tf.TransformListener()
         #机械臂回到初始位置并打开夹爪
         self.init_joint = self.arm.get_current_joint_values()
         rospy.set_param("/robotiq_command",'o')
@@ -48,12 +50,13 @@ class Grasp_manipulate:
         # self.display_trajectory_publisher = rospy.Publisher('/move_group/display_planned_path',
         #                                        moveit_msgs.msg.DisplayTrajectory,
         #                                        queue_size=20)
+        # 订阅位姿调整的话题
+        self.adjust_params_sub = rospy.Subscriber("real_adjust/adjust_params", AdjustParams, self.callback_adjust, queue_size=1, buff_size=52428800)
 
     def callback(self, grasp_params):
         print("获得抓取目标，机器人开始向目标位姿运动")
         rospy.set_param("/grasp_step", 1)
         #坐标监听
-        listener = tf.TransformListener()
         rate = rospy.Rate(30)
         while not rospy.is_shutdown():
             try:
@@ -62,7 +65,7 @@ class Grasp_manipulate:
                 point_cam_to_end = tran_to_point(TRAN)
                 matrix_cam_to_end = matrix_from_quaternion(ori_cam_to_end, point_cam_to_end)
                 #计算末端坐标到基坐标的变换矩阵
-                (trans,rot) = listener.lookupTransform('/base_link', '/tool0', rospy.Time(0))
+                (trans,rot) = self.listener.lookupTransform('/base_link', '/tool0', rospy.Time(0))
                 ori_end_to_base = rot_to_ori(rot)
                 # print(ori_end_to_base.x, ori_end_to_base.y, ori_end_to_base.z, ori_end_to_base.w)
                 point_end_to_base = tran_to_point(trans)
@@ -130,17 +133,24 @@ class Grasp_manipulate:
                 rospy.sleep(1)
                 # 进入姿态调整阶段
                 rospy.set_param("/grasp_step", 2)
-                while int(rospy.get_param("/grasp_step")) == 2:
+                while int(rospy.get_param("/grasp_step")) < 5:
                     rospy.sleep(0.5)
                 # 开始运动3
-                self.arm.set_pose_target(pose_1, "tool0")
+                pose_3 = self.arm.get_current_pose("tool0")
+                matrix_obj_to_base_3 = matrix_from_quaternion(pose_3.pose.orientation, pose_3.pose.position)
+                tran_z_3 = [[1,0,0,0],[0,1,0,0],[0,0,1,-Z_DISTANCE],[0,0,0,1]]
+                matrix_obj_to_base_3 = np.dot(matrix_obj_to_base_3, tran_z_3)
+                pose_3.pose.position.x = matrix_obj_to_base_3[0][3]
+                pose_3.pose.position.y = matrix_obj_to_base_3[1][3]
+                pose_3.pose.position.z = matrix_obj_to_base_3[2][3]
+                self.arm.set_pose_target(pose_3, "tool0")
                 self.arm.go(wait = True)
                 # 先转动最后一个关节
                 joint = self.arm.get_current_joint_values()
                 joint[5] -= angle_z
                 self.arm.set_joint_value_target(joint)
                 self.arm.go(wait = True)
-                if int(rospy.get_param("/grasp_step")) == 4:
+                if int(rospy.get_param("/grasp_step")) == 5:
                     # 到达指定位置放下
                     self.arm.set_joint_value_target(END_JOINT)
                     self.arm.go(wait = True)
@@ -158,6 +168,52 @@ class Grasp_manipulate:
         rospy.set_param("/grasp_step", 0)
         # rospy.sleep(2)
         ans_2 = raw_input("退出请按Ctrl+C,继续按任意键：").lower()
+
+    def callback_adjust(self, adjust_params):
+        print("机器人正在调整姿态")
+        # 坐标监听
+        rate = rospy.Rate(30)
+        while not rospy.is_shutdown():
+            try:
+                # 末端到基坐标的变换矩阵
+                (trans,rot) = self.listener.lookupTransform('/base_link', '/tool0', rospy.Time(0))
+                ori_end_to_base = rot_to_ori(rot)
+                point_end_to_base = tran_to_point(trans)
+                matrix_end_to_base = matrix_from_quaternion(ori_end_to_base, point_end_to_base)
+                # 末端到物体的变换
+                tran_obj_to_end = [[1,0,0,0],[0,1,0,0],[0,0,1,END_TO_END],[0,0,0,1]]
+                # 物体到基坐标的变换矩阵
+                matrix_obj_to_base = np.dot(matrix_end_to_base, tran_obj_to_end)
+                # 调整的矩阵
+                tran_y_and_z = [[1,0,0,0],[0,1,0,float(adjust_params.y)/1000],[0,0,1,float(adjust_params.z)/1000],[0,0,0,1]]
+                rotate_z = euler_to_matrix([0, 0, adjust_params.z_rotate_angle])
+                rotate_y = euler_to_matrix([0, adjust_params.y_rotate_angle, 0])
+                # 调整后的物体
+                matrix_obj_to_base = np.dot(matrix_obj_to_base, tran_y_and_z)
+                matrix_obj_to_base = np.dot(matrix_obj_to_base, rotate_y)
+                matrix_obj_to_base = np.dot(matrix_obj_to_base, rotate_z)
+                # 物体到末端的变换
+                tran_end_to_obj = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END],[0,0,0,1]]
+                # 末端到基坐标的变换
+                matrix_end_to_base = np.dot(matrix_obj_to_base, tran_end_to_obj)
+                # 机器人开始进行调整运动
+                q = matrix_to_quaternion(matrix_end_to_base)
+                pose = self.arm.get_current_pose("tool0")
+                pose.pose.position.x = matrix_end_to_base[0][3]
+                pose.pose.position.y = matrix_end_to_base[1][3]
+                pose.pose.position.z = matrix_end_to_base[2][3]
+                pose.pose.orientation.w = q.w
+                pose.pose.orientation.x = q.x
+                pose.pose.orientation.y = q.y
+                pose.pose.orientation.z = q.z
+                self.arm.set_pose_target(pose, "tool0")
+                self.arm.go(wait = True)
+                break
+            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+                continue
+            rate.sleep()
+        # 姿态调整结束
+        rospy.set_param("/grasp_step", 4)
 
 
 if __name__ == "__main__":

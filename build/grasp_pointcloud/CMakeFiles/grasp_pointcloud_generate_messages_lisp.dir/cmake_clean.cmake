@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/grasp_pointcloud_generate_messages_lisp"
   "/home/jay/grasp_ws/devel/share/common-lisp/ros/grasp_pointcloud/msg/PointBoundingBox.lisp"
+  "/home/jay/grasp_ws/devel/share/common-lisp/ros/grasp_pointcloud/msg/AdjustParams.lisp"
   "/home/jay/grasp_ws/devel/share/common-lisp/ros/grasp_pointcloud/msg/GraspParams.lisp"
 )
 
