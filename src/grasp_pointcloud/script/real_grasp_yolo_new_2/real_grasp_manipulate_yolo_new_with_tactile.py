@@ -161,6 +161,7 @@ class Grasp_manipulate:
                 continue
             rate.sleep()
         #抓取结束,夹爪打开,机械臂回初始点
+        rospy.set_param("/grasp_step", 6)   # 用于停止滑移检测
         self.arm.set_joint_value_target(self.init_joint)
         rospy.set_param("/robotiq_command",'o')
         self.arm.go(wait = True)
