@@ -46,3 +46,17 @@ roslaunch realsense2_camera rs_camera_ca.launch
     rosrun grasp_pointcloud real_grasp_detect_yolo_new_2.py	    更换相机记得更改trans_func的MATRIX
     rosrun pose_adjust pose_adjust_detect_with_slip_detect.py   需要启动xela传感器，参考xela工作空间
     rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_with_tactile.py
+
+    消融实验
+    1、没有堆叠结构树
+        roslaunch yolov5_ros camera_yolo_v5.launch
+        rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_tree.py	    更换相机记得更改trans_func的MATRIX
+        rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
+    2、没有深度滤波聚类
+        roslaunch yolov5_ros camera_yolo_v5.launch
+        rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_DBSCAN.py	    更换相机记得更改trans_func的MATRIX
+        rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
+    3、随机选择抓取候选
+        roslaunch yolov5_ros camera_yolo_v5.launch
+        rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_select.py	    更换相机记得更改trans_func的MATRIX
+        rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
