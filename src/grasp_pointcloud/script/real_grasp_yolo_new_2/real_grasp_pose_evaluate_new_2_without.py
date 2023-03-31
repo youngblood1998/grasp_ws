@@ -13,7 +13,7 @@ from trans_func import trans_real2img_length, trans_img2real_length, trans_img2r
 GRIPPER_WIDTH = 23  # 夹爪宽
 GRIPPER_HEIGHT = 6  # 夹爪厚
 SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
-COLLIDE_PERCENT = 0.1   # 可接受碰撞比例
+COLLIDE_PERCENT = 0.05   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
 STEP = 5            # 步距
 DEPTH = 40          # 最大深度
@@ -96,7 +96,11 @@ def gmm(best_node, depth_img, depth_img_cut, lines_arr):
     # for i, line in enumerate(lines_arr):
 
     # 随机选择抓取候选
-    i = random.randint(0, 10)
+    i = random.randint(0, 9)
+    # print(i)
+    # print("长度")
+    # print(len(lines_arr))
+    # print(lines_arr)
     line = lines_arr[i]
     # # 如果在兄弟节点连线角度附近则跳过
     # flag_angle = False

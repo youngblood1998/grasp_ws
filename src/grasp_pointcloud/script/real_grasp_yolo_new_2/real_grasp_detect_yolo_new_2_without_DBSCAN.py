@@ -126,8 +126,10 @@ class GraspDetector:
             grasp_params.grasp_width_second = best_grasp_datas[4]
             # print(grasp_params)
             self.grasp_params_pub.publish(grasp_params)
-        except CvBridgeError as e:
-            print("CvBridge转换出错！！！")
+        # except CvBridgeError as e:
+        #     print("CvBridge转换出错！！！")
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":

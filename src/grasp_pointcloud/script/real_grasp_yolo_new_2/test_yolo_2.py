@@ -554,6 +554,11 @@
 #     rospy.loginfo("抓取开始")
 #     Grasp_manipulate()
 #--------------------------------------------------------
-a = [(1,2),(5,7),(4,30),(2,1)]
-a.sort(key=lambda a:-a[0])
-print(a)
+# a = [(1,2),(5,7),(4,30),(2,1)]
+# a.sort(key=lambda a:-a[0])
+# print(a)
+#-------------------------------------
+import random
+
+for i in range(15):
+    print(random.randint(0, 10))

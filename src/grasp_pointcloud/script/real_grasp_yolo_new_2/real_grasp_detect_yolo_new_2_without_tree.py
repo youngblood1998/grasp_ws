@@ -8,6 +8,7 @@ import numpy as np
 import cv2
 import copy
 import sys
+import random
 
 from yolov5_ros_msgs.msg import BoundingBox, BoundingBoxes
 from real_grasp_tree_build_new_2_without import grasp_tree_builder
@@ -121,6 +122,9 @@ class GraspDetector:
             #     print(max_area_width_ratio)
             # if max_area_width_ratio == 0:
             #     return
+            # print(best_result_img)
+            # if not type(best_result_img) is np.array:
+            #     return
             self.result_pub.publish(bridge.cv2_to_imgmsg(best_result_img, "bgr8"))
             # 发布抓取参数
             grasp_point = best_grasp_datas[0]
@@ -128,14 +132,17 @@ class GraspDetector:
             grasp_params.x = grasp_point[0]/1000.0
             grasp_params.y = grasp_point[1]/1000.0
             grasp_params.z = grasp_point[2]/1000.0
+            # grasp_params.z = grasp_point[2]/1000.0 - random.randint(0, 3)/1000.0
             grasp_params.rotate_angle = best_grasp_datas[1]
             grasp_params.tilt_angle = best_grasp_datas[2]
             grasp_params.grasp_width_first = best_grasp_datas[3]
             grasp_params.grasp_width_second = best_grasp_datas[4]
             # print(grasp_params)
             self.grasp_params_pub.publish(grasp_params)
-        except CvBridgeError as e:
-            print("CvBridge转换出错！！！")
+        # except CvBridgeError as e:
+        #     print("CvBridge转换出错！！！")
+        except Exception as e:
+            print(e)
 
 
 if __name__ == "__main__":

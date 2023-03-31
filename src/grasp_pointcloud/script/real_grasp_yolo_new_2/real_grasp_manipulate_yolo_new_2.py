@@ -13,17 +13,19 @@ from geometry_msgs.msg import (
 from grasp_pointcloud.msg import GraspParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
 
-END_TO_END = 0.149    # 机器人末端到夹爪末端
-TRAN = [-0.0085, -0.0794528072638, 0.0739784679795] #手眼标定的平移
+END_TO_END = 0.150    # 机器人末端到夹爪末端
+TRAN = [-0.0065, -0.0874528072638, 0.0739784679795] #手眼标定的平移
 ROT = [-0.0322859285682, -0.00222200140914, -0.0294295826053, 0.999042832512]   #手眼标定的旋转
-END_JOINT = [-1.1180594603167933, -1.8702004591571253, -1.35732347169985, 4.850101470947266, -4.704089466725485, 0.1362917274236679]  # 抓取之后放置的位置
+END_JOINT = [-0.9317992369281214, -1.6011360327350062, -1.7463434378253382, -1.2988460699664515, 1.5512953996658325, 0.35472556948661804]  # 抓取之后放置的位置
 Z_DISTANCE = 0.050     # 抓取位置前一个位置的距离
-ADD_WIDTH = 14
+ADD_WIDTH = 12
 SUB_WIDTH = 10
 TOLERANCE = 0.0005
-SCALING_FACTOR = 0.08
+SCALING_FACTOR = 0.1
 GRIPPER_HEIGHT = 4  # 夹爪厚
 MAX_TILT = 15   # 最大偏转角
+MIN_WIDTH = 40
+MAX_WIDTH = 64
 
 
 class Grasp_manipulate:
@@ -92,7 +94,7 @@ class Grasp_manipulate:
                 # 平移一个夹爪长度加一个安全距离
                 tran_z_1 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length-Z_DISTANCE],[0,0,0,1]]
                 matrix_obj_to_base_1 = np.dot(matrix_obj_to_base, tran_z_1)
-                grasp_num_1 = real_width_to_num(min(grasp_params.grasp_width_second+ADD_WIDTH, grasp_params.grasp_width_first+GRIPPER_HEIGHT))
+                grasp_num_1 = real_width_to_num(min(max(min(grasp_params.grasp_width_second+ADD_WIDTH, grasp_params.grasp_width_first+GRIPPER_HEIGHT), MIN_WIDTH), MAX_WIDTH))
                 # 先转动最后一个关节
                 joint = self.arm.get_current_joint_values()
                 joint[5] += angle_z
@@ -150,8 +152,8 @@ class Grasp_manipulate:
         self.arm.go(wait = True)
         #将grasp_param设置为0,开始检测，停止抓取
         rospy.set_param("/grasp_step", 0)
-        # rospy.sleep(2)
-        ans_2 = raw_input("退出请按Ctrl+C,继续按任意键：").lower()
+        rospy.sleep(2)
+        # ans_2 = raw_input("退出请按Ctrl+C,继续按任意键：").lower()
 
 
 if __name__ == "__main__":
