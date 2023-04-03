@@ -60,3 +60,9 @@ roslaunch realsense2_camera rs_camera_ca.launch
         roslaunch yolov5_ros camera_yolo_v5.launch
         rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_select.py	    更换相机记得更改trans_func的MATRIX
         rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
+
+    使用yolo输出5D抓取信息并通过ikfast进行运动规划，并且结合触觉传感器进行滑移检测
+    roslaunch yolov5_ros camera_yolo_v5.launch
+    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2.py	    更换相机记得更改trans_func的MATRIX
+    rosrun pose_adjust slip_detect.py   需要启动xela传感器，参考xela工作空间
+    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_with_tactile_without_adjust.py
