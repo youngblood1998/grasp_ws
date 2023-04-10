@@ -13,10 +13,10 @@ from geometry_msgs.msg import (
 from grasp_pointcloud.msg import GraspParams, AdjustParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
 
-END_TO_END = 0.150    # 机器人末端到夹爪末端
+END_TO_END = 0.151    # 机器人末端到夹爪末端
 TRAN = [-0.0065, -0.0874528072638, 0.0739784679795] #手眼标定的平移
 ROT = [-0.0322859285682, -0.00222200140914, -0.0294295826053, 0.999042832512]   #手眼标定的旋转
-END_JOINT = [-0.9317992369281214, -1.6011360327350062, -1.7463434378253382, -1.2988460699664515, 1.5512953996658325, 0.35472556948661804]  # 抓取之后放置的位置
+END_JOINT = [-0.8871949354754847, -1.5327819029437464, -2.032797161732809, 5.1999711990356445, -4.767383042966024, -0.013096157704488576]  # 抓取之后放置的位置
 Z_DISTANCE = 0.050     # 抓取位置前一个位置的距离
 ADD_WIDTH = 12
 SUB_WIDTH = 10

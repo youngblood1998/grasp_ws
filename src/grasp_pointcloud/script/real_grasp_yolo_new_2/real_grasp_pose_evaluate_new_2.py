@@ -12,7 +12,7 @@ from trans_func import trans_real2img_length, trans_img2real_length, trans_img2r
 GRIPPER_WIDTH = 23  # 夹爪宽
 GRIPPER_HEIGHT = 6  # 夹爪厚
 SIPPLEMENT_VALUE = 2**15-1    # 空洞填补值
-COLLIDE_PERCENT = 0.05   # 可接受碰撞比例
+COLLIDE_PERCENT = 0.03   # 可接受碰撞比例
 ADD_DEPTH = 20      # 判断宽度所在的深度
 STEP = 5            # 步距
 DEPTH = 40          # 最大深度

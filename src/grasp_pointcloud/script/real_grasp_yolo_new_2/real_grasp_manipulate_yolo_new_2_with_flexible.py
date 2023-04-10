@@ -13,10 +13,10 @@ from geometry_msgs.msg import (
 from grasp_pointcloud.msg import GraspParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
 
-END_TO_END = 0.150    # 机器人末端到夹爪末端
+END_TO_END = 0.150+0.072    # 机器人末端到夹爪末端
 TRAN = [-0.0065, -0.0874528072638, 0.0739784679795] #手眼标定的平移
 ROT = [-0.0322859285682, -0.00222200140914, -0.0294295826053, 0.999042832512]   #手眼标定的旋转
-END_JOINT = [-0.8871949354754847, -1.5327819029437464, -2.032797161732809, 5.1999711990356445, -4.767383042966024, -0.013096157704488576]  # 抓取之后放置的位置
+END_JOINT = [-1.0901439825641077, -1.5517953077899378, -1.769083325062887, 4.919984340667725, -4.709146443997518, -0.2551816145526331]  # 抓取之后放置的位置
 Z_DISTANCE = 0.050     # 抓取位置前一个位置的距离
 ADD_WIDTH = 12
 SUB_WIDTH = 10
@@ -127,7 +127,7 @@ class Grasp_manipulate:
                 pose_2.pose.orientation.z = q_1.z
                 self.arm.set_pose_target(pose_2, "tool0")
                 self.arm.go(wait = True)
-                rospy.set_param("/robotiq_command",'c')
+                rospy.set_param("/robotiq_command",str(grasp_num_2))
                 rospy.sleep(1)
                 # 开始运动3
                 self.arm.set_pose_target(pose_1, "tool0")
@@ -152,8 +152,8 @@ class Grasp_manipulate:
         self.arm.go(wait = True)
         #将grasp_param设置为0,开始检测，停止抓取
         rospy.set_param("/grasp_step", 0)
-        rospy.sleep(2)
-        # ans_2 = raw_input("退出请按Ctrl+C,继续按任意键：").lower()
+        # rospy.sleep(2)
+        ans_2 = raw_input("退出请按Ctrl+C,继续按任意键：").lower()
 
 
 if __name__ == "__main__":
