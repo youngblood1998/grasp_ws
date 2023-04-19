@@ -1,4 +1,3 @@
-import numpy
 import numpy as np
 import open3d as o3d
 import copy
@@ -135,12 +134,21 @@ for i in range(1, 11):
     coord_axes.transform(T_matrix)
 
     # 计算主方向和包围盒
-    bbox = o3d.geometry.AxisAlignedBoundingBox.create_from_points(filtered_pcd.points)
+    # bbox = o3d.geometry.AxisAlignedBoundingBox.create_from_points(filtered_pcd.points)
     obb = filtered_pcd.get_oriented_bounding_box()
     # print(numpy.asarray(bbox.get_box_points()))
     # print(numpy.asarray(obb.get_box_points()))
 
+    filtered_pcd_transform = copy.deepcopy(filtered_pcd)
+    filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+    aabb = o3d.geometry.AxisAlignedBoundingBox.create_from_points(filtered_pcd_transform.points)
+    # # 获取OBB对象
+    obb = aabb.get_oriented_bounding_box()
+    # # 对OBB进行旋转和平移操作
+    obb.rotate(T_matrix[:3, :3])
+    obb.translate(T_matrix[:3, 3])
+
     # 可视化结果
     coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1)
-    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb], "result")
+    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, filtered_pcd, obb], "result")
     print('--'*20)

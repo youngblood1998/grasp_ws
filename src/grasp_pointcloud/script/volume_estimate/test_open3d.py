@@ -1,3 +1,10 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import rospy
+import open3d
+
+
+rospy.sleep(5)
 # import open3d as o3d
 # import numpy as np
 #
@@ -142,14 +149,15 @@
 # # 打印投影向量
 # print(projection_vector)
 #-------------------------------------
-import numpy as np
-
-transformation_matrix = np.array([[-0.08266272, -0.99657758,  0.,         -0.01350621],
- [ 0.99591727, -0.08260795, -0.03639669, -0.00574353],
- [ 0.03627212, -0.00300865,  0.99933742,  0.35444077],
- [ 0.,          0.,         0.,          1.        ]])
-# 假设 transformation_matrix 为 4x4 的变换矩阵
-T = transformation_matrix[0:3, 0:3]   # 提取旋转矩阵部分
-y_axis = T[:, 1]                      # 提取该坐标系的 Y 轴方向
-y_unit_vector = y_axis / np.linalg.norm(y_axis)   # 转化为单位向量
-print(y_unit_vector)
+# import numpy as np
+#
+# transformation_matrix = np.array([[-0.08266272, -0.99657758,  0.,         -0.01350621],
+#  [ 0.99591727, -0.08260795, -0.03639669, -0.00574353],
+#  [ 0.03627212, -0.00300865,  0.99933742,  0.35444077],
+#  [ 0.,          0.,         0.,          1.        ]])
+# # 假设 transformation_matrix 为 4x4 的变换矩阵
+# T = transformation_matrix[0:3, 0:3]   # 提取旋转矩阵部分
+# y_axis = T[:, 1]                      # 提取该坐标系的 Y 轴方向
+# y_unit_vector = y_axis / np.linalg.norm(y_axis)   # 转化为单位向量
+# print(y_unit_vector)
+#-------------------------------------------------------------------
