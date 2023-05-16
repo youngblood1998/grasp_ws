@@ -2,6 +2,10 @@ import numpy as np
 import open3d as o3d
 import copy
 
+step = 0.002
+x_val = 0.01
+threshold = 0.001
+
 for i in range(1, 11):
     # 读取点云
     pcd = o3d.io.read_point_cloud("../../pcd/single{}.pcd".format(str(i)))  # single4.pcd尾朝上，别用
@@ -128,16 +132,11 @@ for i in range(1, 11):
         # 变换矩阵
         T_matrix = np.dot(t_matrix, R)
 
-    # 创建坐标轴
-    coord_axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
-    # 对坐标轴进行变换
-    coord_axes.transform(T_matrix)
-
     # 计算主方向和包围盒
     # bbox = o3d.geometry.AxisAlignedBoundingBox.create_from_points(filtered_pcd.points)
-    obb = filtered_pcd.get_oriented_bounding_box()
+    # obb = filtered_pcd.get_oriented_bounding_box()
     # print(numpy.asarray(bbox.get_box_points()))
-    # print(numpy.asarray(obb.get_box_points()))
+    # print(np.asarray(obb.get_box_points()))
 
     filtered_pcd_transform = copy.deepcopy(filtered_pcd)
     filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
@@ -148,7 +147,78 @@ for i in range(1, 11):
     obb.rotate(T_matrix[:3, :3])
     obb.translate(T_matrix[:3, 3])
 
+    # 调整草莓抓取坐标
+    coord_axes_center = T_matrix[:3, 3]
+    # 找到草莓最高点和最低点（平面）
+    top = np.min(np.array(filtered_pcd_transform.points)[:, 2])
+    bottom = np.abs(plane_model[0]*coord_axes_center[0]+plane_model[1]*coord_axes_center[1]
+                     +plane_model[2]*coord_axes_center[2]+plane_model[3]) / np.sqrt(plane_model[0]**2
+                                                                                    +plane_model[1]**2
+                                                                                    +plane_model[2]**2)
+    # 找到草莓y轴最前点和最后点
+    front = np.min(np.array(filtered_pcd_transform.points)[:, 1])
+    end = np.max(np.array(filtered_pcd_transform.points)[:, 1])
+    points = np.array(filtered_pcd_transform.points)
+    points_x = points[:, 0]
+    points_y = points[:, 1]
+    # 沿y轴方向截取点云计算x轴方向的最大方位的位置，即找到草莓直径最大处的位置
+    best_y_pos = 0
+    scope = 0
+    arithmetic_arr = np.arange(front, end, step)
+    for i in arithmetic_arr:
+        idx = (points_y > i) & (points_y < i+step)
+        points_x_cut = points_x[idx]
+        if np.max(points_x_cut) - np.min(points_x_cut) > scope:
+            scope = np.max(points_x_cut) - np.min(points_x_cut)
+            best_y_pos = i + step/2
+    # 调整草莓坐标系的z轴原点到草莓最高点和平面的中间，y轴原点到最大直径处
+    trans = np.array([[1, 0, 0, 0],
+                      [0, 1, 0, best_y_pos],
+                      [0, 0, 1, (top+bottom)/2],
+                      [0, 0, 0, 1]])
+    T_matrix = np.dot(T_matrix, trans)
+    # print(top, bottom)
+    print(front, end)
+
+    # 二分法查找点云对称平面
+    points = np.array(filtered_pcd_transform.points)
+    point_1 = points[np.argmin(points_y)]
+    z_top = top
+    z_bottom = bottom
+    reflect_points = []
+    while True:
+        z_middle = (z_top+z_bottom)/2
+        print(z_middle)
+        point_2 = np.array([-x_val, end, z_middle])
+        point_3 = np.array([x_val, end, z_middle])
+        vector_1 = point_1 - point_2
+        vector_2 = point_1 - point_3
+        vector_normal = np.cross(vector_1, vector_2)
+        vector_normal_normalized = vector_normal/np.linalg.norm(vector_normal)
+        for point in points:
+            distance = np.dot(vector_normal_normalized, point-point_1)
+            reflect_points.append(point - 2*distance*vector_normal_normalized)
+        deviation = np.max(np.array(reflect_points)[:, 2]) - bottom
+        if np.abs(deviation) < threshold or np.abs(z_top - z_bottom) < threshold:
+            break
+        else:
+            reflect_points.clear()
+            if deviation > 0:
+                z_bottom = z_middle
+            else:
+                z_top = z_middle
+    reflect_points = np.array(reflect_points)
+    # reflect_points[:, 0] = -reflect_points[:, 0]
+    pcd_reflect = o3d.geometry.PointCloud()
+    pcd_reflect.points = o3d.utility.Vector3dVector(reflect_points)
+    pcd_reflect.colors = o3d.utility.Vector3dVector([color for i in range(len(pcd.points))])
+
+    # 创建坐标轴
+    coord_axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
+    # 对坐标轴进行变换
+    coord_axes.transform(T_matrix)
+
     # 可视化结果
-    coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1)
-    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, filtered_pcd, obb], "result")
+    coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
+    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, filtered_pcd, filtered_pcd_transform, pcd_reflect, aabb, obb], "result")
     print('--'*20)
