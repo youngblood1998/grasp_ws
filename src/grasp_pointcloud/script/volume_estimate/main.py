@@ -6,7 +6,35 @@ step = 0.002
 x_val = 0.01
 threshold = 0.001
 
-for i in range(1, 11):
+def compute_triangle_mesh_volume(mesh):
+    """
+    计算 TriangleMesh 的体积。
+
+    Args:
+        mesh: open3d.geometry.TriangleMesh 对象。
+
+    Returns:
+        float: 三角网格的体积。
+    """
+
+    vertices = mesh.vertices
+    triangles = mesh.triangles
+    print(len(triangles))
+    print(len(triangles))
+
+    # 遍历每个三角形，计算其面积并累加到总面积中
+    total_volume = 0.0
+    for triangle in triangles:
+        p1 = vertices[triangle[0]]
+        p2 = vertices[triangle[1]]
+        p3 = vertices[triangle[2]]
+        volume = abs(np.dot(np.cross(p2 - p1, p3 - p1), p1))
+        total_volume += volume
+
+    return total_volume / 6.0
+
+
+for i in range(1, 2):
     # 读取点云
     pcd = o3d.io.read_point_cloud("../../pcd/single{}.pcd".format(str(i)))  # single4.pcd尾朝上，别用
 
@@ -177,7 +205,7 @@ for i in range(1, 11):
                       [0, 0, 1, (top+bottom)/2],
                       [0, 0, 0, 1]])
     T_matrix = np.dot(T_matrix, trans)
-    # print(top, bottom)
+    print(top, bottom)
     print(front, end)
 
     # 二分法查找点云对称平面
@@ -186,22 +214,27 @@ for i in range(1, 11):
     z_top = top
     z_bottom = bottom
     reflect_points = []
+    # 二分查找
     while True:
         z_middle = (z_top+z_bottom)/2
         print(z_middle)
+        # 定义三个点，并由三点计算平面法向量
         point_2 = np.array([-x_val, end, z_middle])
         point_3 = np.array([x_val, end, z_middle])
         vector_1 = point_1 - point_2
         vector_2 = point_1 - point_3
         vector_normal = np.cross(vector_1, vector_2)
         vector_normal_normalized = vector_normal/np.linalg.norm(vector_normal)
+        # 将点相对于平面镜像
         for point in points:
             distance = np.dot(vector_normal_normalized, point-point_1)
             reflect_points.append(point - 2*distance*vector_normal_normalized)
+        # 计算最低点与平面的距离是否在阈值内
         deviation = np.max(np.array(reflect_points)[:, 2]) - bottom
         if np.abs(deviation) < threshold or np.abs(z_top - z_bottom) < threshold:
             break
         else:
+            # 更新
             reflect_points.clear()
             if deviation > 0:
                 z_bottom = z_middle
@@ -209,9 +242,29 @@ for i in range(1, 11):
                 z_top = z_middle
     reflect_points = np.array(reflect_points)
     # reflect_points[:, 0] = -reflect_points[:, 0]
-    pcd_reflect = o3d.geometry.PointCloud()
-    pcd_reflect.points = o3d.utility.Vector3dVector(reflect_points)
-    pcd_reflect.colors = o3d.utility.Vector3dVector([color for i in range(len(pcd.points))])
+    # pcd_reflect = o3d.geometry.PointCloud()
+    # pcd_reflect.points = o3d.utility.Vector3dVector(reflect_points)
+    # pcd_reflect.colors = o3d.utility.Vector3dVector([color for i in range(len(pcd.points))])
+    # 合并镜像点云和原点云
+    points = np.concatenate((points, reflect_points), axis=0)
+    filtered_pcd_transform.points = o3d.utility.Vector3dVector(points)
+    filtered_pcd_transform.colors = o3d.utility.Vector3dVector([color for i in range(len(filtered_pcd_transform.points))])
+
+    # 离群点滤波
+    filtered_pcd_transform, ind = filtered_pcd_transform.remove_statistical_outlier(nb_neighbors=5, std_ratio=1)
+
+    print(len(filtered_pcd_transform.points))
+
+    hull, _ = filtered_pcd_transform.compute_convex_hull()
+    # hull.filter_smooth_laplacian(100, 0.8)
+    # hull.filter_smooth_simple(100)
+    # hull.filter_smooth_taubin(100)
+    hull.paint_uniform_color([0, 1, 0])
+
+    print(type(hull))
+
+    volume = compute_triangle_mesh_volume(hull)
+    print("TriangleMesh 体积：", volume)
 
     # 创建坐标轴
     coord_axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
@@ -220,5 +273,5 @@ for i in range(1, 11):
 
     # 可视化结果
     coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
-    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, filtered_pcd, filtered_pcd_transform, pcd_reflect, aabb, obb], "result")
+    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, filtered_pcd, aabb, obb, hull, filtered_pcd_transform], "result")
     print('--'*20)

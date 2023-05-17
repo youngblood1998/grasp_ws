@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# import rospy
-# import open3d
-#
-#
-# rospy.sleep(5)
+import rospy
+import open3d
+from sensor_msgs.msg import Image
+
+rospy.sleep(5)
+tree_pub = rospy.Publisher("real_detect/tree_image", Image, queue_size=1)
 # import open3d as o3d
 # import numpy as np
 #
@@ -162,41 +163,41 @@
 # y_unit_vector = y_axis / np.linalg.norm(y_axis)   # 转化为单位向量
 # print(y_unit_vector)
 #-------------------------------------------------------------------
-import numpy as np
-import open3d as o3d
-
-# 定义平面参数
-A = 1
-B = 2
-C = 3
-D = 4
-
-# 计算平面法向量和截距
-n = np.array([A, B, C])
-d = -D / C
-
-# 创建平面模型的顶点和三角形索引列表
-vertices = np.array([
-    [-10, -10, d],
-    [10, -10, d],
-    [10, 10, d],
-    [-10, 10, d]
-])
-
-triangles = np.array([
-    [0, 1, 2],
-    [0, 2, 3]
-])
-
-# 创建平面模型
-plane = o3d.geometry.TriangleMesh()
-plane.vertices = o3d.utility.Vector3dVector(vertices)
-plane.triangles = o3d.utility.Vector3iVector(triangles)
-
-# 创建可视化窗口并添加平面模型
-vis = o3d.visualization.Visualizer()
-vis.create_window()
-vis.add_geometry(plane)
-
-# 显示平面模型
-o3d.visualization.draw_geometries([plane])
+# import numpy as np
+# import open3d as o3d
+#
+# # 定义平面参数
+# A = 1
+# B = 2
+# C = 3
+# D = 4
+#
+# # 计算平面法向量和截距
+# n = np.array([A, B, C])
+# d = -D / C
+#
+# # 创建平面模型的顶点和三角形索引列表
+# vertices = np.array([
+#     [-10, -10, d],
+#     [10, -10, d],
+#     [10, 10, d],
+#     [-10, 10, d]
+# ])
+#
+# triangles = np.array([
+#     [0, 1, 2],
+#     [0, 2, 3]
+# ])
+#
+# # 创建平面模型
+# plane = o3d.geometry.TriangleMesh()
+# plane.vertices = o3d.utility.Vector3dVector(vertices)
+# plane.triangles = o3d.utility.Vector3iVector(triangles)
+#
+# # 创建可视化窗口并添加平面模型
+# vis = o3d.visualization.Visualizer()
+# vis.create_window()
+# vis.add_geometry(plane)
+#
+# # 显示平面模型
+# o3d.visualization.draw_geometries([plane])
