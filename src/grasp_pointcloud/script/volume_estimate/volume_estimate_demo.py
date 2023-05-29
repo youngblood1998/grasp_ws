@@ -19,8 +19,8 @@ def compute_triangle_mesh_volume(mesh):
 
     vertices = mesh.vertices
     triangles = mesh.triangles
-    print(len(triangles))
-    print(len(triangles))
+    # print(len(vertices))
+    # print(len(triangles))
 
     # 遍历每个三角形，计算其面积并累加到总面积中
     total_volume = 0.0
@@ -34,7 +34,7 @@ def compute_triangle_mesh_volume(mesh):
     return total_volume / 6.0
 
 
-for i in range(1, 2):
+for i in range(6, 7):
     # 读取点云
     pcd = o3d.io.read_point_cloud("../../pcd/single{}.pcd".format(str(i)))  # single4.pcd尾朝上，别用
 
@@ -52,7 +52,7 @@ for i in range(1, 2):
     inlier_cloud = pcd_filtered.select_down_sample(inliers)     # 平面
     outlier_cloud = pcd_filtered.select_down_sample(inliers, invert=True)       # 平面之外的点云
     n = np.asarray(plane_model)[:3]     # 平面的法向量
-    print('平面法向量的值:' + str(n))
+    print('平面法向量的值:' + str(plane_model))
 
     # 离群点滤波
     cl, ind = outlier_cloud.remove_statistical_outlier(nb_neighbors=10, std_ratio=1.0)
@@ -204,9 +204,10 @@ for i in range(1, 2):
                       [0, 1, 0, best_y_pos],
                       [0, 0, 1, (top+bottom)/2],
                       [0, 0, 0, 1]])
-    T_matrix = np.dot(T_matrix, trans)
-    print(top, bottom)
-    print(front, end)
+    T_matrix_grasp = np.dot(T_matrix, trans)
+    print(top-bottom)
+    print(front-end)
+    print(np.min(np.array(filtered_pcd_transform.points)[:, 0])-np.max(np.array(filtered_pcd_transform.points)[:, 0]))
 
     # 二分法查找点云对称平面
     points = np.array(filtered_pcd_transform.points)
@@ -250,17 +251,42 @@ for i in range(1, 2):
     filtered_pcd_transform.points = o3d.utility.Vector3dVector(points)
     filtered_pcd_transform.colors = o3d.utility.Vector3dVector([color for i in range(len(filtered_pcd_transform.points))])
 
+    filtered_pcd_transform_2 = copy.deepcopy(filtered_pcd_transform)
+    filtered_pcd_transform_2.transform(T_matrix)
+
     # 离群点滤波
     filtered_pcd_transform, ind = filtered_pcd_transform.remove_statistical_outlier(nb_neighbors=5, std_ratio=1)
 
-    print(len(filtered_pcd_transform.points))
+    # print(len(filtered_pcd_transform.points))
 
     hull, _ = filtered_pcd_transform.compute_convex_hull()
     # hull.filter_smooth_laplacian(100, 0.8)
     # hull.filter_smooth_simple(100)
     # hull.filter_smooth_taubin(100)
-    hull.paint_uniform_color([0, 1, 0])
+    hull.paint_uniform_color([1, 1, 1])
 
+    # 提取所有非共面的三角形边缘
+    edge_set = set()
+    triangles = np.asarray(hull.triangles)
+    for i in range(triangles.shape[0]):
+        edges = [(triangles[i, j], triangles[i, (j + 1) % 3]) for j in range(3)]
+        for e in edges:
+            if (e[1], e[0]) in edge_set:
+                edge_set.remove((e[1], e[0]))
+            else:
+                edge_set.add(e)
+    # 将边缘保存为线段集合的形式
+    lines = []
+    for e in edge_set:
+        lines.append([e[0], e[1]])
+    # 创建Open3D线段集合对象
+    lineset = o3d.geometry.LineSet()
+    lineset.points = hull.vertices
+    lineset.lines = o3d.utility.Vector2iVector(lines)
+    # 将线段染成红色
+    lineset.paint_uniform_color([0, 1, 0])
+
+    lineset.transform(T_matrix)
     print(type(hull))
 
     volume = compute_triangle_mesh_volume(hull)
@@ -269,9 +295,9 @@ for i in range(1, 2):
     # 创建坐标轴
     coord_axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
     # 对坐标轴进行变换
-    coord_axes.transform(T_matrix)
+    coord_axes.transform(T_matrix_grasp)
 
     # 可视化结果
     coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
-    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, filtered_pcd, aabb, obb, hull, filtered_pcd_transform], "result")
+    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
     print('--'*20)

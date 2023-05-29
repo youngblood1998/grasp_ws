@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import rospy
-import open3d
-from sensor_msgs.msg import Image
-
-rospy.sleep(5)
-tree_pub = rospy.Publisher("real_detect/tree_image", Image, queue_size=1)
+# import rospy
+# import open3d
+# from sensor_msgs.msg import Image
+#
+# rospy.sleep(5)
+# tree_pub = rospy.Publisher("real_detect/tree_image", Image, queue_size=1)
 # import open3d as o3d
 # import numpy as np
 #
@@ -201,3 +201,15 @@ tree_pub = rospy.Publisher("real_detect/tree_image", Image, queue_size=1)
 #
 # # 显示平面模型
 # o3d.visualization.draw_geometries([plane])
+#---------------------------------------------------------------------
+import rospy
+import open3d as o3d
+from sensor_msgs.msg import PointCloud2
+import ros_numpy as rn
+import numpy as np
+
+def callback(data):
+    pass
+
+rospy.init_node("test")
+grasp_params_sub = rospy.Subscriber("real_detect/grasp_params", PointCloud2, callback, queue_size=1, buff_size=52428800)

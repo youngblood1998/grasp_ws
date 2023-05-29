@@ -1,0 +1,5 @@
+# 点云和图像数据收集
+roscore
+rosrun grasp_pointcloud detect_plane.py     (open3d环境)
+rosrun grasp_pointcloud collect_data_move.py
+无效rosrun grasp_pointcloud collect_data.py     (open3d环境)
