@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import rospy
 import open3d as o3d
 from sensor_msgs.msg import PointCloud2
@@ -43,33 +42,34 @@ def cal_matrix(plane_parameters):
                                    [0, 0, -plane_parameters[3], 1])))
 
 
-# 初始化ros节点并等待点云数据
-rospy.init_node("collect_data")
-rospy.loginfo("检测平面程序开始")
-ros_pc = rospy.wait_for_message("/camera/depth/color/points", PointCloud2)
-# 点云格式转换
-points = np.array(pointcloud2_to_array(ros_pc))
-pcd = o3d.geometry.PointCloud()
-pcd.points = o3d.utility.Vector3dVector(points[:, :3])
+if __name__ == "__main__":
+    # 初始化ros节点并等待点云数据
+    rospy.init_node("detect_plane")
+    rospy.loginfo("检测平面程序开始")
+    ros_pc = rospy.wait_for_message("/camera/depth/color/points", PointCloud2)
+    # 点云格式转换
+    points = np.array(pointcloud2_to_array(ros_pc))
+    pcd = o3d.geometry.PointCloud()
+    pcd.points = o3d.utility.Vector3dVector(points[:, :3])
 
-# 直通滤波
-# 定义过滤范围
-x_min, x_max = -0.1, 0.1   # x轴过滤范围
-y_min, y_max = -0.1, 0.1   # y轴过滤范围
-z_min, z_max = 0, 1.0   # z轴过滤范围
-# 进行直通滤波
-bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=(x_min, y_min, z_min), max_bound=(x_max, y_max, z_max))
-pcd_filtered = pcd.crop(bbox)
+    # 直通滤波
+    # 定义过滤范围
+    x_min, x_max = -0.1, 0.1   # x轴过滤范围
+    y_min, y_max = -0.1, 0.1   # y轴过滤范围
+    z_min, z_max = 0, 1.0   # z轴过滤范围
+    # 进行直通滤波
+    bbox = o3d.geometry.AxisAlignedBoundingBox(min_bound=(x_min, y_min, z_min), max_bound=(x_max, y_max, z_max))
+    pcd_filtered = pcd.crop(bbox)
 
-# 平面分割
-plane_model, inliers = pcd_filtered.segment_plane(distance_threshold=0.003, ransac_n=3, num_iterations=100)
-inlier_cloud = pcd_filtered.select_down_sample(inliers)     # 平面
-outlier_cloud = pcd_filtered.select_down_sample(inliers, invert=True)       # 平面之外的点云
-plane_parameters = np.asarray(plane_model)
-z_axis = plane_parameters[:3]        # 平面的法向量
-print('平面法向量的值:' + str(plane_parameters))
+    # 平面分割
+    plane_model, inliers = pcd_filtered.segment_plane(distance_threshold=0.003, ransac_n=3, num_iterations=100)
+    inlier_cloud = pcd_filtered.select_down_sample(inliers)     # 平面
+    outlier_cloud = pcd_filtered.select_down_sample(inliers, invert=True)       # 平面之外的点云
+    plane_parameters = np.asarray(plane_model)
+    z_axis = plane_parameters[:3]        # 平面的法向量
+    print('平面法向量的值:' + str(plane_parameters))
 
-# 计算变换矩阵并设置到参数服务器
-matrix = cal_matrix(plane_parameters)
-rospy.set_param('plane_matrix', matrix.tolist())
-print("检测平面完成")
+    # 计算变换矩阵并设置到参数服务器
+    matrix = cal_matrix(plane_parameters)
+    rospy.set_param('plane_matrix', matrix.tolist())
+    print("检测平面完成")

@@ -391,6 +391,36 @@ nodelet_generate_messages_nodejs/fast:
 .PHONY : nodelet_generate_messages_nodejs/fast
 
 # Convenience name for target.
+grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+pcl_msgs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : pcl_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+pcl_msgs_generate_messages_nodejs/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/build
+.PHONY : pcl_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+std_srvs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
+
+.PHONY : std_srvs_generate_messages_nodejs
+
+# fast build rule for target.
+std_srvs_generate_messages_nodejs/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
+.PHONY : std_srvs_generate_messages_nodejs/fast
+
+# Convenience name for target.
 grasp_pointcloud/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule
 .PHONY : grasp_pointcloud/CMakeFiles/dynamic_reconfigure_gencfg.dir/rule
@@ -434,231 +464,6 @@ dynamic_reconfigure_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/dynami
 dynamic_reconfigure_generate_messages_nodejs/fast:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/build
 .PHONY : dynamic_reconfigure_generate_messages_nodejs/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_py: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/rule
-
-.PHONY : roscpp_generate_messages_py
-
-# fast build rule for target.
-roscpp_generate_messages_py/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/build.make grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/build
-.PHONY : roscpp_generate_messages_py/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_py: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/rule
-
-.PHONY : std_msgs_generate_messages_py
-
-# fast build rule for target.
-std_msgs_generate_messages_py/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/build.make grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/build
-.PHONY : std_msgs_generate_messages_py/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_eus: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_eus
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_eus/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
-.PHONY : rosgraph_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule
-
-# Convenience name for target.
-nodelet_generate_messages_py: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule
-
-.PHONY : nodelet_generate_messages_py
-
-# fast build rule for target.
-nodelet_generate_messages_py/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/build.make grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/build
-.PHONY : nodelet_generate_messages_py/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-roscpp_generate_messages_cpp: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
-
-.PHONY : roscpp_generate_messages_cpp
-
-# fast build rule for target.
-roscpp_generate_messages_cpp/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/build
-.PHONY : roscpp_generate_messages_cpp/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-rosgraph_msgs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : rosgraph_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-rosgraph_msgs_generate_messages_nodejs/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
-.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-geometry_msgs_generate_messages_nodejs/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
-.PHONY : geometry_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_eus: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_eus
-
-# fast build rule for target.
-geometry_msgs_generate_messages_eus/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
-.PHONY : geometry_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule
-
-# Convenience name for target.
-pcl_msgs_generate_messages_lisp: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule
-
-.PHONY : pcl_msgs_generate_messages_lisp
-
-# fast build rule for target.
-pcl_msgs_generate_messages_lisp/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/build.make grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/build
-.PHONY : pcl_msgs_generate_messages_lisp/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-sensor_msgs_generate_messages_eus: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
-
-.PHONY : sensor_msgs_generate_messages_eus
-
-# fast build rule for target.
-sensor_msgs_generate_messages_eus/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
-.PHONY : sensor_msgs_generate_messages_eus/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-actionlib_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
-
-.PHONY : actionlib_generate_messages_nodejs
-
-# fast build rule for target.
-actionlib_generate_messages_nodejs/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/build
-.PHONY : actionlib_generate_messages_nodejs/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-actionlib_msgs_generate_messages_cpp: grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : actionlib_msgs_generate_messages_cpp
-
-# fast build rule for target.
-actionlib_msgs_generate_messages_cpp/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build
-.PHONY : actionlib_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-std_msgs_generate_messages_cpp: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : std_msgs_generate_messages_cpp
-
-# fast build rule for target.
-std_msgs_generate_messages_cpp/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
-.PHONY : std_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-sensor_msgs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : sensor_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-sensor_msgs_generate_messages_nodejs/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
-.PHONY : sensor_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-
-# Convenience name for target.
-geometry_msgs_generate_messages_cpp: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
-
-.PHONY : geometry_msgs_generate_messages_cpp
-
-# fast build rule for target.
-geometry_msgs_generate_messages_cpp/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
-.PHONY : geometry_msgs_generate_messages_cpp/fast
 
 # Convenience name for target.
 grasp_pointcloud/CMakeFiles/bond_generate_messages_py.dir/rule:
@@ -796,6 +601,126 @@ roscpp_generate_messages_nodejs/fast:
 .PHONY : roscpp_generate_messages_nodejs/fast
 
 # Convenience name for target.
+grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule
+
+# Convenience name for target.
+pcl_msgs_generate_messages_lisp: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/rule
+
+.PHONY : pcl_msgs_generate_messages_lisp
+
+# fast build rule for target.
+pcl_msgs_generate_messages_lisp/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/build.make grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/build
+.PHONY : pcl_msgs_generate_messages_lisp/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+sensor_msgs_generate_messages_eus: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/rule
+
+.PHONY : sensor_msgs_generate_messages_eus
+
+# fast build rule for target.
+sensor_msgs_generate_messages_eus/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/build
+.PHONY : sensor_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+actionlib_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/rule
+
+.PHONY : actionlib_generate_messages_nodejs
+
+# fast build rule for target.
+actionlib_generate_messages_nodejs/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/build
+.PHONY : actionlib_generate_messages_nodejs/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+actionlib_msgs_generate_messages_cpp: grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : actionlib_msgs_generate_messages_cpp
+
+# fast build rule for target.
+actionlib_msgs_generate_messages_cpp/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/build
+.PHONY : actionlib_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : geometry_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+geometry_msgs_generate_messages_nodejs/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/build
+.PHONY : geometry_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_eus: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/rule
+
+.PHONY : geometry_msgs_generate_messages_eus
+
+# fast build rule for target.
+geometry_msgs_generate_messages_eus/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/build
+.PHONY : geometry_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+roscpp_generate_messages_cpp: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/rule
+
+.PHONY : roscpp_generate_messages_cpp
+
+# fast build rule for target.
+roscpp_generate_messages_cpp/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/build
+.PHONY : roscpp_generate_messages_cpp/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule
+
+# Convenience name for target.
+nodelet_generate_messages_py: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule
+
+.PHONY : nodelet_generate_messages_py
+
+# fast build rule for target.
+nodelet_generate_messages_py/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/build.make grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/build
+.PHONY : nodelet_generate_messages_py/fast
+
+# Convenience name for target.
 grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir/rule:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir/rule
 .PHONY : grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir/rule
@@ -809,6 +734,81 @@ nodelet_generate_messages_cpp: grasp_pointcloud/CMakeFiles/nodelet_generate_mess
 nodelet_generate_messages_cpp/fast:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir/build
 .PHONY : nodelet_generate_messages_cpp/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/rule
+
+# Convenience name for target.
+roscpp_generate_messages_py: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/rule
+
+.PHONY : roscpp_generate_messages_py
+
+# fast build rule for target.
+roscpp_generate_messages_py/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/build.make grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/build
+.PHONY : roscpp_generate_messages_py/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+
+# Convenience name for target.
+std_msgs_generate_messages_py: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/rule
+
+.PHONY : std_msgs_generate_messages_py
+
+# fast build rule for target.
+std_msgs_generate_messages_py/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/build.make grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/build
+.PHONY : std_msgs_generate_messages_py/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+rosgraph_msgs_generate_messages_eus: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/rule
+
+.PHONY : rosgraph_msgs_generate_messages_eus
+
+# fast build rule for target.
+rosgraph_msgs_generate_messages_eus/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/build
+.PHONY : rosgraph_msgs_generate_messages_eus/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
+
+# Convenience name for target.
+geometry_msgs_generate_messages_cpp: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/rule
+
+.PHONY : geometry_msgs_generate_messages_cpp
+
+# fast build rule for target.
+geometry_msgs_generate_messages_cpp/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/build
+.PHONY : geometry_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+tf2_msgs_generate_messages_eus: grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
+
+.PHONY : tf2_msgs_generate_messages_eus
+
+# fast build rule for target.
+tf2_msgs_generate_messages_eus/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build
+.PHONY : tf2_msgs_generate_messages_eus/fast
 
 # Convenience name for target.
 grasp_pointcloud/CMakeFiles/pcl_ros_gencfg.dir/rule:
@@ -826,19 +826,64 @@ pcl_ros_gencfg/fast:
 .PHONY : pcl_ros_gencfg/fast
 
 # Convenience name for target.
-grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
+grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
 
 # Convenience name for target.
-tf2_msgs_generate_messages_eus: grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/rule
+std_msgs_generate_messages_cpp: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/rule
 
-.PHONY : tf2_msgs_generate_messages_eus
+.PHONY : std_msgs_generate_messages_cpp
 
 # fast build rule for target.
-tf2_msgs_generate_messages_eus/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/build
-.PHONY : tf2_msgs_generate_messages_eus/fast
+std_msgs_generate_messages_cpp/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/build
+.PHONY : std_msgs_generate_messages_cpp/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+sensor_msgs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : sensor_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+sensor_msgs_generate_messages_nodejs/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/build
+.PHONY : sensor_msgs_generate_messages_nodejs/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/rule
+
+# Convenience name for target.
+collect_point_cloud: grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/rule
+
+.PHONY : collect_point_cloud
+
+# fast build rule for target.
+collect_point_cloud/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/build.make grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/build
+.PHONY : collect_point_cloud/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+
+# Convenience name for target.
+rosgraph_msgs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/rule
+
+.PHONY : rosgraph_msgs_generate_messages_nodejs
+
+# fast build rule for target.
+rosgraph_msgs_generate_messages_nodejs/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/build
+.PHONY : rosgraph_msgs_generate_messages_nodejs/fast
 
 # Convenience name for target.
 grasp_pointcloud/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/rule:
@@ -959,36 +1004,6 @@ sensor_msgs_generate_messages_cpp: grasp_pointcloud/CMakeFiles/sensor_msgs_gener
 sensor_msgs_generate_messages_cpp/fast:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build.make grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/build
 .PHONY : sensor_msgs_generate_messages_cpp/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-pcl_msgs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/rule
-
-.PHONY : pcl_msgs_generate_messages_nodejs
-
-# fast build rule for target.
-pcl_msgs_generate_messages_nodejs/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/build
-.PHONY : pcl_msgs_generate_messages_nodejs/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
-
-# Convenience name for target.
-std_srvs_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/rule
-
-.PHONY : std_srvs_generate_messages_nodejs
-
-# fast build rule for target.
-std_srvs_generate_messages_nodejs/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build.make grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/build
-.PHONY : std_srvs_generate_messages_nodejs/fast
 
 # Convenience name for target.
 grasp_pointcloud/CMakeFiles/bond_generate_messages_nodejs.dir/rule:
@@ -1214,36 +1229,6 @@ collect_data: grasp_pointcloud/CMakeFiles/collect_data.dir/rule
 collect_data/fast:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/collect_data.dir/build.make grasp_pointcloud/CMakeFiles/collect_data.dir/build
 .PHONY : collect_data/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/rule
-
-# Convenience name for target.
-region_growing_segmentation: grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/rule
-
-.PHONY : region_growing_segmentation
-
-# fast build rule for target.
-region_growing_segmentation/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/build.make grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/build
-.PHONY : region_growing_segmentation/fast
-
-# Convenience name for target.
-grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/rule
-.PHONY : grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/rule
-
-# Convenience name for target.
-tf_generate_messages_eus: grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/rule
-
-.PHONY : tf_generate_messages_eus
-
-# fast build rule for target.
-tf_generate_messages_eus/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/build
-.PHONY : tf_generate_messages_eus/fast
 
 # Convenience name for target.
 grasp_pointcloud/CMakeFiles/tf_generate_messages_py.dir/rule:
@@ -1651,6 +1636,36 @@ grasp_pointcloud_gennodejs/fast:
 .PHONY : grasp_pointcloud_gennodejs/fast
 
 # Convenience name for target.
+grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/rule
+
+# Convenience name for target.
+tf_generate_messages_eus: grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/rule
+
+.PHONY : tf_generate_messages_eus
+
+# fast build rule for target.
+tf_generate_messages_eus/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/build.make grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/build
+.PHONY : tf_generate_messages_eus/fast
+
+# Convenience name for target.
+grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/rule
+
+# Convenience name for target.
+region_growing_segmentation: grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/rule
+
+.PHONY : region_growing_segmentation
+
+# fast build rule for target.
+region_growing_segmentation/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/build.make grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/build
+.PHONY : region_growing_segmentation/fast
+
+# Convenience name for target.
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py.dir/rule:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py.dir/rule
 .PHONY : grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py.dir/rule
@@ -1706,6 +1721,33 @@ src/collect_data.s: src/collect_data.cpp.s
 src/collect_data.cpp.s:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/collect_data.dir/build.make grasp_pointcloud/CMakeFiles/collect_data.dir/src/collect_data.cpp.s
 .PHONY : src/collect_data.cpp.s
+
+src/collect_point_cloud.o: src/collect_point_cloud.cpp.o
+
+.PHONY : src/collect_point_cloud.o
+
+# target to build an object file
+src/collect_point_cloud.cpp.o:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/build.make grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/src/collect_point_cloud.cpp.o
+.PHONY : src/collect_point_cloud.cpp.o
+
+src/collect_point_cloud.i: src/collect_point_cloud.cpp.i
+
+.PHONY : src/collect_point_cloud.i
+
+# target to preprocess a source file
+src/collect_point_cloud.cpp.i:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/build.make grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/src/collect_point_cloud.cpp.i
+.PHONY : src/collect_point_cloud.cpp.i
+
+src/collect_point_cloud.s: src/collect_point_cloud.cpp.s
+
+.PHONY : src/collect_point_cloud.s
+
+# target to generate assembly for a file
+src/collect_point_cloud.cpp.s:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/build.make grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/src/collect_point_cloud.cpp.s
+.PHONY : src/collect_point_cloud.cpp.s
 
 src/conditional_euclidean_clustering.o: src/conditional_euclidean_clustering.cpp.o
 
@@ -1947,24 +1989,11 @@ help:
 	@echo "... bond_generate_messages_eus"
 	@echo "... bond_generate_messages_cpp"
 	@echo "... nodelet_generate_messages_nodejs"
+	@echo "... pcl_msgs_generate_messages_nodejs"
+	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... dynamic_reconfigure_gencfg"
 	@echo "... std_msgs_generate_messages_nodejs"
 	@echo "... dynamic_reconfigure_generate_messages_nodejs"
-	@echo "... roscpp_generate_messages_py"
-	@echo "... std_msgs_generate_messages_py"
-	@echo "... rosgraph_msgs_generate_messages_eus"
-	@echo "... nodelet_generate_messages_py"
-	@echo "... roscpp_generate_messages_cpp"
-	@echo "... rosgraph_msgs_generate_messages_nodejs"
-	@echo "... geometry_msgs_generate_messages_nodejs"
-	@echo "... geometry_msgs_generate_messages_eus"
-	@echo "... pcl_msgs_generate_messages_lisp"
-	@echo "... sensor_msgs_generate_messages_eus"
-	@echo "... actionlib_generate_messages_nodejs"
-	@echo "... actionlib_msgs_generate_messages_cpp"
-	@echo "... std_msgs_generate_messages_cpp"
-	@echo "... sensor_msgs_generate_messages_nodejs"
-	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... bond_generate_messages_py"
 	@echo "... std_srvs_generate_messages_lisp"
 	@echo "... dynamic_reconfigure_generate_messages_cpp"
@@ -1975,9 +2004,25 @@ help:
 	@echo "... list_install_components"
 	@echo "... sensor_msgs_generate_messages_py"
 	@echo "... roscpp_generate_messages_nodejs"
+	@echo "... pcl_msgs_generate_messages_lisp"
+	@echo "... sensor_msgs_generate_messages_eus"
+	@echo "... actionlib_generate_messages_nodejs"
+	@echo "... actionlib_msgs_generate_messages_cpp"
+	@echo "... geometry_msgs_generate_messages_nodejs"
+	@echo "... geometry_msgs_generate_messages_eus"
+	@echo "... roscpp_generate_messages_cpp"
+	@echo "... nodelet_generate_messages_py"
 	@echo "... nodelet_generate_messages_cpp"
-	@echo "... pcl_ros_gencfg"
+	@echo "... roscpp_generate_messages_py"
+	@echo "... std_msgs_generate_messages_py"
+	@echo "... rosgraph_msgs_generate_messages_eus"
+	@echo "... geometry_msgs_generate_messages_cpp"
 	@echo "... tf2_msgs_generate_messages_eus"
+	@echo "... pcl_ros_gencfg"
+	@echo "... std_msgs_generate_messages_cpp"
+	@echo "... sensor_msgs_generate_messages_nodejs"
+	@echo "... collect_point_cloud"
+	@echo "... rosgraph_msgs_generate_messages_nodejs"
 	@echo "... dynamic_reconfigure_generate_messages_lisp"
 	@echo "... roscpp_generate_messages_eus"
 	@echo "... grasp_pointcloud_generate_messages_cpp"
@@ -1987,8 +2032,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... std_msgs_generate_messages_lisp"
 	@echo "... sensor_msgs_generate_messages_cpp"
-	@echo "... pcl_msgs_generate_messages_nodejs"
-	@echo "... std_srvs_generate_messages_nodejs"
 	@echo "... bond_generate_messages_nodejs"
 	@echo "... dynamic_reconfigure_generate_messages_eus"
 	@echo "... pcl_msgs_generate_messages_py"
@@ -2004,8 +2047,6 @@ help:
 	@echo "... pcl_msgs_generate_messages_cpp"
 	@echo "... std_srvs_generate_messages_cpp"
 	@echo "... collect_data"
-	@echo "... region_growing_segmentation"
-	@echo "... tf_generate_messages_eus"
 	@echo "... tf_generate_messages_py"
 	@echo "... std_msgs_generate_messages_eus"
 	@echo "... actionlib_generate_messages_eus"
@@ -2035,11 +2076,16 @@ help:
 	@echo "... grasp_pointcloud_genlisp"
 	@echo "... grasp_pointcloud_generate_messages_nodejs"
 	@echo "... grasp_pointcloud_gennodejs"
+	@echo "... tf_generate_messages_eus"
+	@echo "... region_growing_segmentation"
 	@echo "... grasp_pointcloud_generate_messages_py"
 	@echo "... pretreatment"
 	@echo "... src/collect_data.o"
 	@echo "... src/collect_data.i"
 	@echo "... src/collect_data.s"
+	@echo "... src/collect_point_cloud.o"
+	@echo "... src/collect_point_cloud.i"
+	@echo "... src/collect_point_cloud.s"
 	@echo "... src/conditional_euclidean_clustering.o"
 	@echo "... src/conditional_euclidean_clustering.i"
 	@echo "... src/conditional_euclidean_clustering.s"

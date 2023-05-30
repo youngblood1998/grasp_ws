@@ -2,4 +2,11 @@
 roscore
 rosrun grasp_pointcloud detect_plane.py     (open3d环境)
 rosrun grasp_pointcloud collect_data_move.py
-无效rosrun grasp_pointcloud collect_data.py     (open3d环境)
+rosrun grasp_pointcloud collect_img.py
+rosrun grasp_pointcloud collect_point_cloud
+
+# 以上命令可用
+roscore
+rosrun grasp_pointcloud detect_plane.py     (open3d环境)
+cd /home/jay/grasp_ws/src/grasp_pointcloud/script/volume_estimate
+./collect_data.sh

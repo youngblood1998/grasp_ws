@@ -56,16 +56,6 @@ CMAKE_BINARY_DIR = /home/jay/grasp_ws/build
 #=============================================================================
 # Targets provided globally by CMake.
 
-# Special rule for the target list_install_components
-list_install_components:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
-.PHONY : list_install_components
-
-# Special rule for the target list_install_components
-list_install_components/fast: list_install_components
-
-.PHONY : list_install_components/fast
-
 # Special rule for the target install
 install: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Install the project..."
@@ -78,16 +68,15 @@ install/fast: preinstall/fast
 	/usr/bin/cmake -P cmake_install.cmake
 .PHONY : install/fast
 
-# Special rule for the target edit_cache
-edit_cache:
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
-	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
-.PHONY : edit_cache
+# Special rule for the target list_install_components
+list_install_components:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Available install components are: \"Unspecified\""
+.PHONY : list_install_components
 
-# Special rule for the target edit_cache
-edit_cache/fast: edit_cache
+# Special rule for the target list_install_components
+list_install_components/fast: list_install_components
 
-.PHONY : edit_cache/fast
+.PHONY : list_install_components/fast
 
 # Special rule for the target test
 test:
@@ -99,6 +88,17 @@ test:
 test/fast: test
 
 .PHONY : test/fast
+
+# Special rule for the target edit_cache
+edit_cache:
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "No interactive CMake dialog available..."
+	/usr/bin/cmake -E echo No\ interactive\ CMake\ dialog\ available.
+.PHONY : edit_cache
+
+# Special rule for the target edit_cache
+edit_cache/fast: edit_cache
+
+.PHONY : edit_cache/fast
 
 # Special rule for the target rebuild_cache
 rebuild_cache:
@@ -166,21 +166,6 @@ depend:
 .PHONY : depend
 
 # Convenience name for target.
-gtest/gtest/CMakeFiles/gtest.dir/rule:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/gtest/CMakeFiles/gtest.dir/rule
-.PHONY : gtest/gtest/CMakeFiles/gtest.dir/rule
-
-# Convenience name for target.
-gtest: gtest/gtest/CMakeFiles/gtest.dir/rule
-
-.PHONY : gtest
-
-# fast build rule for target.
-gtest/fast:
-	cd /home/jay/grasp_ws/build && $(MAKE) -f gtest/gtest/CMakeFiles/gtest.dir/build.make gtest/gtest/CMakeFiles/gtest.dir/build
-.PHONY : gtest/fast
-
-# Convenience name for target.
 gtest/gtest/CMakeFiles/gtest_main.dir/rule:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/gtest/CMakeFiles/gtest_main.dir/rule
 .PHONY : gtest/gtest/CMakeFiles/gtest_main.dir/rule
@@ -194,6 +179,21 @@ gtest_main: gtest/gtest/CMakeFiles/gtest_main.dir/rule
 gtest_main/fast:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f gtest/gtest/CMakeFiles/gtest_main.dir/build.make gtest/gtest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
+
+# Convenience name for target.
+gtest/gtest/CMakeFiles/gtest.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 gtest/gtest/CMakeFiles/gtest.dir/rule
+.PHONY : gtest/gtest/CMakeFiles/gtest.dir/rule
+
+# Convenience name for target.
+gtest: gtest/gtest/CMakeFiles/gtest.dir/rule
+
+.PHONY : gtest
+
+# fast build rule for target.
+gtest/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f gtest/gtest/CMakeFiles/gtest.dir/build.make gtest/gtest/CMakeFiles/gtest.dir/build
+.PHONY : gtest/fast
 
 src/gtest-all.o: src/gtest-all.cc.o
 
@@ -255,13 +255,13 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
-	@echo "... list_install_components"
 	@echo "... install"
-	@echo "... edit_cache"
+	@echo "... list_install_components"
 	@echo "... test"
+	@echo "... gtest_main"
+	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... gtest"
-	@echo "... gtest_main"
 	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... src/gtest-all.o"

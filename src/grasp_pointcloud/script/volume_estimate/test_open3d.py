@@ -202,14 +202,30 @@
 # # 显示平面模型
 # o3d.visualization.draw_geometries([plane])
 #---------------------------------------------------------------------
-import rospy
-import open3d as o3d
-from sensor_msgs.msg import PointCloud2
-import ros_numpy as rn
-import numpy as np
+# import rospy
+# import open3d as o3d
+# from sensor_msgs.msg import PointCloud2
+# import ros_numpy as rn
+# import numpy as np
 
-def callback(data):
-    pass
+# def callback(data):
+#     pass
 
-rospy.init_node("test")
-grasp_params_sub = rospy.Subscriber("real_detect/grasp_params", PointCloud2, callback, queue_size=1, buff_size=52428800)
+# rospy.init_node("test")
+# grasp_params_sub = rospy.Subscriber("real_detect/grasp_params", PointCloud2, callback, queue_size=1, buff_size=52428800)
+#-----------------------------------------------------------------------------------------
+import configparser
+
+ini_path = '/home/jay/grasp_ws/src/grasp_pointcloud/script/volume_estimate/config.ini'
+
+# 创建ConfigParser对象
+config = configparser.ConfigParser()
+
+config.read(ini_path)
+config.set('section', 'num', "2")
+
+print(config.get("section", "num"))
+
+# 写入config.ini文件
+with open(ini_path, 'w') as configfile:
+    config.write(configfile)

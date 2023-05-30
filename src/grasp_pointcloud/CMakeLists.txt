@@ -284,3 +284,11 @@ add_dependencies(real_grasp_posture_generate ${${PROJECT_NAME}_EXPORTED_TARGETS}
 target_link_libraries(real_grasp_posture_generate
   ${catkin_LIBRARIES}
 )
+
+add_executable(collect_point_cloud
+  src/collect_point_cloud.cpp
+)
+add_dependencies(collect_point_cloud ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(collect_point_cloud
+  ${catkin_LIBRARIES}
+)
