@@ -23,6 +23,8 @@ pcl/io/pcd_io.h
 -
 string
 -
+ros/console.h
+-
 
 /opt/ros/kinetic/include/pcl_conversions/pcl_conversions.h
 vector

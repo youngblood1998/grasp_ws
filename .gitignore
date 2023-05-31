@@ -1,1 +1,4 @@
 /src/Yolov5_ros/yolov5_ros/yolov5_ros/weights/*
+/src/grasp_pointcloud/script/volume_estimate/depth_img/*
+/src/grasp_pointcloud/script/volume_estimate/pcd/*
+/src/grasp_pointcloud/script/volume_estimate/rgb_img/*

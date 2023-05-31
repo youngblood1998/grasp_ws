@@ -13,7 +13,7 @@ import configparser
 TRAN = [-0.0065, -0.07, 0.0739784679795] #手眼标定的平移
 INIT_HEIGHT = 0.25   # 初始化时相机坐标距离平面的距离
 TOLERANCE = 0.0005
-SCALING_FACTOR = 0.03
+SCALING_FACTOR = 0.3
 INI_PATH = '/home/jay/grasp_ws/src/grasp_pointcloud/script/volume_estimate/config.ini'
 
 if __name__ == "__main__":
@@ -78,17 +78,22 @@ if __name__ == "__main__":
         except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
             continue
         rate.sleep()
-
+    
     ans = raw_input("调整完成，退出请按q,继续按任意键：").lower()
     if ans == "q":
         exit()
+    rospy.sleep(2)
 
     # 初始化一些参数
     ANGLE_STEP = np.pi/12
+    ANGLE_STEP_INT = 15
     pose = arm.get_current_pose("tool0")
     height_step = [i*0.1 for i in range(3)]
     angle_step = [j*ANGLE_STEP for j in range(7)]
+    angle_step_int = [k*ANGLE_STEP_INT for k in range(7)]
     pub = rospy.Publisher("collect/collectable", String, queue_size=1)
+    pub.publish("test")
+    rospy.sleep(2)
 
     # 创建ConfigParser对象
     config = configparser.ConfigParser()
@@ -103,7 +108,7 @@ if __name__ == "__main__":
             arm.go(wait = True)
             matrix_end_to_base_new = matrix_from_quaternion(new_pose.pose.orientation, new_pose.pose.position)
             init_joint = arm.get_current_joint_values()
-            for j in angle_step:
+            for j, k in zip(angle_step, angle_step_int):
                 # 到达指定角度
                 # 点在末端坐标系的位置
                 pos_to_end = np.array([TRAN[1] * np.sin(j), TRAN[1] * (1-np.cos(j)), 0, 1])
@@ -125,8 +130,8 @@ if __name__ == "__main__":
                 joint[5] = init_joint[5]+j
                 arm.set_joint_value_target(joint)
                 arm.go(wait = True)
-                print(str(num)+"-"+str(i+INIT_HEIGHT)+"-"+str(j))
-                pub.publish(str(num)+"-"+str(i+INIT_HEIGHT)+"-"+str(j))
+                print(str(num)+"-"+str(i+INIT_HEIGHT)+"-"+str(k))
+                pub.publish(str(num)+"-"+str(i+INIT_HEIGHT)+"-"+str(k))
                 rospy.sleep(2)
             # 返回指定高度的初始位置
             arm.set_pose_target(new_pose, "tool0")

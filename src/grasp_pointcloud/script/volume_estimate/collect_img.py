@@ -24,9 +24,9 @@ def callback(name):
         path = "/home/jay/grasp_ws/src/grasp_pointcloud/script/volume_estimate/"
         if not os.path.exists(path):
             os.makedirs(path)
-        cv.imwrite(path + "rgb_img/" + str(name) + ".png", rgb_img)
-        cv.imwrite(path + "depth_img/" + str(name) + ".png", depth_img)
-        print()
+        cv.imwrite(path + "rgb_img/" + str(name.data) + ".png", rgb_img)
+        cv.imwrite(path + "depth_img/" + str(name.data) + ".png", depth_img)
+        print("当前"+name.data+"采集成功")
     except CvBridgeError as e:
         print(e)
 
