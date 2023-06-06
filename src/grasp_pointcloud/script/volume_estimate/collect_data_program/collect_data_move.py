@@ -14,7 +14,7 @@ TRAN = [-0.0065, -0.07, 0.0739784679795] #手眼标定的平移
 INIT_HEIGHT = 0.25   # 初始化时相机坐标距离平面的距离
 TOLERANCE = 0.0005
 SCALING_FACTOR = 0.3
-INI_PATH = '/home/jay/grasp_ws/src/grasp_pointcloud/script/volume_estimate/config.ini'
+INI_PATH = '/home/jay/grasp_ws/src/grasp_pointcloud/script/volume_estimate/collect_data_program/config.ini'
 
 if __name__ == "__main__":
     # 初始化ros节点

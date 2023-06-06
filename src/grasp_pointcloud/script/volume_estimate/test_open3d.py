@@ -216,7 +216,7 @@
 #-----------------------------------------------------------------------------------------
 import configparser
 
-ini_path = '/home/jay/grasp_ws/src/grasp_pointcloud/script/volume_estimate/config.ini'
+ini_path = '/collect_data_program/config.ini'
 
 # 创建ConfigParser对象
 config = configparser.ConfigParser()

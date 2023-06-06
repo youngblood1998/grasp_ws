@@ -2,9 +2,9 @@ import numpy as np
 import open3d as o3d
 import copy
 
-step = 0.002
-x_val = 0.01
-threshold = 0.001
+STEP = 0.002
+X_VAL = 0.01
+THRESHOLD = 0.001
 
 def compute_triangle_mesh_volume(mesh):
     """
@@ -34,10 +34,7 @@ def compute_triangle_mesh_volume(mesh):
     return total_volume / 6.0
 
 
-for i in range(1, 21):
-    # 读取点云
-    pcd = o3d.io.read_point_cloud("./pcd/{}-0.25-0.pcd".format(str(i)))  # single4.pcd尾朝上，别用
-
+def compute_strawberry_volume(pcd, show=False):
     # 直通滤波
     # 定义过滤范围
     x_min, x_max = -0.1, 0.1   # x轴过滤范围
@@ -128,6 +125,7 @@ for i in range(1, 21):
     norm_vec2 = np.linalg.norm(projection_vector)
     # 计算两个向量的夹角
     angle = np.arccos(dot_product / (norm_vec1 * norm_vec2))
+    print("向量夹角:" + str(angle))
     # 定义一个旋转矩阵
     R = np.array([[np.cos(angle), -np.sin(angle), 0, 0],
                   [np.sin(angle), np.cos(angle), 0, 0],
@@ -150,7 +148,7 @@ for i in range(1, 21):
     # 如果变换错误，则矫正
     if not angle_transformed < 0.04:
         angle = -angle
-        # print("矫正后的向量夹角:" + str(angle))
+        print("矫正后的向量夹角:" + str(angle))
         # 定义一个旋转矩阵
         R = np.array([[np.cos(angle), -np.sin(angle), 0, 0],
                       [np.sin(angle), np.cos(angle), 0, 0],
@@ -158,7 +156,6 @@ for i in range(1, 21):
                       [0, 0, 0, 1]])  # 绕 z 轴旋转矩阵
         # 变换矩阵
         T_matrix = np.dot(t_matrix, R)
-    print("向量夹角:" + str(angle))
 
     # 计算主方向和包围盒
     # bbox = o3d.geometry.AxisAlignedBoundingBox.create_from_points(filtered_pcd.points)
@@ -194,23 +191,21 @@ for i in range(1, 21):
     # 沿y轴方向截取点云计算x轴方向的最大方位的位置，即找到草莓直径最大处的位置
     best_y_pos = 0
     scope = 0
-    arithmetic_arr = np.arange(front, end, step)
+    arithmetic_arr = np.arange(front, end, STEP)
     for i in arithmetic_arr:
-        idx = (points_y > i) & (points_y < i+step)
+        idx = (points_y > i) & (points_y < i+STEP)
         points_x_cut = points_x[idx]
         if len(points_x_cut) == 0:
             continue
         if np.max(points_x_cut) - np.min(points_x_cut) > scope:
             scope = np.max(points_x_cut) - np.min(points_x_cut)
-            best_y_pos = i + step/2
+            best_y_pos = i + STEP/2
     # 调整草莓坐标系的z轴原点到草莓最高点和平面的中间，y轴原点到最大直径处
     trans = np.array([[1, 0, 0, 0],
                       [0, 1, 0, best_y_pos],
                       [0, 0, 1, (top+bottom)/2],
                       [0, 0, 0, 1]])
     T_matrix_grasp = np.dot(T_matrix, trans)
-    # # 判断y轴方向是否指向草莓头，不是则绕自身z轴旋转180度
-    # if abs(front) < abs(end):
     print(top-bottom)
     print(front-end)
     print(left-right)
@@ -226,8 +221,8 @@ for i in range(1, 21):
         z_middle = (z_top+z_bottom)/2
         # print(z_middle)
         # 定义三个点，并由三点计算平面法向量
-        point_2 = np.array([-x_val, end, z_middle])
-        point_3 = np.array([x_val, end, z_middle])
+        point_2 = np.array([-X_VAL, end, z_middle])
+        point_3 = np.array([X_VAL, end, z_middle])
         vector_1 = point_1 - point_2
         vector_2 = point_1 - point_3
         vector_normal = np.cross(vector_1, vector_2)
@@ -238,7 +233,7 @@ for i in range(1, 21):
             reflect_points.append(point - 2*distance*vector_normal_normalized)
         # 计算最低点与平面的距离是否在阈值内
         deviation = np.max(np.array(reflect_points)[:, 2]) - bottom
-        if np.abs(deviation) < threshold or np.abs(z_top - z_bottom) < threshold:
+        if np.abs(deviation) < THRESHOLD or np.abs(z_top - z_bottom) < THRESHOLD:
             break
         else:
             # 更新
@@ -293,15 +288,10 @@ for i in range(1, 21):
     lineset.paint_uniform_color([0, 1, 0])
 
     lineset.transform(T_matrix)
-    print(type(hull))
+    # print(type(hull))
 
     volume = compute_triangle_mesh_volume(hull)
     print("TriangleMesh 体积：", volume)
-
-    # 创建首次变换坐标轴
-    coord_axes_first = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
-    # 对坐标轴进行变换
-    coord_axes_first.transform(t_matrix)
 
     # 创建坐标轴
     coord_axes = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
@@ -313,12 +303,15 @@ for i in range(1, 21):
     flag_reverse = 1
     if T_matrix_grasp[1, 1] < 0:
         flag_reverse = 0
-    angle_grasp = np.arctan(-T_matrix_grasp[0, 1] / T_matrix_grasp[1, 1])
+    angle_grasp = np.arctan(-T_matrix_grasp[0, 1] / T_matrix_grasp[1, 1]) * 180 / np.pi
     print("是否颠倒：" + str(flag_reverse))
     print("抓取位置：" + str(position_grasp))
-    print("抓取角度：" + str(angle_grasp*180/np.pi))
+    print("抓取角度：" + str(angle_grasp))
 
     # 可视化结果
-    coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
-    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
+    if show:
+        coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
+        o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
     print('--'*20)
+
+    return position_grasp, angle_grasp, volume, front-end, left-right, top-bottom
