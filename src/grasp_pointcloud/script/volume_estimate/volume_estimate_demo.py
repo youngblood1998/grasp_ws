@@ -1,6 +1,7 @@
 import numpy as np
 import open3d as o3d
 import copy
+from sklearn.cluster import DBSCAN
 
 step = 0.002
 x_val = 0.01
@@ -36,7 +37,7 @@ def compute_triangle_mesh_volume(mesh):
 
 for i in range(1, 21):
     # 读取点云
-    pcd = o3d.io.read_point_cloud("./pcd/{}-0.25-0.pcd".format(str(i)))  # single4.pcd尾朝上，别用
+    pcd = o3d.io.read_point_cloud("./pcd/{}-0.35-0.pcd".format(str(i)))  # single4.pcd尾朝上，别用
 
     # 直通滤波
     # 定义过滤范围
@@ -72,7 +73,8 @@ for i in range(1, 21):
     filtered_pcd = o3d.geometry.PointCloud()
     filtered_pcd.points = o3d.utility.Vector3dVector(filtered_points)
     color = [1, 0, 1]
-    filtered_pcd.colors = o3d.utility.Vector3dVector([color for i in range(len(filtered_pcd.points))])
+    filtered_pcd.colors = o3d.utility.Vector3dVector(filtered_colors)
+    # filtered_pcd.colors = o3d.utility.Vector3dVector([color for i in range(len(filtered_pcd.points))])
 
     # 复制预处理后的点云
     filtered_pcd_copy = copy.deepcopy(filtered_pcd)
@@ -168,6 +170,10 @@ for i in range(1, 21):
 
     filtered_pcd_transform = copy.deepcopy(filtered_pcd)
     filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+    # 进行体素下采样
+    voxel_size = 0.001  # 体素大小为5cm
+    filtered_pcd_transform = filtered_pcd_transform.voxel_down_sample(voxel_size=voxel_size)
+
     aabb = o3d.geometry.AxisAlignedBoundingBox.create_from_points(filtered_pcd_transform.points)
     # # 获取OBB对象
     obb = aabb.get_oriented_bounding_box()
@@ -210,14 +216,77 @@ for i in range(1, 21):
                       [0, 0, 0, 1]])
     T_matrix_grasp = np.dot(T_matrix, trans)
     # # 判断y轴方向是否指向草莓头，不是则绕自身z轴旋转180度
-    # if abs(front) < abs(end):
-    print(top-bottom)
-    print(front-end)
-    print(left-right)
+    if abs(front-best_y_pos) < abs(end-best_y_pos):
+        rotate_z = np.array([
+            [-1, 0, 0, 0],
+            [0, -1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ])
+        T_matrix = np.dot(T_matrix, rotate_z)
+        T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
+        filtered_pcd_transform = copy.deepcopy(filtered_pcd)
+        filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+
+    points_transform = np.array(filtered_pcd_transform.points)
+    colors_transform = np.array(filtered_pcd_transform.colors)
+    green_indexes = colors_transform[:, 0] <= 1.1*colors_transform[:, 1]
+    points_green = points_transform[green_indexes]
+    point_green_mean = np.mean(points_green, axis=0)
+    print(point_green_mean[1])
+    if point_green_mean[1] < 0:
+        rotate_z = np.array([
+            [-1, 0, 0, 0],
+            [0, -1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ])
+        T_matrix = np.dot(T_matrix, rotate_z)
+        T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
+        filtered_pcd_transform = copy.deepcopy(filtered_pcd)
+        filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+    # colors_transform = np.array(filtered_pcd_transform.colors)
+    # end_indexes = np.argsort(points[:, 1])[::-1][:3]
+    # front_indexes = np.argsort(points[:, 1])[:3]
+    # point_transform_front = np.mean(colors_transform[front_indexes], axis=0)
+    # point_transform_end = np.mean(colors_transform[end_indexes], axis=0)
+    # # point_transform_front = colors_transform[np.argmin(points[:, 1])]
+    # # point_transform_end = colors_transform[np.argmax(points[:, 1])]
+    # print("颜色：")
+    # print(point_transform_front, point_transform_end)
+    # if point_transform_front[0] < point_transform_end[0]:
+    #     rotate_z = np.array([
+    #         [-1, 0, 0, 0],
+    #         [0, -1, 0, 0],
+    #         [0, 0, 1, 0],
+    #         [0, 0, 0, 1]
+    #     ])
+    #     T_matrix = np.dot(T_matrix, rotate_z)
+    #     T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
+    #     filtered_pcd_transform = copy.deepcopy(filtered_pcd)
+    #     filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+
+    # # DBSCAN
+    # points_filtered_transform = np.array(filtered_pcd_transform.points)
+    # dbscan = DBSCAN(eps=0.003, min_samples=10)
+    # dbscan.fit(points_filtered_transform)
+    # # 获取每个簇的标签（-1 表示噪声点）
+    # labels = dbscan.labels_
+    # # 获取每个簇中的点数
+    # unique_labels, counts = np.unique(labels, return_counts=True)
+    # counts_dict = dict(zip(unique_labels, counts))
+    # # 将簇按包含点数从大到小排序，并选择前n_clusters个簇
+    # sorted_labels = sorted(counts_dict, key=counts_dict.get, reverse=True)
+    # selected_labels = sorted_labels[:1]
+    # # 仅保留选中的簇和相关信息
+    # selected_indices = [i for i in range(len(labels)) if labels[i] in selected_labels]
+    # points_selected = points_filtered_transform[np.array(selected_indices)]
+    # filtered_pcd_transform.points = o3d.utility.Vector3dVector(points_selected)
+    # filtered_pcd_transform.colors = o3d.utility.Vector3dVector([color for i in range(len(points_selected))])
 
     # 二分法查找点云对称平面
     points = np.array(filtered_pcd_transform.points)
-    point_1 = points[np.argmin(points_y)]
+    point_1 = points[np.argmin(points[:, 1])]
     z_top = top
     z_bottom = bottom
     reflect_points = []

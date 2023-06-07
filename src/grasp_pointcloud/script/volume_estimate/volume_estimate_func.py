@@ -69,7 +69,8 @@ def compute_strawberry_volume(pcd, show=False):
     filtered_pcd = o3d.geometry.PointCloud()
     filtered_pcd.points = o3d.utility.Vector3dVector(filtered_points)
     color = [1, 0, 1]
-    filtered_pcd.colors = o3d.utility.Vector3dVector([color for i in range(len(filtered_pcd.points))])
+    filtered_pcd.colors = o3d.utility.Vector3dVector(filtered_colors)
+    # filtered_pcd.colors = o3d.utility.Vector3dVector([color for i in range(len(filtered_pcd.points))])
 
     # 复制预处理后的点云
     filtered_pcd_copy = copy.deepcopy(filtered_pcd)
@@ -165,6 +166,10 @@ def compute_strawberry_volume(pcd, show=False):
 
     filtered_pcd_transform = copy.deepcopy(filtered_pcd)
     filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+    # 进行体素下采样
+    voxel_size = 0.001  # 体素大小为5cm
+    filtered_pcd_transform = filtered_pcd_transform.voxel_down_sample(voxel_size=voxel_size)
+
     aabb = o3d.geometry.AxisAlignedBoundingBox.create_from_points(filtered_pcd_transform.points)
     # # 获取OBB对象
     obb = aabb.get_oriented_bounding_box()
@@ -206,13 +211,59 @@ def compute_strawberry_volume(pcd, show=False):
                       [0, 0, 1, (top+bottom)/2],
                       [0, 0, 0, 1]])
     T_matrix_grasp = np.dot(T_matrix, trans)
-    print(top-bottom)
-    print(front-end)
-    print(left-right)
+    # # 判断y轴方向是否指向草莓头，不是则绕自身z轴旋转180度
+    if abs(front - best_y_pos) < abs(end - best_y_pos):
+        rotate_z = np.array([
+            [-1, 0, 0, 0],
+            [0, -1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ])
+        T_matrix = np.dot(T_matrix, rotate_z)
+        T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
+        filtered_pcd_transform = copy.deepcopy(filtered_pcd)
+        filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
 
+    points_transform = np.array(filtered_pcd_transform.points)
+    colors_transform = np.array(filtered_pcd_transform.colors)
+    green_indexes = colors_transform[:, 0] <= colors_transform[:, 1]
+    points_green = points_transform[green_indexes]
+    point_green_mean = np.mean(points_green, axis=0)
+    print(point_green_mean[1])
+    if point_green_mean[1] < 0:
+        rotate_z = np.array([
+            [-1, 0, 0, 0],
+            [0, -1, 0, 0],
+            [0, 0, 1, 0],
+            [0, 0, 0, 1]
+        ])
+        T_matrix = np.dot(T_matrix, rotate_z)
+        T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
+        filtered_pcd_transform = copy.deepcopy(filtered_pcd)
+        filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+    # colors_transform = np.array(filtered_pcd_transform.colors)
+    # end_indexes = np.argsort(points[:, 1])[::-1][:3]
+    # front_indexes = np.argsort(points[:, 1])[:3]
+    # point_transform_front = np.mean(colors_transform[front_indexes], axis=0)
+    # point_transform_end = np.mean(colors_transform[end_indexes], axis=0)
+    # # point_transform_front = colors_transform[np.argmin(points[:, 1])]
+    # # point_transform_end = colors_transform[np.argmax(points[:, 1])]
+    # print("颜色：")
+    # print(point_transform_front, point_transform_end)
+    # if point_transform_front[0] < point_transform_end[0]:
+    #     rotate_z = np.array([
+    #         [-1, 0, 0, 0],
+    #         [0, -1, 0, 0],
+    #         [0, 0, 1, 0],
+    #         [0, 0, 0, 1]
+    #     ])
+    #     T_matrix = np.dot(T_matrix, rotate_z)
+    #     T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
+    #     filtered_pcd_transform = copy.deepcopy(filtered_pcd)
+    #     filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
     # 二分法查找点云对称平面
     points = np.array(filtered_pcd_transform.points)
-    point_1 = points[np.argmin(points_y)]
+    point_1 = points[np.argmin(points[:, 1])]
     z_top = top
     z_bottom = bottom
     reflect_points = []
@@ -314,4 +365,4 @@ def compute_strawberry_volume(pcd, show=False):
         o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
     print('--'*20)
 
-    return position_grasp, angle_grasp, volume, front-end, left-right, top-bottom
+    return position_grasp, angle_grasp, flag_reverse, volume, front-end, left-right, top-bottom
