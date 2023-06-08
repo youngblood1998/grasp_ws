@@ -214,18 +214,82 @@
 # rospy.init_node("test")
 # grasp_params_sub = rospy.Subscriber("real_detect/grasp_params", PointCloud2, callback, queue_size=1, buff_size=52428800)
 #-----------------------------------------------------------------------------------------
-import configparser
+# import configparser
+#
+# ini_path = '/collect_data_program/config.ini'
+#
+# # 创建ConfigParser对象
+# config = configparser.ConfigParser()
+#
+# config.read(ini_path)
+# config.set('section', 'num', "2")
+#
+# print(config.get("section", "num"))
+#
+# # 写入config.ini文件
+# with open(ini_path, 'w') as configfile:
+#     config.write(configfile)
+#---------------------------------------------
+# import matplotlib.pyplot as plt
+# import numpy as np
+#
+# # 定义x和y的值域
+# x = np.linspace(0, 10, 500)
+# y = np.sin(x)
+#
+# # 使用不同的colormaps绘制不同颜色的线条
+# plt.plot(x, y, color=plt.cm.viridis(0.3), linewidth=2.5)
+# plt.plot(x, y + 1, color=plt.cm.jet(0.4), linewidth=2.5)
+# plt.plot(x, y + 2, color=plt.cm.autumn(0.5), linewidth=2.5)
+# plt.plot(x, y + 3, color=plt.cm.winter(0.6), linewidth=2.5)
+#
+# # 添加网格线
+# plt.grid(True)
+#
+# # 显示图像
+# plt.show()
+#---------------------------------
+# import matplotlib.pyplot as plt
+# import numpy as np
+#
+# # 生成一组随机数据作为样本
+# x = np.random.rand(100)
+# y = np.random.rand(100)
+#
+# # 将样本分成每21个点一组，用不同的颜色表示
+# color_idx = np.arange(len(x)) // 21
+# plt.scatter(x, y, c=color_idx)
+#
+# # 添加标题和标签
+# plt.title("Scatter Plot with Different Colors")
+# plt.xlabel("X Axis")
+# plt.ylabel("Y Axis")
+#
+# # 显示图像
+# plt.show()
+#-----------------------------------------------
+# import numpy as np
+#
+# a = np.array([1,2,3])
+# b = np.array([4,5,6])
+# c = np.abs(b-a)/a
+# print(c)
+#--------------------------------
+import matplotlib.pyplot as plt
+import numpy as np
 
-ini_path = '/collect_data_program/config.ini'
+# 生成数据
+num_lines = 4
+x = np.linspace(0, 10, 100)
+y = np.random.rand(num_lines, 100)
 
-# 创建ConfigParser对象
-config = configparser.ConfigParser()
+# 绘制每条折线
+for i in range(num_lines):
+    plt.plot(x, y[i], label=f"Line {i+1}")
 
-config.read(ini_path)
-config.set('section', 'num', "2")
+# 添加图例和标题
+plt.legend()
+plt.title("Multiple Lines with Different Colors")
 
-print(config.get("section", "num"))
-
-# 写入config.ini文件
-with open(ini_path, 'w') as configfile:
-    config.write(configfile)
+# 显示图形
+plt.show()
