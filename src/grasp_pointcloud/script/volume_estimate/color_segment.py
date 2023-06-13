@@ -15,7 +15,7 @@ def empty(a):
 
 
 if __name__ == "__main__":
-    path = './rgb_img/1-0.25-0.png'
+    path = './rgb_img/20-0.45-90.png'
     # 创建一个窗口，放置6个滑动条
     cv2.namedWindow("TrackBars")
     cv2.resizeWindow("TrackBars", 640, 240)

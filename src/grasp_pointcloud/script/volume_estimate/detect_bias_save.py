@@ -2,8 +2,49 @@ import cv2
 import numpy as np
 import math
 
+def color_segment_new(path, hsv_min, hsv_max):
+    img = cv2.imread(path)
+
+    # 获取图像的高度和宽度
+    height, width = img.shape[:2]
+    # 计算需要裁剪的高度和宽度
+    new_height = height // 3
+    new_width = width // 3
+    # 计算裁剪位置的左上角坐标和右下角坐标
+    left_x = (width - new_width) // 2
+    top_y = (height - new_height) // 2
+    right_x = left_x + new_width
+    bottom_y = top_y + new_height
+    # 裁剪图像
+    img = img[top_y:bottom_y, left_x:right_x]
+
+    img = cv2.GaussianBlur(img, (5, 5), 0)
+    imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+    lower = np.array(hsv_min)
+    upper = np.array(hsv_max)
+    # 获得指定颜色范围内的掩码
+    mask = cv2.inRange(imgHSV, lower, upper)
+    # 对原图图像进行按位与的操作，掩码区域保留
+    imgResult = cv2.bitwise_and(img, img, mask=mask)
+
+    # 定义卷积核
+    kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+    # 开运算
+    opened = cv2.morphologyEx(mask, cv2.MORPH_OPEN, kernel)
+    # 闭运算
+    closed = cv2.morphologyEx(opened, cv2.MORPH_CLOSE, kernel)
+
+    # cv2.imshow("Mask", mask)
+    # cv2.imshow("Result", imgResult)
+    #
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    return closed
+
 def color_segment(path, hsv_min, hsv_max):
     img = cv2.imread(path)
+
+    img = cv2.GaussianBlur(img, (5, 5), 0)
     imgHSV = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     lower = np.array(hsv_min)
     upper = np.array(hsv_max)
@@ -44,13 +85,15 @@ def cal_moments(binary):
     edge1 = box[0] - box[1]
     edge2 = box[1] - box[2]
     long_edge = edge1 if np.linalg.norm(edge1) > np.linalg.norm(edge2) else edge2
+    short_edge = edge2 if np.linalg.norm(edge1) > np.linalg.norm(edge2) else edge1
     angle = np.arctan2(-long_edge[0], long_edge[1]) * 180 / np.pi - 180
-    print(angle)
+    area_ratio = np.count_nonzero(binary) / (np.linalg.norm(long_edge) * np.linalg.norm(short_edge))
 
-    # 显示绘制结果
-    cv2.imshow('Min Area Rect', binary)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # # 显示绘制结果
+    # cv2.imshow('Min Area Rect', binary)
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
+    return [np.linalg.norm(long_edge), np.linalg.norm(short_edge), area_ratio]
 
 def draw_angle(path):
     # 读入图片

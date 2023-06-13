@@ -275,21 +275,45 @@
 # c = np.abs(b-a)/a
 # print(c)
 #--------------------------------
-import matplotlib.pyplot as plt
-import numpy as np
-
-# 生成数据
-num_lines = 4
-x = np.linspace(0, 10, 100)
-y = np.random.rand(num_lines, 100)
-
-# 绘制每条折线
-for i in range(num_lines):
-    plt.plot(x, y[i], label=f"Line {i+1}")
-
-# 添加图例和标题
-plt.legend()
-plt.title("Multiple Lines with Different Colors")
-
-# 显示图形
-plt.show()
+# import matplotlib.pyplot as plt
+# import numpy as np
+#
+# # 生成数据
+# num_lines = 4
+# x = np.linspace(0, 10, 100)
+# y = np.random.rand(num_lines, 100)
+#
+# # 绘制每条折线
+# for i in range(num_lines):
+#     plt.plot(x, y[i], label=f"Line {i+1}")
+#
+# # 添加图例和标题
+# plt.legend()
+# plt.title("Multiple Lines with Different Colors")
+#
+# # 显示图形
+# plt.show()
+#------------------------------------------
+# import matplotlib.pyplot as plt
+# import numpy as np
+#
+# # 定义数据和指定值
+# data = np.random.normal(size=1000)
+# value = 0.5
+#
+# # 统计直方图
+# hist, bin_edges = np.histogram(data, bins=50, range=(-3, 3))
+# bin_centers = (bin_edges[:-1] + bin_edges[1:]) / 2
+# index = np.searchsorted(bin_centers, value)
+# count = hist[index]
+# print(hist)
+#
+# # 绘制直方图
+# plt.hist(data, bins=50, range=(-3, 3))
+# plt.axvline(x=value, color='r', linestyle='dashed', linewidth=2)
+# plt.text(value, count+5, f"Count={count}", ha='center')
+# plt.show()
+#---------------------------------
+a = [0, 1]
+b = [2, 3]
+print(a+b)

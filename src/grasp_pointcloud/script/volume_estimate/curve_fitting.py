@@ -26,7 +26,7 @@ def curve_fit(x, y, x_label, y_label, save_path):
     # 设置坐标轴范围
     plt.xlim(0, int(np.max(x)) + 1)
     plt.ylim(0, int(np.max(y)) + 1)
-    plt.savefig(save_path)
+    plt.savefig(save_path, dpi=300)
     # 显示图形
     plt.show()
     plt.close()
@@ -54,7 +54,7 @@ def accuracy_statistics(y_array, y_correct, x_label, y_label, lines_label, save_
     plt.xlim(0, max(accuracy_array))
     plt.ylim(0, 1)
     plt.grid(True)
-    plt.savefig(save_path)
+    plt.savefig(save_path, dpi=300)
     plt.show()
 
 if __name__ == "__main__":
@@ -83,15 +83,15 @@ if __name__ == "__main__":
     # 体积拟合
     x_volume_fit = np.array(x_volume_fit)
     x_volume_fit = x_volume_fit * 10 ** 6
-    k1 = curve_fit(x_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_volume.svg")
+    k1 = curve_fit(x_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_volume.png")
     # obb xyz体积拟合
     x_xyz_volume_fit = np.array(x_xyz_volume_fit)
     x_xyz_volume_fit = np.abs(x_xyz_volume_fit * 10 ** 6)
-    k2 = curve_fit(x_xyz_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_xyz.svg")
+    k2 = curve_fit(x_xyz_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_xyz.png")
     # obb xxy体积拟合
     x_xxy_volume_fit = np.array(x_xxy_volume_fit)
     x_xxy_volume_fit = np.abs(x_xxy_volume_fit * 10 ** 6)
-    k3 = curve_fit(x_xxy_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_xxy.svg")
+    k3 = curve_fit(x_xxy_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_xxy.png")
 
     # 将分析的数据分离
     x_volume_analyze = []
@@ -105,6 +105,7 @@ if __name__ == "__main__":
             x_xyz_volume_analyze.append(float(reader_list[row][8]) * float(reader_list[row][9]) * float(reader_list[row][10]))
             x_xxy_volume_analyze.append(float(reader_list[row][8]) * float(reader_list[row][9]) * float(reader_list[row][9]))
             y_analyze.append(float(reader_list[row][12]))
+
     # 数据转换成numpy格式
     x_volume_analyze = np.array(x_volume_analyze)
     x_volume_analyze = np.abs(x_volume_analyze) * 10 ** 6
@@ -119,4 +120,4 @@ if __name__ == "__main__":
     y_xxy_volume_analyze = k3 * x_xxy_volume_analyze
     # 画准确率图
     accuracy_statistics([y_volume_analyze, y_xyz_volume_analyze, y_xxy_volume_analyze], y_analyze, 'Percentage ranges',
-                        'Cumulative percentage', ["hull", "xyz", "xxy"], "./data/accuracy_statistics.svg")
+                        'Cumulative percentage', ["hull", "xyz", "xxy"], "./data/accuracy_statistics.png")
