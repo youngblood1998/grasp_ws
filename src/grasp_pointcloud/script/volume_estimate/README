@@ -1,0 +1,14 @@
+# HSV分割
+color_segment.py
+
+# 自己的方法
+volume_estimate_demo.py     # 自己方法的例子
+detect_data_save.py     # （volume_estimate_func.py）自己方法，检测所有数据并保存为CSV文件
+detect_bias_save.py     # 检测草莓正确姿态的
+
+# 对比方法
+detect_data_cmp_save.py     # 对比方法，将数据保存为CSV文件
+cmp_algorithm.py            # 训练模型
+
+# 结果拟合
+curve_fitting.py
