@@ -35,7 +35,7 @@ def compute_triangle_mesh_volume(mesh):
     return total_volume / 6.0
 
 
-for i in range(1, 21):
+for i in range(3, 4):
     # 读取点云
     pcd = o3d.io.read_point_cloud("./pcd/{}-0.35-0.pcd".format(str(i)))  # single4.pcd尾朝上，别用
 
@@ -170,6 +170,7 @@ for i in range(1, 21):
 
     filtered_pcd_transform = copy.deepcopy(filtered_pcd)
     filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+    filtered_pcd_transform_copy = copy.deepcopy(filtered_pcd_transform)
     # 进行体素下采样
     voxel_size = 0.001  # 体素大小为5cm
     filtered_pcd_transform = filtered_pcd_transform.voxel_down_sample(voxel_size=voxel_size)
@@ -329,6 +330,11 @@ for i in range(1, 21):
     filtered_pcd_transform_2 = copy.deepcopy(filtered_pcd_transform)
     filtered_pcd_transform_2.transform(T_matrix)
 
+    filtered_pcd_transform_copy_2 = copy.deepcopy(filtered_pcd_transform)
+    filtered_pcd_transform_copy_2.colors = o3d.utility.Vector3dVector(list(colors_transform) + list(colors_transform))
+    # 离群点滤波
+    filtered_pcd_transform_copy_2, _ = filtered_pcd_transform_copy_2.remove_statistical_outlier(nb_neighbors=5, std_ratio=1)
+
     # 离群点滤波
     filtered_pcd_transform, ind = filtered_pcd_transform.remove_statistical_outlier(nb_neighbors=5, std_ratio=1)
 
@@ -359,7 +365,8 @@ for i in range(1, 21):
     lineset.points = hull.vertices
     lineset.lines = o3d.utility.Vector2iVector(lines)
     # 将线段染成红色
-    lineset.paint_uniform_color([0, 1, 0])
+    lineset.paint_uniform_color([1, 0, 0])
+    lineset_copy = copy.deepcopy(lineset)
 
     lineset.transform(T_matrix)
     print(type(hull))
@@ -389,5 +396,13 @@ for i in range(1, 21):
 
     # 可视化结果
     coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
-    o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
+    # o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
+    o3d.visualization.draw_geometries([pcd_filtered], "result")
+    o3d.visualization.draw_geometries([inlier_cloud], "inlier_cloud")
+    o3d.visualization.draw_geometries([outlier_cloud], "outlier_cloud")
+    o3d.visualization.draw_geometries([filtered_pcd], "filtered_pcd")
+    o3d.visualization.draw_geometries([coord_axes_base, filtered_pcd_transform_copy, aabb], "coord_axes")
+    o3d.visualization.draw_geometries([coord_axes_base, filtered_pcd_transform_copy_2], "reconstruct_pcd")
+    o3d.visualization.draw_geometries([coord_axes_base, lineset_copy], "lineset")
+
     print('--'*20)
