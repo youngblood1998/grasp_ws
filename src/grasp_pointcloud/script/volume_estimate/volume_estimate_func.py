@@ -1,6 +1,7 @@
 import numpy as np
 import open3d as o3d
 import copy
+import time
 
 STEP = 0.002
 X_VAL = 0.01
@@ -117,6 +118,7 @@ def compute_strawberry_main_direction_and_histogram(pcd):
 
 
 def compute_strawberry_volume(pcd, show=False):
+    t = time.time()
     # 直通滤波
     # 定义过滤范围
     x_min, x_max = -0.1, 0.1   # x轴过滤范围
@@ -343,6 +345,9 @@ def compute_strawberry_volume(pcd, show=False):
     #     T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
     #     filtered_pcd_transform = copy.deepcopy(filtered_pcd)
     #     filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+
+    print(time.time()-t)
+
     # 二分法查找点云对称平面
     points = np.array(filtered_pcd_transform.points)
     point_1 = points[np.argmin(points[:, 1])]

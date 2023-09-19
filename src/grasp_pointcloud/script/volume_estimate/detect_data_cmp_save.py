@@ -3,6 +3,7 @@ from volume_estimate_func import compute_strawberry_main_direction_and_histogram
 import open3d as o3d
 import csv
 import os
+import time
 
 NUM = 20
 INIT_HEIGHT = 0.25
@@ -42,13 +43,15 @@ def save_data():
                 # name = "1-0.25-0"
                 # 读取点云
                 pcd = o3d.io.read_point_cloud("./pcd/" + name + ".pcd")
+                t = time.time()
                 mask = color_segment_new("./rgb_img/" + name + ".png", [0, 106, 0], [179, 255, 255])
                 result1 = cal_moments(mask)
                 result2 = compute_strawberry_main_direction_and_histogram(pcd)
+                print(time.time()-t)
                 result1.extend(result2[0].tolist())
                 result1.extend(result2[1].tolist())
                 result1.extend(result2[2].tolist())
-                write_csv(name, result1)
+                # write_csv(name, result1)
     #
     # name = "20-0.45-90"
     # # 读取点云

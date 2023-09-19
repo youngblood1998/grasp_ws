@@ -13,15 +13,16 @@ def accuracy_statistics(y_array, y_correct, x_label, y_label, lines_label, save_
             percent_accuracy.append(np.count_nonzero(accuracy < thresh)/len(accuracy))
         accuracy_array = np.array(accuracy_array)
         percent_accuracy = np.array(percent_accuracy)
+        print(percent_accuracy)
         # 绘制折线图
-        plt.plot(accuracy_array, percent_accuracy, label=lines_label[i])
+        plt.plot(accuracy_array, percent_accuracy*100, label=lines_label[i])
     # 设置坐标轴标签
     plt.legend()
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     # 设置坐标轴范围
     plt.xlim(0, max(accuracy_array))
-    plt.ylim(0, 1)
+    plt.ylim(0, 100)
     plt.grid(True)
     plt.savefig(save_path, dpi=300)
     plt.show()
@@ -48,5 +49,5 @@ if __name__ == '__main__':
     y_with_pca = data_cmp_list[1:, 4].astype(np.float)
 
     # 画准确率图
-    accuracy_statistics([y_volume, y_xyz, y_xxy, y_no_pca, y_with_pca], y_test, 'Percentage ranges',
-                        'Cumulative percentage', ["hull", "xyz", "xxy", "random_forest", "randon_forest(pca)"], "./data/accuracy_statistics_all.png")
+    accuracy_statistics([y_volume, y_xyz, y_xxy, y_no_pca, y_with_pca], y_test, 'PCW tolerance level',
+                        'Correct weight estimation rate / %', ["Ours", "XYZ", "XXY", "Random forest", "Random forest (PCA)"], "./data/accuracy_statistics_all.png")

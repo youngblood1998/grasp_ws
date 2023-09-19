@@ -2,6 +2,7 @@ import open3d as o3d
 from volume_estimate_func import compute_strawberry_volume
 import csv
 import os
+import time
 
 NUM = 20
 INIT_HEIGHT = 0.25
@@ -42,8 +43,10 @@ def save_data():
                 print(pcd_name)
                 # 读取点云
                 pcd = o3d.io.read_point_cloud(path + pcd_name)
+                # t = time.time()
                 position_grasp, angle_grasp, flag_reverse, volume, length, width, height = compute_strawberry_volume(pcd)
-                write_csv(pcd_name, position_grasp, angle_grasp, flag_reverse, volume, length, width, height)
+                # print(time.time()-t)
+                # write_csv(pcd_name, position_grasp, angle_grasp, flag_reverse, volume, length, width, height)
 
 
 if __name__ == "__main__":

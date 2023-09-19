@@ -21,7 +21,7 @@ def curve_fit(x, y, x_label, y_label, save_path):
     x_line = np.array([0, int(np.max(x)) + 1])
     plt.plot(x_line, k * x_line)
     # 添加文字标注直线方程
-    plt.text(0.7 * np.mean(x_line), 0.6 * k * np.mean(x_line), "y = {}x".format(k))
+    plt.text(0.7 * np.mean(x_line), 0.6 * k * np.mean(x_line), "y = {}x".format(round(k, 5)))
     # 设置坐标轴标签
     plt.xlabel(x_label)
     plt.ylabel(y_label)
@@ -108,15 +108,15 @@ if __name__ == "__main__":
     # 体积拟合
     x_volume_fit = np.array(x_volume_fit)
     x_volume_fit = x_volume_fit * 10 ** 6
-    k1 = curve_fit(x_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_volume.png")
+    k1 = curve_fit(x_volume_fit, y_fit, 'Volume/cm$^{3}$', 'Weight/g', "./data/curve_fitting_volume_new.png")
     # obb xyz体积拟合
     x_xyz_volume_fit = np.array(x_xyz_volume_fit)
     x_xyz_volume_fit = np.abs(x_xyz_volume_fit * 10 ** 6)
-    k2 = curve_fit(x_xyz_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_xyz.png")
+    k2 = curve_fit(x_xyz_volume_fit, y_fit, 'Volume/cm$^{3}$', 'Weight/g', "./data/curve_fitting_xyz_new.png")
     # obb xxy体积拟合
     x_xxy_volume_fit = np.array(x_xxy_volume_fit)
     x_xxy_volume_fit = np.abs(x_xxy_volume_fit * 10 ** 6)
-    k3 = curve_fit(x_xxy_volume_fit, y_fit, 'volume/cm3', 'weight/g', "./data/curve_fitting_xxy.png")
+    k3 = curve_fit(x_xxy_volume_fit, y_fit, 'Volume/cm$^{3}$', 'Weight/g', "./data/curve_fitting_xxy_new.png")
 
     # 将分析的数据分离
     x_volume_analyze = []
@@ -143,7 +143,7 @@ if __name__ == "__main__":
     y_volume_analyze = k1 * x_volume_analyze
     y_xyz_volume_analyze = k2 * x_xyz_volume_analyze
     y_xxy_volume_analyze = k3 * x_xxy_volume_analyze
-    write_csv(name, y_analyze, y_volume_analyze, y_xyz_volume_analyze, y_xxy_volume_analyze)
+    # write_csv(name, y_analyze, y_volume_analyze, y_xyz_volume_analyze, y_xxy_volume_analyze)
     # 画准确率图
     accuracy_statistics([y_volume_analyze, y_xyz_volume_analyze, y_xxy_volume_analyze], y_analyze, 'Percentage ranges',
                         'Cumulative percentage', ["hull", "xyz", "xxy"], "./data/accuracy_statistics.png")

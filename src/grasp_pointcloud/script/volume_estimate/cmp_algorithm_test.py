@@ -2,6 +2,7 @@ import pandas as pd
 import joblib
 import os
 import csv
+import time
 
 FIT_INDEXES = [1, 2, 4, 12, 14, 15, 16, 17, 18, 19]     # 拟合的索引
 ANALYZE_INDEXES = list(set(range(1, 21)) - set(FIT_INDEXES))    # 分析误差的索引
@@ -55,7 +56,12 @@ if __name__ == '__main__':
     rf_regressor_no_pca = joblib.load(SAVE_PATH + 'model_no_pca.pkl')
     rf_regressor_with_pca = joblib.load(SAVE_PATH + 'model_with_pca.pkl')
 
+    print(x_no_pca_test)
+    t = time.time()
     y_no_pca_pred = rf_regressor_no_pca.predict(x_no_pca_test)
+    t1 = time.time()
+    print(t1-t)
     y_with_pca_pred = rf_regressor_with_pca.predict(x_with_pca_test)
+    print(time.time()-t1)
 
-    write_csv(name_test, y_test, y_no_pca_pred, y_with_pca_pred)
+    # write_csv(name_test, y_test, y_no_pca_pred, y_with_pca_pred)

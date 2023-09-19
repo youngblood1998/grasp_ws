@@ -1,76 +1,77 @@
-启动机器人
-roslaunch ur_modern_driver ur5_bringup.launch limited:=true robot_ip:=192.168.1.12
-roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch limited:=true
-roslaunch ur5_moveit_config moveit_rviz.launch config:=true
+1、启动机器人
+	roslaunch ur_modern_driver ur5_bringup.launch limited:=true robot_ip:=192.168.1.12
+	roslaunch ur5_moveit_config ur5_moveit_planning_execution.launch limited:=true
+	roslaunch ur5_moveit_config moveit_rviz.launch config:=true
+	等同于：
+	roslaunch ur5_platform_manipulation ur5_real_moveit.launch
 
-roslaunch ur5_platform_manipulation ur5_real_moveit.launch
+2、启动夹爪
+	rosrun robotiq_2f_gripper_control Robotiq2FGripperRtuNode.py /dev/ttyUSB0
+	rosrun robotiq_2f_gripper_control robotiq_listener.py
+	rosrun robotiq_2f_gripper_control robotiq_controller.py
 
-启动夹爪
-rosrun robotiq_2f_gripper_control Robotiq2FGripperRtuNode.py /dev/ttyUSB0
-rosrun robotiq_2f_gripper_control robotiq_listener.py
-rosrun robotiq_2f_gripper_control robotiq_controller.py
-启动摄像头
-roslaunch realsense2_camera rs_camera_ca.launch
+3、启动摄像头
+	roslaunch realsense2_camera rs_camera_ca.launch
 
-运行程序
-    没有加周围检测的(real_grasp)
-    rosrun grasp_pointcloud real_grasp_detect.py
-    rosrun grasp_pointcloud real_grasp_manipulate.py
+4、运行程序
+    	(1)、没有加周围检测的(real_grasp)
+	    rosrun grasp_pointcloud real_grasp_detect.py
+	    rosrun grasp_pointcloud real_grasp_manipulate.py
 
-    加周围检测(real_grasp_new)
-    rosrun grasp_pointcloud real_grasp_detect_new.py
-    rosrun grasp_pointcloud real_grasp_manipulate_new.py
+    	(2)、加周围检测(real_grasp_new)
+	    rosrun grasp_pointcloud real_grasp_detect_new.py
+	    rosrun grasp_pointcloud real_grasp_manipulate_new.py
 
-    加移动到被抓物体的上方(real_grasp_new_1)
-    rosrun grasp_pointcloud real_grasp_detect_new_1.1.py
-    rosrun grasp_pointcloud real_grasp_manipulate_new_1.py
+    	(3)、加移动到被抓物体的上方(real_grasp_new_1)
+	    rosrun grasp_pointcloud real_grasp_detect_new_1.1.py
+	    rosrun grasp_pointcloud real_grasp_manipulate_new_1.py
 
-    使用yolo发布点云聚类信息(real_grasp_yolo)没有对点云进行处理，无执行程序
-    roslaunch yolov5_ros yolo_v5.launch
-    rosrun grasp_pointcloud real_grasp_detect_yolo.py	更换相机记得更改trans_func的MATRIX
+    	(4)、使用yolo发布点云聚类信息(real_grasp_yolo)	没有对点云进行处理，无执行程序
+	    roslaunch yolov5_ros yolo_v5.launch
+	    rosrun grasp_pointcloud real_grasp_detect_yolo.py	更换相机记得更改trans_func的MATRIX
 
-    使用yolo输出5D抓取信息(real_grasp_yolo_new)
-    roslaunch yolov5_ros yolo_v5.launch
-    rosrun grasp_pointcloud real_grasp_detect_yolo_new.py	更换相机记得更改trans_func的MATRIX
-    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new.py
+    	(5)、使用yolo输出5D抓取信息(real_grasp_yolo_new)
+	    roslaunch yolov5_ros yolo_v5.launch
+	    rosrun grasp_pointcloud real_grasp_detect_yolo_new.py	更换相机记得更改trans_func的MATRIX
+	    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new.py
 
-    使用yolo输出4D抓取信息(real_grasp_yolo_new_1)
-    roslaunch yolov5_ros camera_yolo_v5.launch
-    rosrun grasp_pointcloud real_grasp_detect_yolo_new_1.py	    更换相机记得更改trans_func的MATRIX
-    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_1.py
+    	(6)、使用yolo输出4D抓取信息(real_grasp_yolo_new_1)
+	    roslaunch yolov5_ros camera_yolo_v5.launch
+	    rosrun grasp_pointcloud real_grasp_detect_yolo_new_1.py	    更换相机记得更改trans_func的MATRIX
+	    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_1.py
 
-    使用yolo输出5D抓取信息并通过ikfast进行运动规划(real_grasp_yolo_new_2)
-    roslaunch yolov5_ros camera_yolo_v5.launch
-    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2.py	    更换相机记得更改trans_func的MATRIX
-    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
+    	(7)、使用yolo输出5D抓取信息并通过ikfast进行运动规划(real_grasp_yolo_new_2)
+	    roslaunch yolov5_ros camera_yolo_v5.launch
+	    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2.py	    更换相机记得更改trans_func的MATRIX
+	    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
 
-    使用yolo输出5D抓取信息并通过ikfast进行运动规划，并且结合触觉传感器进行位姿调整和滑移检测
-    roslaunch yolov5_ros camera_yolo_v5.launch
-    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2.py	    更换相机记得更改trans_func的MATRIX
-    rosrun pose_adjust pose_adjust_detect_with_slip_detect.py   需要启动xela传感器，参考xela工作空间
-    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_with_tactile.py
+    	    使用yolo输出5D抓取信息并通过ikfast进行运动规划，并且结合触觉传感器进行位姿调整和滑移检测(real_grasp_yolo_new_2)
+	    roslaunch yolov5_ros camera_yolo_v5.launch
+	    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2.py	    更换相机记得更改trans_func的MATRIX
+	    rosrun pose_adjust pose_adjust_detect_with_slip_detect.py   需要启动xela传感器，参考xela工作空间
+	    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2_with_tactile.py
 
-    消融实验
-    1、没有堆叠结构树
-        roslaunch yolov5_ros camera_yolo_v5.launch
-        rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_tree.py	    更换相机记得更改trans_func的MATRIX
-        rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
-    2、没有深度滤波聚类
-        roslaunch yolov5_ros camera_yolo_v5.launch
-        rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_DBSCAN.py	    更换相机记得更改trans_func的MATRIX
-        rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
-    3、随机选择抓取候选
-        roslaunch yolov5_ros camera_yolo_v5.launch
-        rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_select.py	    更换相机记得更改trans_func的MATRIX
-        rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
+    	    使用yolo输出5D抓取信息并通过ikfast进行运动规划，并且结合触觉传感器进行滑移检测(real_grasp_yolo_new_2)
+	    roslaunch yolov5_ros camera_yolo_v5.launch
+	    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2.py	    更换相机记得更改trans_func的MATRIX
+	    rosrun pose_adjust slip_detect.py   需要启动xela传感器，参考xela工作空间
+	    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2_with_tactile_without_adjust.py
 
-    使用yolo输出5D抓取信息并通过ikfast进行运动规划，并且结合触觉传感器进行滑移检测
-    roslaunch yolov5_ros camera_yolo_v5.launch
-    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2.py	    更换相机记得更改trans_func的MATRIX
-    rosrun pose_adjust slip_detect.py   需要启动xela传感器，参考xela工作空间
-    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2_with_tactile_without_adjust.py
+    	    使用柔性夹爪抓取(real_grasp_yolo_new_2)
+	    roslaunch yolov5_ros camera_yolo_v5.launch
+	    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_with_flexible.py	    更换相机记得更改trans_func的MATRIX
+	    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2_with_flexible.py
 
-    使用柔性夹爪抓取
-    roslaunch yolov5_ros camera_yolo_v5.launch
-    rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_with_flexible.py	    更换相机记得更改trans_func的MATRIX
-    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2_with_flexible.py
+    	    消融实验(real_grasp_yolo_new_2)
+	    1、没有堆叠结构树
+		roslaunch yolov5_ros camera_yolo_v5.launch
+		rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_tree.py	    更换相机记得更改trans_func的MATRIX
+		rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
+	    2、没有深度滤波聚类
+		roslaunch yolov5_ros camera_yolo_v5.launch
+		rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_DBSCAN.py	    更换相机记得更改trans_func的MATRIX
+		rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
+	    3、随机选择抓取候选
+		roslaunch yolov5_ros camera_yolo_v5.launch
+		rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_select.py	    更换相机记得更改trans_func的MATRIX
+		rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
