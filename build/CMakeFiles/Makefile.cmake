@@ -339,6 +339,7 @@ set(CMAKE_DEPEND_INFO_FILES
   "grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/DependInfo.cmake"
   "grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/DependInfo.cmake"
   "grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/DependInfo.cmake"
+  "grasp_pointcloud/CMakeFiles/template_alignment.dir/DependInfo.cmake"
   "grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/DependInfo.cmake"
   "grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir/DependInfo.cmake"
   "grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/DependInfo.cmake"

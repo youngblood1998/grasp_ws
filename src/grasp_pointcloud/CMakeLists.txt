@@ -292,3 +292,11 @@ add_dependencies(collect_point_cloud ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catki
 target_link_libraries(collect_point_cloud
   ${catkin_LIBRARIES}
 )
+
+add_executable(template_alignment
+  src/template_alignment.cpp
+)
+add_dependencies(template_alignment ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(template_alignment
+  ${catkin_LIBRARIES}
+)

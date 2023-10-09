@@ -706,6 +706,21 @@ roscpp_generate_messages_cpp/fast:
 .PHONY : roscpp_generate_messages_cpp/fast
 
 # Convenience name for target.
+grasp_pointcloud/CMakeFiles/template_alignment.dir/rule:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/template_alignment.dir/rule
+.PHONY : grasp_pointcloud/CMakeFiles/template_alignment.dir/rule
+
+# Convenience name for target.
+template_alignment: grasp_pointcloud/CMakeFiles/template_alignment.dir/rule
+
+.PHONY : template_alignment
+
+# fast build rule for target.
+template_alignment/fast:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/template_alignment.dir/build.make grasp_pointcloud/CMakeFiles/template_alignment.dir/build
+.PHONY : template_alignment/fast
+
+# Convenience name for target.
 grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule
 .PHONY : grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/rule
@@ -1938,6 +1953,33 @@ src/region_growing_segmentation.cpp.s:
 	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/build.make grasp_pointcloud/CMakeFiles/region_growing_segmentation.dir/src/region_growing_segmentation.cpp.s
 .PHONY : src/region_growing_segmentation.cpp.s
 
+src/template_alignment.o: src/template_alignment.cpp.o
+
+.PHONY : src/template_alignment.o
+
+# target to build an object file
+src/template_alignment.cpp.o:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/template_alignment.dir/build.make grasp_pointcloud/CMakeFiles/template_alignment.dir/src/template_alignment.cpp.o
+.PHONY : src/template_alignment.cpp.o
+
+src/template_alignment.i: src/template_alignment.cpp.i
+
+.PHONY : src/template_alignment.i
+
+# target to preprocess a source file
+src/template_alignment.cpp.i:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/template_alignment.dir/build.make grasp_pointcloud/CMakeFiles/template_alignment.dir/src/template_alignment.cpp.i
+.PHONY : src/template_alignment.cpp.i
+
+src/template_alignment.s: src/template_alignment.cpp.s
+
+.PHONY : src/template_alignment.s
+
+# target to generate assembly for a file
+src/template_alignment.cpp.s:
+	cd /home/jay/grasp_ws/build && $(MAKE) -f grasp_pointcloud/CMakeFiles/template_alignment.dir/build.make grasp_pointcloud/CMakeFiles/template_alignment.dir/src/template_alignment.cpp.s
+.PHONY : src/template_alignment.cpp.s
+
 src/test.o: src/test.cpp.o
 
 .PHONY : src/test.o
@@ -2011,6 +2053,7 @@ help:
 	@echo "... geometry_msgs_generate_messages_nodejs"
 	@echo "... geometry_msgs_generate_messages_eus"
 	@echo "... roscpp_generate_messages_cpp"
+	@echo "... template_alignment"
 	@echo "... nodelet_generate_messages_py"
 	@echo "... nodelet_generate_messages_cpp"
 	@echo "... roscpp_generate_messages_py"
@@ -2107,6 +2150,9 @@ help:
 	@echo "... src/region_growing_segmentation.o"
 	@echo "... src/region_growing_segmentation.i"
 	@echo "... src/region_growing_segmentation.s"
+	@echo "... src/template_alignment.o"
+	@echo "... src/template_alignment.i"
+	@echo "... src/template_alignment.s"
 	@echo "... src/test.o"
 	@echo "... src/test.i"
 	@echo "... src/test.s"

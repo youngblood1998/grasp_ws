@@ -394,6 +394,7 @@ grasp_pointcloud/all: grasp_pointcloud/CMakeFiles/real_grasp_posture_generate.di
 grasp_pointcloud/all: grasp_pointcloud/CMakeFiles/dbscan.dir/all
 grasp_pointcloud/all: grasp_pointcloud/CMakeFiles/conditional_euclidean_clustering.dir/all
 grasp_pointcloud/all: grasp_pointcloud/CMakeFiles/cluster_extraction.dir/all
+grasp_pointcloud/all: grasp_pointcloud/CMakeFiles/template_alignment.dir/all
 grasp_pointcloud/all: grasp_pointcloud/CMakeFiles/collect_point_cloud.dir/all
 grasp_pointcloud/all: grasp_pointcloud/CMakeFiles/collect_data.dir/all
 grasp_pointcloud/all: grasp_pointcloud/CMakeFiles/grasp_pointcloud.dir/all
@@ -441,6 +442,7 @@ grasp_pointcloud/clean: grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_mess
 grasp_pointcloud/clean: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/clean
 grasp_pointcloud/clean: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/clean
 grasp_pointcloud/clean: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+grasp_pointcloud/clean: grasp_pointcloud/CMakeFiles/template_alignment.dir/clean
 grasp_pointcloud/clean: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/clean
 grasp_pointcloud/clean: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir/clean
 grasp_pointcloud/clean: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/clean
@@ -2012,6 +2014,125 @@ grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/clean:
 
 # clean rule for target.
 clean: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target grasp_pointcloud/CMakeFiles/template_alignment.dir
+
+# All Build rule for target.
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/nodelet_topic_tools_gencfg.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/bond_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/topic_tools_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/topic_tools_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/bond_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/bond_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/dynamic_reconfigure_gencfg.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/dynamic_reconfigure_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/bond_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/dynamic_reconfigure_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/pcl_ros_gencfg.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/rosgraph_msgs_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/dynamic_reconfigure_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/nodelet_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/bond_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/dynamic_reconfigure_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/sensor_msgs_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/topic_tools_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/topic_tools_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/pcl_msgs_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_srvs_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/std_msgs_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/dynamic_reconfigure_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/actionlib_msgs_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_cpp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf2_msgs_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/topic_tools_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/roscpp_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_py.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_lisp.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/tf_generate_messages_eus.dir/all
+grasp_pointcloud/CMakeFiles/template_alignment.dir/all: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py.dir/all
+	$(MAKE) -f grasp_pointcloud/CMakeFiles/template_alignment.dir/build.make grasp_pointcloud/CMakeFiles/template_alignment.dir/depend
+	$(MAKE) -f grasp_pointcloud/CMakeFiles/template_alignment.dir/build.make grasp_pointcloud/CMakeFiles/template_alignment.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=49,50 "Built target template_alignment"
+.PHONY : grasp_pointcloud/CMakeFiles/template_alignment.dir/all
+
+# Include target in all.
+all: grasp_pointcloud/CMakeFiles/template_alignment.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+grasp_pointcloud/CMakeFiles/template_alignment.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/grasp_ws/build/CMakeFiles 19
+	$(MAKE) -f CMakeFiles/Makefile2 grasp_pointcloud/CMakeFiles/template_alignment.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/jay/grasp_ws/build/CMakeFiles 0
+.PHONY : grasp_pointcloud/CMakeFiles/template_alignment.dir/rule
+
+# Convenience name for target.
+template_alignment: grasp_pointcloud/CMakeFiles/template_alignment.dir/rule
+
+.PHONY : template_alignment
+
+# clean rule for target.
+grasp_pointcloud/CMakeFiles/template_alignment.dir/clean:
+	$(MAKE) -f grasp_pointcloud/CMakeFiles/template_alignment.dir/build.make grasp_pointcloud/CMakeFiles/template_alignment.dir/clean
+.PHONY : grasp_pointcloud/CMakeFiles/template_alignment.dir/clean
+
+# clean rule for target.
+clean: grasp_pointcloud/CMakeFiles/template_alignment.dir/clean
 
 .PHONY : clean
 
@@ -4763,7 +4884,7 @@ Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messag
 Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_py.dir/all: Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/_yolov5_ros_msgs_generate_messages_check_deps_BoundingBox.dir/all
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_py.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_py.dir/depend
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_py.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_py.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=58,59,60 "Built target yolov5_ros_msgs_generate_messages_py"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=60,61,62 "Built target yolov5_ros_msgs_generate_messages_py"
 .PHONY : Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_py.dir/all
 
 # Build rule for subdir invocation for target.
@@ -4861,7 +4982,7 @@ Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messag
 Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_cpp.dir/all: Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/_yolov5_ros_msgs_generate_messages_check_deps_BoundingBox.dir/all
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_cpp.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_cpp.dir/depend
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_cpp.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_cpp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=49,50 "Built target yolov5_ros_msgs_generate_messages_cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=51,52 "Built target yolov5_ros_msgs_generate_messages_cpp"
 .PHONY : Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_cpp.dir/all
 
 # Build rule for subdir invocation for target.
@@ -4959,7 +5080,7 @@ Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messag
 Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_nodejs.dir/all: Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/_yolov5_ros_msgs_generate_messages_check_deps_BoundingBox.dir/all
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_nodejs.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_nodejs.dir/depend
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_nodejs.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_nodejs.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=56,57 "Built target yolov5_ros_msgs_generate_messages_nodejs"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=58,59 "Built target yolov5_ros_msgs_generate_messages_nodejs"
 .PHONY : Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_nodejs.dir/all
 
 # Build rule for subdir invocation for target.
@@ -5025,7 +5146,7 @@ Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messag
 Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_eus.dir/all: Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/_yolov5_ros_msgs_generate_messages_check_deps_BoundingBox.dir/all
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_eus.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_eus.dir/depend
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_eus.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_eus.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=51,52,53 "Built target yolov5_ros_msgs_generate_messages_eus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=53,54,55 "Built target yolov5_ros_msgs_generate_messages_eus"
 .PHONY : Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_eus.dir/all
 
 # Build rule for subdir invocation for target.
@@ -5059,7 +5180,7 @@ Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messag
 Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_lisp.dir/all: Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/_yolov5_ros_msgs_generate_messages_check_deps_BoundingBox.dir/all
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_lisp.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_lisp.dir/depend
 	$(MAKE) -f Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_lisp.dir/build.make Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_lisp.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=54,55 "Built target yolov5_ros_msgs_generate_messages_lisp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=56,57 "Built target yolov5_ros_msgs_generate_messages_lisp"
 .PHONY : Yolov5_ros/yolov5_ros/yolov5_ros_msgs/CMakeFiles/yolov5_ros_msgs_generate_messages_lisp.dir/all
 
 # Build rule for subdir invocation for target.

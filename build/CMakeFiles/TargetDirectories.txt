@@ -68,6 +68,7 @@
 /home/jay/grasp_ws/build/grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_nodejs.dir
 /home/jay/grasp_ws/build/grasp_pointcloud/CMakeFiles/geometry_msgs_generate_messages_eus.dir
 /home/jay/grasp_ws/build/grasp_pointcloud/CMakeFiles/roscpp_generate_messages_cpp.dir
+/home/jay/grasp_ws/build/grasp_pointcloud/CMakeFiles/template_alignment.dir
 /home/jay/grasp_ws/build/grasp_pointcloud/CMakeFiles/nodelet_generate_messages_py.dir
 /home/jay/grasp_ws/build/grasp_pointcloud/CMakeFiles/nodelet_generate_messages_cpp.dir
 /home/jay/grasp_ws/build/grasp_pointcloud/CMakeFiles/roscpp_generate_messages_py.dir

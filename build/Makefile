@@ -751,6 +751,19 @@ roscpp_generate_messages_cpp/fast:
 .PHONY : roscpp_generate_messages_cpp/fast
 
 #=============================================================================
+# Target rules for targets named template_alignment
+
+# Build rule for target.
+template_alignment: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 template_alignment
+.PHONY : template_alignment
+
+# fast build rule for target.
+template_alignment/fast:
+	$(MAKE) -f grasp_pointcloud/CMakeFiles/template_alignment.dir/build.make grasp_pointcloud/CMakeFiles/template_alignment.dir/build
+.PHONY : template_alignment/fast
+
+#=============================================================================
 # Target rules for targets named nodelet_generate_messages_py
 
 # Build rule for target.
@@ -1848,6 +1861,7 @@ help:
 	@echo "... geometry_msgs_generate_messages_nodejs"
 	@echo "... geometry_msgs_generate_messages_eus"
 	@echo "... roscpp_generate_messages_cpp"
+	@echo "... template_alignment"
 	@echo "... nodelet_generate_messages_py"
 	@echo "... nodelet_generate_messages_cpp"
 	@echo "... roscpp_generate_messages_py"
