@@ -155,40 +155,42 @@
 
 #-----------------------------------------------------------------------------------------------------
 
-'''使用open3d 0.9.0读取显示点云及原始坐标系'''
-import copy
+# '''使用open3d 0.9.0读取显示点云及原始坐标系'''
+# import copy
+#
+# import open3d as o3d
+# from trans_func import euler_to_matrix, tran_to_matrix
+# import configparser
+# from math import radians
+# from numpy import dot
+#
+# # 读取点云
+# pcd = o3d.io.read_point_cloud("./pcd/target_full_box_transform.pcd")
+#
+# # 读取原始坐标系
+# mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=[0, 0, 0])
+#
+# # 读取配置文件
+# config = configparser.ConfigParser()
+# config.read("./config/pose.ini", encoding="utf-8")
+# row_num = config.getint("Parameters", "row_num")
+# col_num = config.getint("Parameters", "col_num")
+# row_step = config.getfloat("Parameters", "row_step")
+# col_step = config.getfloat("Parameters", "col_step")
+# x_init = config.getfloat("Parameters", "x_init")
+# y_init = config.getfloat("Parameters", "y_init")
+# angle = config.getint("Parameters", "angle")
+# frame_array = []
+# for i in range(row_num):
+#     y = y_init + i * col_step
+#     for j in range(col_num):
+#         x = x_init + j * row_step
+#         frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.02, origin=[0, 0, 0])
+#         frame.transform(dot(tran_to_matrix([x, y, 0]), euler_to_matrix([0, 0, radians(angle)])))
+#         frame_array.append(frame)
+# print(len(frame_array))
+#
+# # 显示点云及原始坐标系
+# o3d.visualization.draw_geometries([pcd, mesh_frame] + frame_array)
 
-import open3d as o3d
-from trans_func import euler_to_matrix, tran_to_matrix
-import configparser
-from math import radians
-from numpy import dot
-
-# 读取点云
-pcd = o3d.io.read_point_cloud("./pcd/target_full_box_transform.pcd")
-
-# 读取原始坐标系
-mesh_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=[0, 0, 0])
-
-# 读取配置文件
-config = configparser.ConfigParser()
-config.read("./config/pose.ini", encoding="utf-8")
-row_num = config.getint("Parameters", "row_num")
-col_num = config.getint("Parameters", "col_num")
-row_step = config.getfloat("Parameters", "row_step")
-col_step = config.getfloat("Parameters", "col_step")
-x_init = config.getfloat("Parameters", "x_init")
-y_init = config.getfloat("Parameters", "y_init")
-angle = config.getint("Parameters", "angle")
-frame_array = []
-for i in range(row_num):
-    y = y_init + i * col_step
-    for j in range(col_num):
-        x = x_init + j * row_step
-        frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.02, origin=[0, 0, 0])
-        frame.transform(dot(tran_to_matrix([x, y, 0]), euler_to_matrix([0, 0, radians(angle)])))
-        frame_array.append(frame)
-print(len(frame_array))
-
-# 显示点云及原始坐标系
-o3d.visualization.draw_geometries([pcd, mesh_frame] + frame_array)
+# -----------------------------------------------------------------------------------------------------
