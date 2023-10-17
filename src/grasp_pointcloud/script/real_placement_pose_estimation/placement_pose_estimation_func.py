@@ -16,10 +16,10 @@ X_MIN, X_MAX = -0.2, 0.2  # x轴过滤范围
 Y_MIN, Y_MAX = -0.2, 0.2  # y轴过滤范围
 THRESHOLD = 0.005    # 设置ICP参数
 
-def pose_estimation(source_path, target, config_path):
+def pose_estimation(source, target, config_path):
     # 读取局部点云和全局点云
     # target = o3d.io.read_point_cloud(target_path)
-    source = o3d.io.read_point_cloud(source_path)
+    # source = o3d.io.read_point_cloud(source_path)
 
     # 进行点云降采样
     source_down = source.voxel_down_sample(voxel_size=VOXEL_SIZE)
@@ -82,7 +82,6 @@ def pose_estimation(source_path, target, config_path):
     translate = target_center - source_center
     source_down.translate(translate)
     source_down_reverse.translate(translate)
-    print(translate)
 
     # ICP
     trans_init = np.asarray([[1, 0, 0, 0],
@@ -128,14 +127,17 @@ def pose_estimation(source_path, target, config_path):
     y_init = config.getfloat("Parameters", "y_init")
     angle = config.getint("Parameters", "angle")
     frame_array = []
+    frame_value_array = []
     for i in range(row_num):
         y = y_init + i * col_step
         for j in range(col_num):
             x = x_init + j * row_step
             frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.02, origin=[0, 0, 0])
-            frame.transform(np.dot(transformation, np.dot(tran_to_matrix([x, y, 0]), euler_to_matrix([0, 0, radians(angle)]))))
+            frame_value = np.dot(transformation, np.dot(tran_to_matrix([x, y, 0]), euler_to_matrix([0, 0, radians(angle)])))
+            frame.transform(frame_value)
             frame_array.append(frame)
+            frame_value_array.append(frame_value.tolist())
     # base_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=[0, 0, 0])
     # 可视化
     o3d.visualization.draw_geometries([target] + frame_array)
-    return frame_array
+    return frame_value_array

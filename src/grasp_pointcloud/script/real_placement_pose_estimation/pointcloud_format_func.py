@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import rospy
 import open3d as o3d
-from sensor_msgs.msg import PointCloud2
 import ros_numpy as rn
 import numpy as np
 
