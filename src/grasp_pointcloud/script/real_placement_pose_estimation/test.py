@@ -40,30 +40,50 @@
 # print(pcd)
 
 #--------------------------------------------------------------------------------------------------------
+# import configparser
+# import json
+
+# # 将三维列表转换为字符串并写入pose_result.ini文件
+# frame_value_array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]  # 你的三维列表数据
+# list_string = json.dumps(frame_value_array)
+
+# config = configparser.ConfigParser()
+# mydict = {
+#     'result1': list_string,
+#     'result2': list_string
+# }
+# config['Result'] = mydict
+
+# with open('/home/jay/grasp_ws/src/grasp_pointcloud/script/real_placement_pose_estimation/config/pose_result.ini', 'w') as configfile:
+#     config.write(configfile)
+
+# # 从pose_result.ini中读取字符串并将其转换为三维列表
+# config = configparser.ConfigParser()
+# config.read('/home/jay/grasp_ws/src/grasp_pointcloud/script/real_placement_pose_estimation/config/pose_result.ini')
+
+# if 'Result' in config:
+#     list_string_new = config.get('Result', 'result1')
+#     list_3d = json.loads(list_string_new)
+#     print(type(list_3d))
+# else:
+#     print("No 'Result' section found in pose_result.ini")
+#------------------------------------------------------------------------------------------------
 import configparser
-import json
 
-# 将三维列表转换为字符串并写入pose_result.ini文件
-frame_value_array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]  # 你的三维列表数据
-list_string = json.dumps(frame_value_array)
+def clear_config(filename):
+    # 创建 configparser 对象
+    config = configparser.ConfigParser()
 
-config = configparser.ConfigParser()
-mydict = {
-    'result1': list_string,
-    'result2': list_string
-}
-config['Result'] = mydict
+    # 读取配置文件内容
+    config.read(filename)
 
-with open('/home/jay/grasp_ws/src/grasp_pointcloud/script/real_placement_pose_estimation/config/pose_result.ini', 'w') as configfile:
-    config.write(configfile)
+    # 移除所有的节和配置项
+    for option in config.options('Result'):
+        config.remove_option('Result', option)
 
-# 从pose_result.ini中读取字符串并将其转换为三维列表
-config = configparser.ConfigParser()
-config.read('/home/jay/grasp_ws/src/grasp_pointcloud/script/real_placement_pose_estimation/config/pose_result.ini')
+    # 将修改后的配置写回到文件中
+    with open(filename, 'w') as configfile:
+        config.write(configfile)
 
-if 'Result' in config:
-    list_string_new = config.get('Result', 'result1')
-    list_3d = json.loads(list_string_new)
-    print(type(list_3d))
-else:
-    print("No 'Result' section found in pose_result.ini")
+# 调用示例
+clear_config('./config/pose_result.ini')
