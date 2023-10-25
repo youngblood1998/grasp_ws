@@ -28,6 +28,7 @@ MAX_TILT = 15   # 最大偏转角
 MIN_WIDTH = 40
 MAX_WIDTH = 64
 RESULT_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_placement_pose_estimation/config/pose_result.ini"
+LIFT_DISTANCE = 0.1
 
 class Grasp_manipulate:
     def __init__(self):
@@ -95,98 +96,100 @@ class Grasp_manipulate:
 
 
     def callback(self, grasp_params):
-        # 停止抓取检测
+        # 同步控制：停止抓取检测
         rospy.set_param("/grasp_step", 1)
-        # 计算相机坐标到末端坐标的变换矩阵
+        # 计算：相机坐标到末端坐标的变换矩阵
         ori_cam_to_end = rot_to_ori(ROT)
         point_cam_to_end = tran_to_point(TRAN)
         matrix_cam_to_end = matrix_from_quaternion(ori_cam_to_end, point_cam_to_end)
-        # 坐标监听
-        listener = tf.TransformListener()
-        rate = rospy.Rate(30)
         # 1、抓取检测
-        while not rospy.is_shutdown():
-            try:
-                #计算末端坐标到基坐标的变换矩阵
-                (trans,rot) = listener.lookupTransform('/base_link', '/tool0', rospy.Time(0))
-                ori_end_to_base = rot_to_ori(rot)
-                point_end_to_base = tran_to_point(trans)
-                matrix_end_to_base = matrix_from_quaternion(ori_end_to_base, point_end_to_base)
-                # 物体相对于相机位置
-                point_obj_to_cam = [grasp_params.x, grasp_params.y, grasp_params.z, 1]
-                # 物体相对于基坐标位置
-                point_obj_to_base = np.dot(np.dot(matrix_end_to_base, matrix_cam_to_end), point_obj_to_cam)
-                # 物体相对于基坐标的变换矩阵
-                matrix_obj_to_base = copy.deepcopy(matrix_end_to_base)
-                matrix_obj_to_base[0][3],matrix_obj_to_base[1][3],matrix_obj_to_base[2][3] = point_obj_to_base[0], point_obj_to_base[1], point_obj_to_base[2]
-                # 先进行rotate角度变换
-                angle_z = -grasp_params.rotate_angle if grasp_params.rotate_angle < np.pi/2 else np.pi-grasp_params.rotate_angle
-                rotate_z = euler_to_matrix([0, 0, angle_z])
-                matrix_obj_to_base = np.dot(matrix_obj_to_base, rotate_z)
-                # 再进行tilt角度变换
-                angle_y = -grasp_params.tilt_angle if grasp_params.rotate_angle < np.pi/2 else grasp_params.tilt_angle
-                angle_y = np.pi*MAX_TILT/180 if angle_y > np.pi*MAX_TILT/180 else -np.pi*MAX_TILT/180 if angle_y < -np.pi*MAX_TILT/180 else angle_y
-                rotate_y = euler_to_matrix([0, angle_y, 0])
-                matrix_obj_to_base = np.dot(matrix_obj_to_base, rotate_y)
-                # 平移一个夹爪长度和当前位置的抓取输入数值
-                grasp_num = real_width_to_num(grasp_params.grasp_width_second)
-                add_length = num_to_real_length(grasp_num)/1000.0
-                tran_z_2 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length],[0,0,0,1]]
-                matrix_obj_to_base_2 = np.dot(matrix_obj_to_base, tran_z_2)
-                grasp_num_2 = real_width_to_num(grasp_params.grasp_width_second-SUB_WIDTH)
-                # 平移一个夹爪长度加一个安全距离
-                tran_z_1 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length-Z_DISTANCE],[0,0,0,1]]
-                matrix_obj_to_base_1 = np.dot(matrix_obj_to_base, tran_z_1)
-                grasp_num_1 = real_width_to_num(min(max(min(grasp_params.grasp_width_second+ADD_WIDTH, grasp_params.grasp_width_first+GRIPPER_HEIGHT), MIN_WIDTH), MAX_WIDTH))
-                # 先转动最后一个关节
-                joint = self.arm.get_current_joint_values()
-                joint[5] += angle_z
-                self.arm.set_joint_value_target(joint)
-                rospy.set_param("/robotiq_command",str(grasp_num_1))
-                self.arm.go(wait = True)
-                # 开始运动1
-                q_1 = matrix_to_quaternion(matrix_obj_to_base)
-                pose_1 = self.arm.get_current_pose("tool0")
-                pose_1.pose.position.x = matrix_obj_to_base_1[0][3]
-                pose_1.pose.position.y = matrix_obj_to_base_1[1][3]
-                pose_1.pose.position.z = matrix_obj_to_base_1[2][3]
-                pose_1.pose.orientation.w = q_1.w
-                pose_1.pose.orientation.x = q_1.x
-                pose_1.pose.orientation.y = q_1.y
-                pose_1.pose.orientation.z = q_1.z
-                self.arm.set_pose_target(pose_1, "tool0")
-                self.arm.go(wait = True)
-                # 开始运动2
-                pose_2 = self.arm.get_current_pose("tool0")
-                pose_2.pose.position.x = matrix_obj_to_base_2[0][3]
-                pose_2.pose.position.y = matrix_obj_to_base_2[1][3]
-                pose_2.pose.position.z = matrix_obj_to_base_2[2][3]
-                pose_2.pose.orientation.w = q_1.w
-                pose_2.pose.orientation.x = q_1.x
-                pose_2.pose.orientation.y = q_1.y
-                pose_2.pose.orientation.z = q_1.z
-                self.arm.set_pose_target(pose_2, "tool0")
-                self.arm.go(wait = True)
-                rospy.set_param("/robotiq_command",str(grasp_num_2))
-                rospy.sleep(1)
-                # 开始运动3
-                self.arm.set_pose_target(pose_1, "tool0")
-                self.arm.go(wait = True)
-                # 先转动最后一个关节
-                joint = self.arm.get_current_joint_values()
-                joint[5] -= angle_z
-                self.arm.set_joint_value_target(joint)
-                self.arm.go(wait = True)
-                # # 到达指定位置放下
-                # self.arm.set_joint_value_target(END_JOINT)
-                # self.arm.go(wait = True)
-                # rospy.set_param("/robotiq_command",'o')
-                # rospy.sleep(1)
-                break
-            except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
-                continue
-            rate.sleep()
+        # 计算：末端坐标到基坐标的变换矩阵
+        pose_grasp_detect = self.arm.get_current_pose("tool0")
+        matrix_end_to_base = matrix_from_quaternion(pose_grasp_detect.pose.orientation, pose_grasp_detect.pose.position)
+        # 计算：物体相对于相机位置
+        point_obj_to_cam = [grasp_params.x, grasp_params.y, grasp_params.z, 1]
+        # 计算：物体相对于基坐标位置
+        point_obj_to_base = np.dot(np.dot(matrix_end_to_base, matrix_cam_to_end), point_obj_to_cam)
+        # 计算：物体相对于基坐标的变换矩阵
+        matrix_obj_to_base = copy.deepcopy(matrix_end_to_base)
+        matrix_obj_to_base[0][3],matrix_obj_to_base[1][3],matrix_obj_to_base[2][3] = point_obj_to_base[0], point_obj_to_base[1], point_obj_to_base[2]
+        # 计算：物体相对于基坐标的变换矩阵乘rotate角度变换
+        angle_z = -grasp_params.rotate_angle if grasp_params.rotate_angle < np.pi/2 else np.pi-grasp_params.rotate_angle
+        rotate_z = euler_to_matrix([0, 0, angle_z])
+        matrix_obj_to_base = np.dot(matrix_obj_to_base, rotate_z)
+        # 计算：物体相对于基坐标的变换矩阵乘tilt角度变换
+        angle_y = -grasp_params.tilt_angle if grasp_params.rotate_angle < np.pi/2 else grasp_params.tilt_angle
+        angle_y = np.pi*MAX_TILT/180 if angle_y > np.pi*MAX_TILT/180 else -np.pi*MAX_TILT/180 if angle_y < -np.pi*MAX_TILT/180 else angle_y
+        rotate_y = euler_to_matrix([0, angle_y, 0])
+        matrix_obj_to_base = np.dot(matrix_obj_to_base, rotate_y)
+        # 计算：平移一个夹爪长度的变换矩阵和当前位置的抓取输入宽度
+        grasp_num = real_width_to_num(grasp_params.grasp_width_second)
+        add_length = num_to_real_length(grasp_num)/1000.0
+        tran_z_2 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length],[0,0,0,1]]
+        matrix_obj_to_base_2 = np.dot(matrix_obj_to_base, tran_z_2)
+        grasp_num_2 = real_width_to_num(grasp_params.grasp_width_second-SUB_WIDTH)
+        # 计算：平移一个夹爪长度加一个安全距离的变换矩阵和当前位置的抓取输入宽度
+        tran_z_1 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length-Z_DISTANCE],[0,0,0,1]]
+        matrix_obj_to_base_1 = np.dot(matrix_obj_to_base, tran_z_1)
+        grasp_num_1 = real_width_to_num(min(max(min(grasp_params.grasp_width_second+ADD_WIDTH, grasp_params.grasp_width_first+GRIPPER_HEIGHT), MIN_WIDTH), MAX_WIDTH))
+        # 运动：机器人先转动最后一个关节
+        joint = self.arm.get_current_joint_values()
+        joint[5] += angle_z
+        self.arm.set_joint_value_target(joint)
+        rospy.set_param("/robotiq_command",str(grasp_num_1))
+        self.arm.go(wait = True)
+        # 运动：机器人到达抓取位姿的上方
+        q_1 = matrix_to_quaternion(matrix_obj_to_base)
+        pose_1 = self.arm.get_current_pose("tool0")
+        pose_1.pose.position.x = matrix_obj_to_base_1[0][3]
+        pose_1.pose.position.y = matrix_obj_to_base_1[1][3]
+        pose_1.pose.position.z = matrix_obj_to_base_1[2][3]
+        pose_1.pose.orientation.w = q_1.w
+        pose_1.pose.orientation.x = q_1.x
+        pose_1.pose.orientation.y = q_1.y
+        pose_1.pose.orientation.z = q_1.z
+        self.arm.set_pose_target(pose_1, "tool0")
+        self.arm.go(wait = True)
+        # 运动：机器人到达抓取位姿
+        pose_2 = self.arm.get_current_pose("tool0")
+        pose_2.pose.position.x = matrix_obj_to_base_2[0][3]
+        pose_2.pose.position.y = matrix_obj_to_base_2[1][3]
+        pose_2.pose.position.z = matrix_obj_to_base_2[2][3]
+        pose_2.pose.orientation.w = q_1.w
+        pose_2.pose.orientation.x = q_1.x
+        pose_2.pose.orientation.y = q_1.y
+        pose_2.pose.orientation.z = q_1.z
+        self.arm.set_pose_target(pose_2, "tool0")
+        self.arm.go(wait = True)
+        rospy.set_param("/robotiq_command",str(grasp_num_2))
+        rospy.sleep(1)
+        # 运动：机器人到达抓取位姿的上方
+        self.arm.set_pose_target(pose_1, "tool0")
+        self.arm.go(wait = True)
+        # 运动：机器人先转动最后一个关节
+        joint = self.arm.get_current_joint_values()
+        joint[5] -= angle_z
+        self.arm.set_joint_value_target(joint)
+        self.arm.go(wait = True)
+        # 运动：机器人到达放置草莓的位置并打开夹爪
+        self.arm.set_joint_value_target(self.place_joint)
+        self.arm.go(wait = True)
+        rospy.set_param("/robotiq_command", 'o')
+        rospy.sleep(1)
+        # 运动：机器人到达检测重量的位置
+        pose_place = self.arm.get_current_pose("tool0")
+        matrix_place_to_base = matrix_from_quaternion(pose_place.pose.orientation, pose_place.pose.position)
+        point_detect_to_place = [0, -TRAN[1], -LIFT_DISTANCE, 1]
+        point_detect_to_base = np.dot(matrix_place_to_base, point_detect_to_place)
+        pose_detect = copy.deepcopy(pose_place)
+        pose_detect.pose.position.x = point_detect_to_base[0]
+        pose_detect.pose.position.y = point_detect_to_base[1]
+        pose_detect.pose.position.z = point_detect_to_base[2]
+        self.arm.set_pose_target(pose_detect)
+        self.arm.go(True)
+        rospy.set_param("/grasp_step", 2)
         
+
         # 抓取结束,夹爪打开,机械臂回初始点
         self.arm.set_joint_value_target(self.init_joint)
         rospy.set_param("/robotiq_command",'o')
