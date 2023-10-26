@@ -55,6 +55,7 @@ include grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py.dir/pr
 
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_PointBoundingBox.py
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_AdjustParams.py
+grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_VolumeParams.py
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_GraspParams.py
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/__init__.py
 
@@ -70,21 +71,28 @@ grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py: /home/jay/gra
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Python from MSG grasp_pointcloud/AdjustParams"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg
 
+/home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_VolumeParams.py: /opt/ros/kinetic/lib/genpy/genmsg_py.py
+/home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_VolumeParams.py: /home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Python from MSG grasp_pointcloud/VolumeParams"
+	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg
+
 /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_GraspParams.py: /opt/ros/kinetic/lib/genpy/genmsg_py.py
 /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_GraspParams.py: /home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Python from MSG grasp_pointcloud/GraspParams"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating Python from MSG grasp_pointcloud/GraspParams"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg
 
 /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/__init__.py: /opt/ros/kinetic/lib/genpy/genmsg_py.py
 /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/__init__.py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_PointBoundingBox.py
 /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/__init__.py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_AdjustParams.py
+/home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/__init__.py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_VolumeParams.py
 /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/__init__.py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_GraspParams.py
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating Python msg __init__.py for grasp_pointcloud"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Generating Python msg __init__.py for grasp_pointcloud"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/genpy/cmake/../../../lib/genpy/genmsg_py.py -o /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg --initpy
 
 grasp_pointcloud_generate_messages_py: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py
 grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_PointBoundingBox.py
 grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_AdjustParams.py
+grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_VolumeParams.py
 grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/_GraspParams.py
 grasp_pointcloud_generate_messages_py: /home/jay/grasp_ws/devel/lib/python2.7/dist-packages/grasp_pointcloud/msg/__init__.py
 grasp_pointcloud_generate_messages_py: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_py.dir/build.make

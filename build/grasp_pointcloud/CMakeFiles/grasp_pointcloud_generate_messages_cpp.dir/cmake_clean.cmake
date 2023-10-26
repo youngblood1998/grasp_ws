@@ -2,6 +2,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/grasp_pointcloud_generate_messages_cpp"
   "/home/jay/grasp_ws/devel/include/grasp_pointcloud/PointBoundingBox.h"
   "/home/jay/grasp_ws/devel/include/grasp_pointcloud/AdjustParams.h"
+  "/home/jay/grasp_ws/devel/include/grasp_pointcloud/VolumeParams.h"
   "/home/jay/grasp_ws/devel/include/grasp_pointcloud/GraspParams.h"
 )
 

@@ -55,6 +55,7 @@ include grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus.dir/p
 
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/PointBoundingBox.l
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/AdjustParams.l
+grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/VolumeParams.l
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/GraspParams.l
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/manifest.l
 
@@ -70,18 +71,24 @@ grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus: /home/jay/gr
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating EusLisp code from grasp_pointcloud/AdjustParams.msg"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg
 
+/home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/VolumeParams.l: /opt/ros/kinetic/lib/geneus/gen_eus.py
+/home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/VolumeParams.l: /home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating EusLisp code from grasp_pointcloud/VolumeParams.msg"
+	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg
+
 /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/GraspParams.l: /opt/ros/kinetic/lib/geneus/gen_eus.py
 /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/GraspParams.l: /home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating EusLisp code from grasp_pointcloud/GraspParams.msg"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating EusLisp code from grasp_pointcloud/GraspParams.msg"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg
 
 /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/manifest.l: /opt/ros/kinetic/lib/geneus/gen_eus.py
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating EusLisp manifest code for grasp_pointcloud"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Generating EusLisp manifest code for grasp_pointcloud"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/geneus/cmake/../../../lib/geneus/gen_eus.py -m -o /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud grasp_pointcloud std_msgs
 
 grasp_pointcloud_generate_messages_eus: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus
 grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/PointBoundingBox.l
 grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/AdjustParams.l
+grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/VolumeParams.l
 grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/msg/GraspParams.l
 grasp_pointcloud_generate_messages_eus: /home/jay/grasp_ws/devel/share/roseus/ros/grasp_pointcloud/manifest.l
 grasp_pointcloud_generate_messages_eus: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_eus.dir/build.make

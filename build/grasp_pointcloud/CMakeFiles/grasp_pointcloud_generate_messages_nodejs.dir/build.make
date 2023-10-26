@@ -55,6 +55,7 @@ include grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs.di
 
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs: /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/PointBoundingBox.js
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs: /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/AdjustParams.js
+grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs: /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/VolumeParams.js
 grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs: /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/GraspParams.js
 
 
@@ -69,14 +70,20 @@ grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs: /home/jay
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Generating Javascript code from grasp_pointcloud/AdjustParams.msg"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg
 
+/home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/VolumeParams.js: /opt/ros/kinetic/lib/gennodejs/gen_nodejs.py
+/home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/VolumeParams.js: /home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Javascript code from grasp_pointcloud/VolumeParams.msg"
+	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg
+
 /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/GraspParams.js: /opt/ros/kinetic/lib/gennodejs/gen_nodejs.py
 /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/GraspParams.js: /home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Javascript code from grasp_pointcloud/GraspParams.msg"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/jay/grasp_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating Javascript code from grasp_pointcloud/GraspParams.msg"
 	cd /home/jay/grasp_ws/build/grasp_pointcloud && ../catkin_generated/env_cached.sh /usr/bin/python2 /opt/ros/kinetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg -Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg -Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg -p grasp_pointcloud -o /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg
 
 grasp_pointcloud_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs
 grasp_pointcloud_generate_messages_nodejs: /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/PointBoundingBox.js
 grasp_pointcloud_generate_messages_nodejs: /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/AdjustParams.js
+grasp_pointcloud_generate_messages_nodejs: /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/VolumeParams.js
 grasp_pointcloud_generate_messages_nodejs: /home/jay/grasp_ws/devel/share/gennodejs/ros/grasp_pointcloud/msg/GraspParams.js
 grasp_pointcloud_generate_messages_nodejs: grasp_pointcloud/CMakeFiles/grasp_pointcloud_generate_messages_nodejs.dir/build.make
 

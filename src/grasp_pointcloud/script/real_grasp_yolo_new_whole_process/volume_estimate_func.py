@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import numpy as np
 import open3d as o3d
 import copy
@@ -298,9 +300,9 @@ def compute_strawberry_volume(pcd, show=False):
 
     # 抓取位置，是否颠倒，抓取角度
     position_grasp = T_matrix_grasp[:3, 3]
-    flag_reverse = 1
+    flag_reverse = False
     if T_matrix_grasp[1, 1] < 0:
-        flag_reverse = 0
+        flag_reverse = True
     angle_grasp = np.arctan(-T_matrix_grasp[0, 1] / T_matrix_grasp[1, 1]) * 180 / np.pi
     print("是否颠倒：" + str(flag_reverse))
     print("抓取位置：" + str(position_grasp))
@@ -311,4 +313,4 @@ def compute_strawberry_volume(pcd, show=False):
         coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
         o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
 
-    return position_grasp, angle_grasp, flag_reverse, volume
+    return position_grasp, angle_grasp, flag_reverse, volume, right-left

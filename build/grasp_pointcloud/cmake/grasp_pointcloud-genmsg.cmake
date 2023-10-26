@@ -1,6 +1,6 @@
 # generated from genmsg/cmake/pkg-genmsg.cmake.em
 
-message(STATUS "grasp_pointcloud: 3 messages, 0 services")
+message(STATUS "grasp_pointcloud: 4 messages, 0 services")
 
 set(MSG_I_FLAGS "-Igrasp_pointcloud:/home/jay/grasp_ws/src/grasp_pointcloud/msg;-Istd_msgs:/opt/ros/kinetic/share/std_msgs/cmake/../msg")
 
@@ -27,6 +27,11 @@ add_custom_target(_grasp_pointcloud_generate_messages_check_deps_${_filename}
   COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "grasp_pointcloud" "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg" ""
 )
 
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg" NAME_WE)
+add_custom_target(_grasp_pointcloud_generate_messages_check_deps_${_filename}
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "grasp_pointcloud" "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg" ""
+)
+
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
 add_custom_target(_grasp_pointcloud_generate_messages_check_deps_${_filename}
   COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "grasp_pointcloud" "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" ""
@@ -46,6 +51,12 @@ _generate_msg_cpp(grasp_pointcloud
 )
 _generate_msg_cpp(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_cpp(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/grasp_pointcloud
@@ -75,6 +86,8 @@ get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/Po
 add_dependencies(grasp_pointcloud_generate_messages_cpp _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_cpp _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_cpp _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_cpp _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
@@ -95,6 +108,12 @@ _generate_msg_eus(grasp_pointcloud
 )
 _generate_msg_eus(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_eus(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/grasp_pointcloud
@@ -124,6 +143,8 @@ get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/Po
 add_dependencies(grasp_pointcloud_generate_messages_eus _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_eus _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_eus _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_eus _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
@@ -144,6 +165,12 @@ _generate_msg_lisp(grasp_pointcloud
 )
 _generate_msg_lisp(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_lisp(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/grasp_pointcloud
@@ -173,6 +200,8 @@ get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/Po
 add_dependencies(grasp_pointcloud_generate_messages_lisp _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_lisp _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_lisp _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_lisp _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
@@ -193,6 +222,12 @@ _generate_msg_nodejs(grasp_pointcloud
 )
 _generate_msg_nodejs(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_nodejs(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/grasp_pointcloud
@@ -222,6 +257,8 @@ get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/Po
 add_dependencies(grasp_pointcloud_generate_messages_nodejs _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_nodejs _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_nodejs _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_nodejs _grasp_pointcloud_generate_messages_check_deps_${_filename})
 
@@ -242,6 +279,12 @@ _generate_msg_py(grasp_pointcloud
 )
 _generate_msg_py(grasp_pointcloud
   "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg"
+  "${MSG_I_FLAGS}"
+  ""
+  ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/grasp_pointcloud
+)
+_generate_msg_py(grasp_pointcloud
+  "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg"
   "${MSG_I_FLAGS}"
   ""
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/grasp_pointcloud
@@ -270,6 +313,8 @@ add_dependencies(grasp_pointcloud_generate_messages grasp_pointcloud_generate_me
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/PointBoundingBox.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_py _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/AdjustParams.msg" NAME_WE)
+add_dependencies(grasp_pointcloud_generate_messages_py _grasp_pointcloud_generate_messages_check_deps_${_filename})
+get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/VolumeParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_py _grasp_pointcloud_generate_messages_check_deps_${_filename})
 get_filename_component(_filename "/home/jay/grasp_ws/src/grasp_pointcloud/msg/GraspParams.msg" NAME_WE)
 add_dependencies(grasp_pointcloud_generate_messages_py _grasp_pointcloud_generate_messages_check_deps_${_filename})

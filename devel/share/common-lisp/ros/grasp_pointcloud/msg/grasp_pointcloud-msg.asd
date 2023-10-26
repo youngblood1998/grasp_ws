@@ -11,4 +11,6 @@
     (:file "_package_GraspParams" :depends-on ("_package"))
     (:file "PointBoundingBox" :depends-on ("_package_PointBoundingBox"))
     (:file "_package_PointBoundingBox" :depends-on ("_package"))
+    (:file "VolumeParams" :depends-on ("_package_VolumeParams"))
+    (:file "_package_VolumeParams" :depends-on ("_package"))
   ))
