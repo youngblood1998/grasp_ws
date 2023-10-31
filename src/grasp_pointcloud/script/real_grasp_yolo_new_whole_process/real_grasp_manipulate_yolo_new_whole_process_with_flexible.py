@@ -28,7 +28,7 @@ GRIPPER_HEIGHT = 4  # 夹爪厚
 MAX_TILT = 15   # 最大偏转角
 MIN_WIDTH = 40
 MAX_WIDTH = 64
-RESULT_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_placement_pose_estimation/config/pose_result.ini"
+RESULT_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_new_whole_process/config/pose_result.ini"
 LIFT_DISTANCE = 0.1
 PUT_DISTANCE = 0.01
 
@@ -79,14 +79,15 @@ class Grasp_manipulate:
             
             # 读取盒子的槽位数组
             self.grooves_array = []
-            config = configparser.ConfigParser()
-            config.read(RESULT_PATH)
             flag = False
             for i in range(self.box_num):
+                config = configparser.ConfigParser()
+                config.read(RESULT_PATH)
                 if config.has_option('Result', 'result_'+str(i+1)):
                     list_string = config.get('Result', 'result_'+str(i+1))
                     config.remove_option('Result', 'result_'+str(i+1))
                     self.grooves_array.append(json.loads(list_string))
+                    print(self.grooves_array)
                 else:
                     flag = True
                     print("槽位数量错误，请重新检测盒子")

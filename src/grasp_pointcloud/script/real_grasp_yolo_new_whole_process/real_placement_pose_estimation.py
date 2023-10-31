@@ -17,6 +17,7 @@ RESULT_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_ne
 class PlacementPoseEstimation:
     
     def __init__(self):
+        print(1)
         num = 1
         config = configparser.ConfigParser()
         config['Result'] = {}
@@ -37,7 +38,7 @@ class PlacementPoseEstimation:
             config.write(configfile)
 
 
-if __name__ == "__mian__":
+if __name__ == "__main__":
     # 节点初始化
     rospy.init_node("pose_estimation_test")
     rospy.loginfo("放置位姿估计开始!")

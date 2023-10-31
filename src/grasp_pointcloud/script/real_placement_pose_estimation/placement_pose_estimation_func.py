@@ -139,5 +139,5 @@ def pose_estimation(source, target, config_path):
             frame_value_array.append(frame_value.tolist())
     # base_frame = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.1, origin=[0, 0, 0])
     # 可视化
-    o3d.visualization.draw_geometries([target] + frame_array)
+    o3d.visualization.draw_geometries([target_down] + frame_array)
     return frame_value_array
