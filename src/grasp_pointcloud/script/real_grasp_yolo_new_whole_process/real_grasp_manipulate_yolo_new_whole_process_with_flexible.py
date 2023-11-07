@@ -16,7 +16,7 @@ from grasp_pointcloud.msg import GraspParams
 from grasp_pointcloud.msg import VolumeParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
 
-END_TO_END = 0.150+0.072    # 机器人末端到夹爪末端
+END_TO_END = 0.160+0.072    # 机器人末端到夹爪末端
 TRAN = [-0.0065, -0.0874528072638, 0.0739784679795] #手眼标定的平移
 ROT = [-0.0322859285682, -0.00222200140914, -0.0294295826053, 0.999042832512]   #手眼标定的旋转
 Z_DISTANCE = 0.050     # 抓取位置前一个位置的距离

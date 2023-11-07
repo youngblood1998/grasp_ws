@@ -106,5 +106,4 @@ def real_width_to_num(width):
 
 # 夹爪输入数值转增加的长度
 def num_to_real_length(num):
-    # return 0.04*num
-    return -0.0003*num*num + 0.2191*num + 0.8258
+    return -0.0003*num*num + 0.1291*num + 0.8258
