@@ -200,23 +200,23 @@ def compute_strawberry_volume(pcd, show=False):
         filtered_pcd_transform = copy.deepcopy(filtered_pcd)
         filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
 
-    points_transform = np.array(filtered_pcd_transform.points)
-    colors_transform = np.array(filtered_pcd_transform.colors)
-    green_indexes = colors_transform[:, 0] <= colors_transform[:, 1]
-    points_green = points_transform[green_indexes]
-    point_green_mean = np.mean(points_green, axis=0)
-    print(point_green_mean[1])
-    if point_green_mean[1] < 0:
-        rotate_z = np.array([
-            [-1, 0, 0, 0],
-            [0, -1, 0, 0],
-            [0, 0, 1, 0],
-            [0, 0, 0, 1]
-        ])
-        T_matrix = np.dot(T_matrix, rotate_z)
-        T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
-        filtered_pcd_transform = copy.deepcopy(filtered_pcd)
-        filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
+    # points_transform = np.array(filtered_pcd_transform.points)
+    # colors_transform = np.array(filtered_pcd_transform.colors)
+    # green_indexes = colors_transform[:, 0] <= colors_transform[:, 1]
+    # points_green = points_transform[green_indexes]
+    # point_green_mean = np.mean(points_green, axis=0)
+    # print(point_green_mean[1])
+    # if point_green_mean[1] < 0:
+    #     rotate_z = np.array([
+    #         [-1, 0, 0, 0],
+    #         [0, -1, 0, 0],
+    #         [0, 0, 1, 0],
+    #         [0, 0, 0, 1]
+    #     ])
+    #     T_matrix = np.dot(T_matrix, rotate_z)
+    #     T_matrix_grasp = np.dot(T_matrix_grasp, rotate_z)
+    #     filtered_pcd_transform = copy.deepcopy(filtered_pcd)
+    #     filtered_pcd_transform.transform(np.linalg.inv(T_matrix))
 
     # 二分法查找点云对称平面
     points = np.array(filtered_pcd_transform.points)
@@ -255,7 +255,7 @@ def compute_strawberry_volume(pcd, show=False):
     # 合并镜像点云和原点云
     points = np.concatenate((points, reflect_points), axis=0)
     filtered_pcd_transform.points = o3d.utility.Vector3dVector(points)
-    filtered_pcd_transform.colors = o3d.utility.Vector3dVector([color for i in range(len(filtered_pcd_transform.points))])
+    # filtered_pcd_transform.colors = o3d.utility.Vector3dVector([color for i in range(len(filtered_pcd_transform.points))])
 
     filtered_pcd_transform_2 = copy.deepcopy(filtered_pcd_transform)
     filtered_pcd_transform_2.transform(T_matrix)
@@ -307,10 +307,13 @@ def compute_strawberry_volume(pcd, show=False):
     print("是否颠倒：" + str(flag_reverse))
     print("抓取位置：" + str(position_grasp))
     print("抓取角度：" + str(angle_grasp))
+    print("重量:" + str(volume))
+    print("宽度:" + str(right-left))
 
     # 可视化结果
     if show:
         coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
+        # o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
         o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
 
     return position_grasp, angle_grasp, flag_reverse, volume, right-left

@@ -15,10 +15,11 @@ class VolumeEstimation:
 
     def callback(self, point_cloud):
         #如果参数grasp_step不存在或者不等于2说明机器人在移动,暂停检测
-        if rospy.has_param("/grasp_step") and int(rospy.get_param("/grasp_step"))!=2:
+        # if rospy.has_param("/grasp_step") and int(rospy.get_param("/grasp_step"))!=2:
+        if (not rospy.has_param("/grasp_step")) or (rospy.has_param("/grasp_step") and int(rospy.get_param("/grasp_step"))!=2):
             return 0
         pcd = rospc_to_o3dpc(point_cloud)
-        position_grasp, angle_grasp, flag_reverse, volume, width = compute_strawberry_volume(pcd)
+        position_grasp, angle_grasp, flag_reverse, volume, width = compute_strawberry_volume(pcd, True)
         volume_params = VolumeParams()
         volume_params.reverse = flag_reverse
         volume_params.x = position_grasp[0]

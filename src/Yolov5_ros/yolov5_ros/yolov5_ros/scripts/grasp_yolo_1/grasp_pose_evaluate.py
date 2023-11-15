@@ -90,6 +90,8 @@ def gmm(bound_data, depth_img, depth_img_cut, lines_arr):
         if i == 0:
             line_num = line_num[::-1]
         x = np.arange(len(line_num))
+        np.savetxt("./data/origin_x_{}.txt".format(i), x)
+        np.savetxt("./data/origin_y_{}.txt".format(i), line_num)
         #插值
         line_num = interpolation(line_num, x)
         print("数组长度")

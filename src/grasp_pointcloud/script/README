@@ -11,7 +11,7 @@
 	rosrun robotiq_2f_gripper_control robotiq_controller.py
 
 3、启动摄像头
-	roslaunch realsense2_camera rs_camera_ca.launch
+	roslaunch realsense2_camera rs_camera_ca.launch filters:=pointcloud
 
 4、运行程序
     	(1)、没有加周围检测的(real_grasp)
@@ -76,4 +76,10 @@
 		rosrun grasp_pointcloud real_grasp_detect_yolo_new_2_without_select.py	    更换相机记得更改trans_func的MATRIX
 		rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_2.py
 
-	(9)、
+	(9)、全流程实验(real_grasp_yolo_new_whole_process)
+	    rosrun grasp_pointcloud real_placement_pose_estimation.py (open3d)
+	    rosrun grasp_pointcloud real_grasp_manipulate_yolo_new_whole_process_with_flexible.py
+	    roslaunch yolov5_ros yolo_v5.launch (pytorch)
+	    rosrun grasp_pointcloud real_volume_estimation.py (open3d)
+	    rosrun grasp_pointcloud real_grasp_detect_yolo_new_whole_process_with_flexible.py
+	    
