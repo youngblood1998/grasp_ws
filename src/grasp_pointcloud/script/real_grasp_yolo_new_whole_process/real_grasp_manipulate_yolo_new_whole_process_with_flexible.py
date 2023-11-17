@@ -18,7 +18,7 @@ from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_
 
 END_TO_END = 0.162+0.072    # 机器人末端到夹爪末端
 TRAN = [-0.0065, -0.0874528072638, 0.0739784679795] #手眼标定的平移
-TRAN_1 = [0.008, -0.065, 0.0739784679795] #手眼标定的平移：使用点云时
+TRAN_1 = [0.015, -0.071, 0.0739784679795] #手眼标定的平移：使用点云时
 ROT = [-0.0322859285682, -0.00222200140914, -0.0294295826053, 0.999042832512]   #手眼标定的旋转
 Z_DISTANCE = 0.050     # 抓取位置前一个位置的距离
 ADD_WIDTH = 12
@@ -31,7 +31,7 @@ MIN_WIDTH = 40
 MAX_WIDTH = 64
 RESULT_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_new_whole_process/config/pose_result.ini"
 LIFT_DISTANCE = 0.16
-PUT_DISTANCE = 0.025
+PUT_DISTANCE = 0.02
 REGRASP_ADD_DEPTH = 0.005
 
 class Grasp_manipulate:
@@ -57,53 +57,53 @@ class Grasp_manipulate:
         raw_input("2、请将机械臂调整到合适位姿，并按任意键将当前的位姿作为草莓重量检测的位姿，退出请按Ctrl+C：")
         self.place_joint = self.arm.get_current_joint_values()
         
-        # # 保证正确获得盒子的槽位才退出
-        # while True:
-        #     self.box_num = int(raw_input("3、请输入放置盒子的数量，退出请按Ctrl+C："))
+        # 保证正确获得盒子的槽位才退出
+        while True:
+            self.box_num = int(raw_input("3、请输入放置盒子的数量，退出请按Ctrl+C："))
             
-        #     # 重量间隔
-        #     self.box_cap = []
-        #     if self.box_num > 1:
-        #         for i in range(self.box_num - 1):
-        #             self.box_cap.append(int(raw_input("3、请输入第{}个和第{}个盒子指间的重量间隔(由小到大输入)，退出请按Ctrl+C：".format(i+1, i+2))))
-        #     elif self.box_num < 1:
-        #         print("请输入正确的盒子数量")
+            # 重量间隔
+            self.box_cap = []
+            if self.box_num > 1:
+                for i in range(self.box_num - 1):
+                    self.box_cap.append(int(raw_input("3、请输入第{}个和第{}个盒子指间的重量间隔(由小到大输入)，退出请按Ctrl+C：".format(i+1, i+2))))
+            elif self.box_num < 1:
+                print("请输入正确的盒子数量")
             
-        #     # 每个盒子的所在的位姿
-        #     self.put_pose_array = []
-        #     if self.box_num > 1:
-        #         for i in range(self.box_num):
-        #             raw_input("4、请将机械臂调整到合适位姿，并检测盒子的槽位，然后按任意键将当前的位姿作为第{}个盒子的位姿，退出请按Ctrl+C：".format(i+1))
-        #             self.put_pose_array.append(self.arm.get_current_pose("tool0"))
-        #     elif self.box_num == 1:
-        #         raw_input("4、请将机械臂调整到合适位姿，并检测盒子的槽位，然后按任意键将当前的位姿作为盒子的位姿，退出请按Ctrl+C：")
-        #         self.put_pose_array.append(self.arm.get_current_pose("tool0"))
+            # 每个盒子的所在的位姿
+            self.put_pose_array = []
+            if self.box_num > 1:
+                for i in range(self.box_num):
+                    raw_input("4、请将机械臂调整到合适位姿，并检测盒子的槽位，然后按任意键将当前的位姿作为第{}个盒子的位姿，退出请按Ctrl+C：".format(i+1))
+                    self.put_pose_array.append(self.arm.get_current_pose("tool0"))
+            elif self.box_num == 1:
+                raw_input("4、请将机械臂调整到合适位姿，并检测盒子的槽位，然后按任意键将当前的位姿作为盒子的位姿，退出请按Ctrl+C：")
+                self.put_pose_array.append(self.arm.get_current_pose("tool0"))
             
-        #     # 读取盒子的槽位数组
-        #     self.grooves_array = []
-        #     flag = False
-        #     for i in range(self.box_num):
-        #         config = configparser.ConfigParser()
-        #         config.read(RESULT_PATH)
-        #         if config.has_option('Result', 'result_'+str(i+1)):
-        #             list_string = config.get('Result', 'result_'+str(i+1))
-        #             config.remove_option('Result', 'result_'+str(i+1))
-        #             self.grooves_array.append(json.loads(list_string))
-        #             print(self.grooves_array)
-        #         else:
-        #             flag = True
-        #             print("槽位数量错误，请重新检测盒子")
-        #             self.box_cap = []
-        #             self.put_pose_array = []
-        #             self.grooves_array = []
-        #             break
+            # 读取盒子的槽位数组
+            self.grooves_array = []
+            flag = False
+            for i in range(self.box_num):
+                config = configparser.ConfigParser()
+                config.read(RESULT_PATH)
+                if config.has_option('Result', 'result_'+str(i+1)):
+                    list_string = config.get('Result', 'result_'+str(i+1))
+                    config.remove_option('Result', 'result_'+str(i+1))
+                    self.grooves_array.append(json.loads(list_string))
+                    print(self.grooves_array)
+                else:
+                    flag = True
+                    print("槽位数量错误，请重新检测盒子")
+                    self.box_cap = []
+                    self.put_pose_array = []
+                    self.grooves_array = []
+                    break
             
-        #     # 槽位检测是否出错，出错重检
-        #     if flag:
-        #         continue
-        #     with open(RESULT_PATH, 'w') as configfile:
-        #         config.write(configfile)
-        #     break
+            # 槽位检测是否出错，出错重检
+            if flag:
+                continue
+            with open(RESULT_PATH, 'w') as configfile:
+                config.write(configfile)
+            break
         
         self.arm.set_joint_value_target(self.init_joint)
         rospy.set_param("/robotiq_command",'o')
@@ -113,7 +113,7 @@ class Grasp_manipulate:
 
         # 同步控制：停止抓取检测
         rospy.set_param("/grasp_step", 0)
-
+        rospy.sleep(1)
         # 订阅物体位置的话题
         self.grasp_params_sub = rospy.Subscriber("real_detect/grasp_params", GraspParams, self.callback, queue_size=1, buff_size=52428800)
 
@@ -259,27 +259,28 @@ class Grasp_manipulate:
         pose_regrasp.pose.position.z = point_obj_to_base[2]
         self.arm.set_pose_target(pose_regrasp, "tool0")
         self.arm.go(wait = True)
-        rospy.set_param("/robotiq_command", str(grasp_num_3))
+
+        # 测试代码---------------------------------------------------------------
+        raw_input("退出请按Ctrl+C,继续按任意键：")
+        # 测试代码---------------------------------------------------------------
+
+        rospy.set_param("/robotiq_command", str(grasp_num_3+30))
         rospy.sleep(1)
 
         # 重新到达检测位置
         self.arm.set_pose_target(pose_detect, "tool0")
         self.arm.go(wait = True)
 
-
-
-        # 测试代码---------------------------------------------------------------
-        # 抓取结束,夹爪打开,机械臂回初始点
-        self.arm.set_joint_value_target(self.init_joint)
-        rospy.set_param("/robotiq_command",'o')
-        self.arm.go(wait = True)
+        # # 测试代码---------------------------------------------------------------
+        # # 抓取结束,夹爪打开,机械臂回初始点
+        # self.arm.set_joint_value_target(self.init_joint)
+        # rospy.set_param("/robotiq_command",'o')
+        # self.arm.go(wait = True)
         
-        #将grasp_param设置为0,开始检测，停止抓取
-        rospy.set_param("/grasp_step", 0)
-        return
-        # 测试代码---------------------------------------------------------------
-
-
+        # #将grasp_param设置为0,开始检测，停止抓取
+        # rospy.set_param("/grasp_step", 0)
+        # return
+        # # 测试代码---------------------------------------------------------------
 
         # 3、放置
         flag_full = False
@@ -289,7 +290,7 @@ class Grasp_manipulate:
             while weight_rank < len(self.box_cap) and volume_params.volume > self.box_cap[weight_rank]:
                 weight_rank += 1
             
-            pose_put = self.put_pose_array[weight_rank]
+            pose_detect_groove = self.put_pose_array[weight_rank]
             matrix_groove_to_cam = self.grooves_array[weight_rank][0]
             del self.grooves_array[weight_rank][0]
 
@@ -298,7 +299,7 @@ class Grasp_manipulate:
 
         else:
             # 只有一个盒子的情况
-            pose_put = self.put_pose_array[0]
+            pose_detect_groove = self.put_pose_array[0]
             matrix_groove_to_cam = self.grooves_array[0][0]
             del self.grooves_array[0][0]
 
@@ -306,19 +307,21 @@ class Grasp_manipulate:
                 flag_full = True
 
         # 运动：先到达放置检测的位置
-        self.arm.set_pose_target(pose_put, "tool0")
+        self.arm.set_pose_target(pose_detect_groove, "tool0")
         self.arm.go(wait = True)
         
         # 计算：槽位相对于基坐标的变换矩阵，需要区分草莓正反
-        matrix_end_to_base = matrix_from_quaternion(pose_put.pose.orientation, pose_put.pose.position)
+        matrix_end_to_base = matrix_from_quaternion(pose_detect_groove.pose.orientation, pose_detect_groove.pose.position)
         tran_z_3 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length-PUT_DISTANCE],[0,0,0,1]]
-        matrix_groove_to_base = np.dot(np.dot(np.dot(matrix_end_to_base, matrix_cam_to_end), matrix_groove_to_cam), tran_z_3)
+        matrix_groove_to_base = np.dot(np.dot(np.dot(matrix_end_to_base, matrix_cam_to_end_1), matrix_groove_to_cam), tran_z_3)
         
         # 如果颠倒，则绕z轴旋转
-        if not volume_params.reverse:
+        if volume_params.reverse:
             rotate_z = euler_to_matrix([0, 0, np.pi])
             matrix_groove_to_base = np.dot(matrix_groove_to_base, rotate_z)
         
+        pose_put = copy.deepcopy(pose_detect_groove)
+
         # 运动：到达槽位
         q_groove = matrix_to_quaternion(matrix_groove_to_base)
         pose_put.pose.position.x = matrix_groove_to_base[0][3]
@@ -330,11 +333,16 @@ class Grasp_manipulate:
         pose_put.pose.orientation.z = q_groove.z
         self.arm.set_pose_target(pose_put, "tool0")
         self.arm.go(wait = True)
+
+        # 测试代码---------------------------------------------------------------
+        raw_input("退出请按Ctrl+C,继续按任意键：")
+        # 测试代码---------------------------------------------------------------
+
         rospy.set_param("/robotiq_command", 'o')
         rospy.sleep(1)
 
         # 运动：先到达放置检测的位置
-        self.arm.set_pose_target(pose_put, "tool0")
+        self.arm.set_pose_target(pose_detect_groove, "tool0")
         self.arm.go(wait = True)
 
         # 判断是否放满
