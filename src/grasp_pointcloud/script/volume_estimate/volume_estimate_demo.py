@@ -35,7 +35,7 @@ def compute_triangle_mesh_volume(mesh):
     return total_volume / 6.0
 
 
-for i in range(3, 4):
+for i in range(2, 3):
     # 读取点云
     pcd = o3d.io.read_point_cloud("./pcd/{}-0.35-0.pcd".format(str(i)))  # single4.pcd尾朝上，别用
 
@@ -396,13 +396,16 @@ for i in range(3, 4):
 
     # 可视化结果
     coord_axes_base = o3d.geometry.TriangleMesh.create_coordinate_frame(size=0.03)
-    # o3d.visualization.draw_geometries([coord_axes_base, coord_axes, pcd, obb, filtered_pcd_transform_2, lineset], "result")
-    o3d.visualization.draw_geometries([pcd_filtered], "result")
+    coord_axes_base.transform(trans)
+    o3d.visualization.draw_geometries([pcd], "input")
+    o3d.visualization.draw_geometries([pcd_filtered], "pcd_filtered")
     o3d.visualization.draw_geometries([inlier_cloud], "inlier_cloud")
     o3d.visualization.draw_geometries([outlier_cloud], "outlier_cloud")
     o3d.visualization.draw_geometries([filtered_pcd], "filtered_pcd")
-    o3d.visualization.draw_geometries([coord_axes_base, filtered_pcd_transform_copy, aabb], "coord_axes")
+    o3d.visualization.draw_geometries([coord_axes_base, filtered_pcd_transform_copy], "coord_axes")
+    o3d.visualization.draw_geometries([coord_axes_base, filtered_pcd_transform_copy, aabb], "aabb")
     o3d.visualization.draw_geometries([coord_axes_base, filtered_pcd_transform_copy_2], "reconstruct_pcd")
     o3d.visualization.draw_geometries([coord_axes_base, lineset_copy], "lineset")
+    o3d.visualization.draw_geometries([coord_axes, pcd, filtered_pcd_transform_2, lineset], "result")
 
     print('--'*20)

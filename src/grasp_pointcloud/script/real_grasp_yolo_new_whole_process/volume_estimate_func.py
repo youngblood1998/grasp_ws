@@ -57,6 +57,9 @@ def compute_strawberry_volume(pcd, show=False):
     # 离群点滤波
     filtered_pcd, ind = outlier_cloud.remove_statistical_outlier(nb_neighbors=10, std_ratio=1.0)
 
+    if len(filtered_pcd.points) < 1000:
+        return [0,0,0], 0, True, 0, 0
+
     # 复制预处理后的点云
     filtered_pcd_copy = copy.deepcopy(filtered_pcd)
     # 计算点云中心
@@ -291,6 +294,7 @@ def compute_strawberry_volume(pcd, show=False):
     # print(type(hull))
 
     volume = compute_triangle_mesh_volume(hull)
+    volume = 0.769*volume + 7.79*T_matrix_grasp[2, 3]
     # print("TriangleMesh 体积：", volume)
 
     # 创建坐标轴

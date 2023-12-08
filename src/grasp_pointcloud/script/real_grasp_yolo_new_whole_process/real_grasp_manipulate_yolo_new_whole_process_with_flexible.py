@@ -15,24 +15,29 @@ from geometry_msgs.msg import (
 from grasp_pointcloud.msg import GraspParams
 from grasp_pointcloud.msg import VolumeParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
+from rgb_pose_detect_func import compute_rgb_pose
 
-END_TO_END = 0.162+0.072    # 机器人末端到夹爪末端
-TRAN = [-0.0065, -0.0874528072638, 0.0739784679795] #手眼标定的平移
-TRAN_1 = [0.015, -0.071, 0.0739784679795] #手眼标定的平移：使用点云时
+# END_TO_END = 0.162+0.072    # 机器人末端到夹爪末端（柔性）
+END_TO_END = 0.162    # 机器人末端到夹爪末端（原装）
+TRAN = [-0.0065, -0.084528072638, 0.0739784679795] #手眼标定的平移
+TRAN_1 = [0.015, -0.072, 0.0739784679795] #手眼标定的平移：使用点云时
+TRAN_2 = [0.015, -0.072, 0.0739784679795]
 ROT = [-0.0322859285682, -0.00222200140914, -0.0294295826053, 0.999042832512]   #手眼标定的旋转
-Z_DISTANCE = 0.050     # 抓取位置前一个位置的距离
-ADD_WIDTH = 12
-SUB_WIDTH = 8
+Z_DISTANCE = 0.100     # 抓取位置前一个位置的距离
+ADD_WIDTH = 8
+SUB_WIDTH = 2
 TOLERANCE = 0.0005
-SCALING_FACTOR = 0.05
+SCALING_FACTOR = 0.1
 GRIPPER_HEIGHT = 4  # 夹爪厚
 MAX_TILT = 15   # 最大偏转角
 MIN_WIDTH = 40
 MAX_WIDTH = 64
 RESULT_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_new_whole_process/config/pose_result.ini"
-LIFT_DISTANCE = 0.16
-PUT_DISTANCE = 0.02
+# LIFT_DISTANCE = 0.20    # (柔性)
+LIFT_DISTANCE = 0.20+0.072    # (原装)
+PUT_DISTANCE = 0.01
 REGRASP_ADD_DEPTH = 0.005
+ERROR_ANGLE = 30
 
 class Grasp_manipulate:
     def __init__(self):
@@ -130,6 +135,9 @@ class Grasp_manipulate:
 
         point_cam_to_end_1 = tran_to_point(TRAN_1)
         matrix_cam_to_end_1 = matrix_from_quaternion(ori_cam_to_end, point_cam_to_end_1)
+
+        point_cam_to_end_2 = tran_to_point(TRAN_2)
+        matrix_cam_to_end_2 = matrix_from_quaternion(ori_cam_to_end, point_cam_to_end_2)
         
         # 1、抓取检测
         # 计算：末端坐标到基坐标的变换矩阵
@@ -236,8 +244,30 @@ class Grasp_manipulate:
         rospy.set_param("/grasp_step", 2)
         volume_params = rospy.wait_for_message("real_detect/volume_params", VolumeParams)
         rospy.set_param("/grasp_step", 1)
-        
+
+        # 再抓取姿态矫正
+        flag_reverse_rgb, angle_grasp_rgb = compute_rgb_pose()
+        print(volume_params.reverse, volume_params.rotate_angle, flag_reverse_rgb, angle_grasp_rgb)
+        if angle_grasp_rgb != 360:
+            if ((not flag_reverse_rgb and volume_params.reverse) or (flag_reverse_rgb and not volume_params.reverse)) or abs(volume_params.rotate_angle-angle_grasp_rgb) > ERROR_ANGLE:
+                volume_params.reverse = flag_reverse_rgb
+                volume_params.rotate_angle = angle_grasp_rgb
+
         # 运动：再抓取
+        # 没有草莓
+        if volume_params.volume == 0:
+            print("当前位置没有草莓")
+            # 抓取结束,夹爪打开,机械臂回初始点
+            self.arm.set_joint_value_target(self.init_joint)
+            rospy.set_param("/robotiq_command",'o')
+            self.arm.go(wait = True)
+            
+            #将grasp_param设置为0,开始检测，停止抓取
+            rospy.set_param("/grasp_step", 0)
+            # rospy.sleep(2)
+            # ans_2 = raw_input("退出请按Ctrl+C,继续按任意键：").lower()
+            return 
+
         # 再到达抓取位置
         grasp_num_3 = real_width_to_num(volume_params.width*1000)
         add_length = num_to_real_length(grasp_num_3)/1000.0
@@ -261,7 +291,7 @@ class Grasp_manipulate:
         self.arm.go(wait = True)
 
         # 测试代码---------------------------------------------------------------
-        raw_input("退出请按Ctrl+C,继续按任意键：")
+        # raw_input("退出请按Ctrl+C,继续按任意键：")
         # 测试代码---------------------------------------------------------------
 
         rospy.set_param("/robotiq_command", str(grasp_num_3+30))
@@ -313,7 +343,7 @@ class Grasp_manipulate:
         # 计算：槽位相对于基坐标的变换矩阵，需要区分草莓正反
         matrix_end_to_base = matrix_from_quaternion(pose_detect_groove.pose.orientation, pose_detect_groove.pose.position)
         tran_z_3 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length-PUT_DISTANCE],[0,0,0,1]]
-        matrix_groove_to_base = np.dot(np.dot(np.dot(matrix_end_to_base, matrix_cam_to_end_1), matrix_groove_to_cam), tran_z_3)
+        matrix_groove_to_base = np.dot(np.dot(np.dot(matrix_end_to_base, matrix_cam_to_end_2), matrix_groove_to_cam), tran_z_3)
         
         # 如果颠倒，则绕z轴旋转
         if volume_params.reverse:
@@ -335,7 +365,7 @@ class Grasp_manipulate:
         self.arm.go(wait = True)
 
         # 测试代码---------------------------------------------------------------
-        raw_input("退出请按Ctrl+C,继续按任意键：")
+        # raw_input("退出请按Ctrl+C,继续按任意键：")
         # 测试代码---------------------------------------------------------------
 
         rospy.set_param("/robotiq_command", 'o')
@@ -357,7 +387,7 @@ class Grasp_manipulate:
         #将grasp_param设置为0,开始检测，停止抓取
         rospy.set_param("/grasp_step", 0)
         # rospy.sleep(2)
-        ans_2 = raw_input("退出请按Ctrl+C,继续按任意键：").lower()
+        # ans_2 = raw_input("退出请按Ctrl+C,继续按任意键：").lower()
 
 
 if __name__ == "__main__":

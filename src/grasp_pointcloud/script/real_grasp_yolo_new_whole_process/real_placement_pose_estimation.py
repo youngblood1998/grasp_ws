@@ -9,8 +9,8 @@ from pointcloud_format_func import rospc_to_o3dpc
 from placement_pose_estimation_func import pose_estimation
 
 
-SOURCE_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_new_whole_process/pcd/target_full_box_transform.pcd"
-CONFIG_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_new_whole_process/config/pose_config.ini"
+SOURCE_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_new_whole_process/pcd/target_full_box_transform_2.pcd"
+CONFIG_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_new_whole_process/config/pose_config_1.ini"
 RESULT_PATH = "/home/jay/grasp_ws/src/grasp_pointcloud/script/real_grasp_yolo_new_whole_process/config/pose_result.ini"
 
 

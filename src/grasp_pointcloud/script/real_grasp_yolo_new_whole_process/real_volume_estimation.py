@@ -6,7 +6,6 @@ from pointcloud_format_func import rospc_to_o3dpc
 from sensor_msgs.msg import PointCloud2
 from grasp_pointcloud.msg import VolumeParams
 
-
 class VolumeEstimation:
 
     def __init__(self):
@@ -18,16 +17,19 @@ class VolumeEstimation:
         # if rospy.has_param("/grasp_step") and int(rospy.get_param("/grasp_step"))!=2:
         if (not rospy.has_param("/grasp_step")) or (rospy.has_param("/grasp_step") and int(rospy.get_param("/grasp_step"))!=2):
             return 0
+
+        # 使用点云检测重量、位姿并发布
         pcd = rospc_to_o3dpc(point_cloud)
-        position_grasp, angle_grasp, flag_reverse, volume, width = compute_strawberry_volume(pcd, True)
+        position_grasp, angle_grasp, flag_reverse, volume, width = compute_strawberry_volume(pcd, False)
         volume_params = VolumeParams()
-        volume_params.reverse = flag_reverse
         volume_params.x = position_grasp[0]
         volume_params.y = position_grasp[1]
         volume_params.z = position_grasp[2]
-        volume_params.rotate_angle = angle_grasp
         volume_params.volume = volume
         volume_params.width = width
+        volume_params.reverse = flag_reverse
+        volume_params.rotate_angle = angle_grasp
+
         self.volume_params_pub.publish(volume_params)
 
 

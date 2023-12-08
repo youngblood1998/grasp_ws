@@ -23,7 +23,7 @@ def accuracy_statistics(y_array, y_correct, x_label, y_label, lines_label, save_
     # 设置坐标轴范围
     plt.xlim(0, max(accuracy_array))
     plt.ylim(0, 100)
-    plt.grid(True)
+    # plt.grid(True)
     plt.savefig(save_path, dpi=300)
     plt.show()
 
