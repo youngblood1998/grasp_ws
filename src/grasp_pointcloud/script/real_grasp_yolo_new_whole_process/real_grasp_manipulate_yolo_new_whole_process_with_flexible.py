@@ -16,6 +16,7 @@ from grasp_pointcloud.msg import GraspParams
 from grasp_pointcloud.msg import VolumeParams
 from trans_func import matrix_from_quaternion, rot_to_ori, tran_to_point, euler_to_matrix, tran_to_matrix, real_width_to_num, num_to_real_length, matrix_to_quaternion
 from rgb_pose_detect_func import compute_rgb_pose
+import time
 
 # END_TO_END = 0.162+0.072    # 机器人末端到夹爪末端（柔性）
 END_TO_END = 0.162    # 机器人末端到夹爪末端（原装）
@@ -176,7 +177,7 @@ class Grasp_manipulate:
         tran_z_1 = [[1,0,0,0],[0,1,0,0],[0,0,1,-END_TO_END-add_length-Z_DISTANCE],[0,0,0,1]]
         matrix_obj_to_base_1 = np.dot(matrix_obj_to_base, tran_z_1)
         grasp_num_1 = real_width_to_num(min(max(min(grasp_params.grasp_width_second+ADD_WIDTH, grasp_params.grasp_width_first+GRIPPER_HEIGHT), MIN_WIDTH), MAX_WIDTH))
-        
+
         # 运动：机器人先转动最后一个关节
         joint = self.arm.get_current_joint_values()
         joint[5] += angle_z
@@ -239,19 +240,26 @@ class Grasp_manipulate:
         pose_detect.pose.position.z = point_detect_to_base[2]
         self.arm.set_pose_target(pose_detect, "tool0")
         self.arm.go(wait = True)
-        
+
         # 等待重量检测
         rospy.set_param("/grasp_step", 2)
         volume_params = rospy.wait_for_message("real_detect/volume_params", VolumeParams)
         rospy.set_param("/grasp_step", 1)
 
+        # # 再抓取姿态矫正
+        # flag_reverse_rgb, angle_grasp_rgb = compute_rgb_pose()
+        # print(volume_params.reverse, volume_params.rotate_angle, flag_reverse_rgb, angle_grasp_rgb)
+        # if angle_grasp_rgb != 360:
+        #     if ((not flag_reverse_rgb and volume_params.reverse) or (flag_reverse_rgb and not volume_params.reverse)) or abs(volume_params.rotate_angle-angle_grasp_rgb) > ERROR_ANGLE:
+        #         volume_params.reverse = flag_reverse_rgb
+        #         volume_params.rotate_angle = angle_grasp_rgb
+
         # 再抓取姿态矫正
         flag_reverse_rgb, angle_grasp_rgb = compute_rgb_pose()
         print(volume_params.reverse, volume_params.rotate_angle, flag_reverse_rgb, angle_grasp_rgb)
         if angle_grasp_rgb != 360:
-            if ((not flag_reverse_rgb and volume_params.reverse) or (flag_reverse_rgb and not volume_params.reverse)) or abs(volume_params.rotate_angle-angle_grasp_rgb) > ERROR_ANGLE:
-                volume_params.reverse = flag_reverse_rgb
-                volume_params.rotate_angle = angle_grasp_rgb
+            volume_params.reverse = flag_reverse_rgb
+            volume_params.rotate_angle = angle_grasp_rgb
 
         # 运动：再抓取
         # 没有草莓
